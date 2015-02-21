@@ -1,17 +1,12 @@
-
-// Copyright (c) 2013, Web Notes Technologies Pvt. Ltd. and Contributors
-// License: GNU General Public License v3. See license.txt
-
-frappe.ui.form.on("Member", "onload", function(frm,doc) {
-  $( "#map-canvas" ).remove();
+frappe.ui.form.on("Member", "onload", function(frm) {
+ $( "#map-canvas" ).remove();
   $(cur_frm.get_field("lon").wrapper).append('<div id="map-canvas" style="width: 425px; height: 425px;">Google Map</div>');
     if(frm.doc.__islocal || (!frm.doc.lat || ! frm.doc.lon)){
       cur_frm.cscript.create_pin_on_map(frm.doc,'9.072264','7.491302');
     }
     else{
-
-      cur_frm.cscript.create_pin_on_map(frm.doc,frm.doc.lat,frm.doc.lon);
-    }   
+    cur_frm.cscript.create_pin_on_map(frm.doc,frm.doc.lat,frm.doc.lon);
+    }    
 });
 
 

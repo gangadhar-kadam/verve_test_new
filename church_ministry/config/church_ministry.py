@@ -18,22 +18,62 @@ def get_data():
 				},				
 				{
 					"type":"doctype",
+					"name": "Event Attendance",
+					"description": _("Event Attendance Database")
+				},
+				{
+					"type":"doctype",
 					"name": "Cell Meeting Invitation",
 					"description": _("Cell Meeting Invitation Database")
-				},							
+				},
+				{
+					"type":"doctype",
+					"name": "Cell Meeting Attendance",
+					"description": _("Cell Meeting Attendance Database")
+				},
+				{
+					"type":"doctype",
+					"name": "Partnership Arm Record",
+					"description": _("Partnership Arm Record Database")
+				},								
+
+				{
+					"type":"doctype",
+					"name": "Foundation School Exam",
+					"description": _("Foundation School Exam Attendance/Results")
+				},
+				{
+					"type":"doctype",
+					"name": "Event",
+					"description": _("Event")
+				},
+			]
+		},
+		{
+			"label": _("page"),
+			"icon": "icon-star",
+			"items": [
 				{
 					"type": "page",
 					"name": "assign-for-followup",
 					"label": _("Assign For Followup"),
 					"icon": "icon-bar-chart",
 					"description": _("Assign For Followup")
-				},						
-				{
-					"type":"doctype",
-					"name": "Foundation School Exam",
-					"description": _("Foundation School Exam Attendance/Results")
 				},
-				
+				{
+					"type": "page",
+					"name": "approve-ftv-to-membe",
+					"label": _("Approve FTV to Member"),
+					"icon": "icon-bar-chart",
+					"description": _("Support Analytics")
+				},
+				{
+					"type": "page",
+					"name": "convert-ftv-to-membe",
+					"label": _("Convert FTV to Member"),
+					"icon": "icon-bar-chart",
+					"description": _("Convert FTV to Member")
+				},				
 			]
 		},
 		{

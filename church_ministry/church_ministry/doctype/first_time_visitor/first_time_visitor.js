@@ -13,6 +13,29 @@ frappe.ui.form.on("First Time Visitor", "onload", function(frm,doc) {
     }   
 });
 
+frappe.ui.form.on("First Time Visitor", "refresh", function(frm,doc) {
+    if(!frm.doc.__islocal && frm.doc.approved) {
+        frappe.call({
+              method:"church_ministry.church_ministry.doctype.first_time_visitor.first_time_visitor.ismember",
+              args:{
+                      "name":frm.doc.name
+              },
+              callback: function(r) {
+                  if (r.message=='No'){
+                      frm.add_custom_button(__("Create Member"), cur_frm.cscript.create_member,frappe.boot.doctype_icons["Customer"], "btn-default");
+                  }
+              }
+        })      
+    }
+});
+
+cur_frm.cscript.create_member = function() {
+    frappe.model.open_mapped_doc({
+      method: "church_ministry.church_ministry.doctype.first_time_visitor.first_time_visitor.make_member",
+      frm: cur_frm
+    })
+}
+
 
 cur_frm.add_fetch("cell", "pcf", "pcf");
 cur_frm.add_fetch("cell", "church", "church");
@@ -57,8 +80,6 @@ gmap = Class.extend({
                 };
                 map = new google.maps.Map($('.map-canvas'), myOptions);
                 console.log(['map in gmap ',map]);
-                //console.log($('#map-canvas'));
-                //me.successFunction(doc.address, map)
                 me.successFunction('abuja nigeria', map)
         },
         successFunction: function(position, map) {
@@ -217,11 +238,8 @@ var s=1;
 
 function updateMarkerPosition(latLng) {
   doc=cur_frm.doc
-  //console.log(['latlon',latLng])
-  //console.log(["update mrkr psn",latLng,doc.lat,doc.lon,latLng.lat(),latLng.lng()])
   doc.lat=latLng.lat()
   doc.lon=latLng.lng()
-  //console.log([doc.lat,doc.lon,doc.name])
   refresh_field('lat')
   refresh_field('lon')
 }
@@ -270,11 +288,3 @@ cur_frm.cscript.address = function(doc, dt, dn){
         o.codeAddress(doc.address)
 }
 
-
-/*cur_frm.get_field("address").$input.on("keypress", function() {
-        console.log("hi on key up");
-        console.log(['in address trigger ',doc.address]);
-        var o = new gmap(this.frm.doc);
-        console.log(['o gmap after address trigger ',o]);
-        o.codeAddress(doc.address)
-});*/

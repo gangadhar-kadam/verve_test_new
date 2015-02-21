@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 import frappe
 import frappe.defaults
 from frappe.desk.reportview import get_match_cond
+import frappe.share
+from frappe.utils import cstr,now,add_days
 
 @frappe.whitelist()
 def ftv():
@@ -50,16 +52,33 @@ def loadmembers(ftv):
 
 @frappe.whitelist()
 def assignmember(memberid,ftv):
+	#frappe.errprint(now)
+	#return "Done"
 	frappe.db.sql("""update `tabFirst Time Visitor` set ftv_owner='%s' where name='%s' """ % (memberid,ftv))
 	recipients='gangadhar.k@indictranstech.com'
 	member=frappe.db.sql("select member_name,email_id from `tabMember` where name='%s'"%(memberid))
-	ftvdetails=frappe.db.sql("select ftv_name,email_id from `tabFirst Time Visitor` where name='%s'"%(ftv))
+	ftvdetails=frappe.db.sql("select ftv_name,email_id,task_description,due_date from `tabFirst Time Visitor` where name='%s'"%(ftv))
+
 	msg_member="""Hello %s,<br>
 	The First Time visitor '%s' name: '%s' Email ID: '%s' is assigned to you for follow up <br>Regrds,<br>Varve
 	"""%(member[0][0],ftv,ftvdetails[0][0],ftvdetails[0][0])
 	msg_ftv="""Hello %s,<br>
 	The Member '%s' name: '%s' Email ID: '%s' is assigned to you for follow up <br>Regrds,<br>Varve
 	"""%(ftvdetails[0][0],memberid,member[0][0],member[0][0])
-	frappe.sendmail(recipients=member[0][1], sender='gangadhar.k@indictranstech.com', content=msg_member, subject='Assign for follow up')
-	frappe.sendmail(recipients=ftvdetails[0][1], sender='gangadhar.k@indictranstech.com', content=msg_ftv, subject='Assign for follow up')
+	#frappe.errprint(cstr(nowdate)+" 10:00:00")
+	event = frappe.get_doc({
+				"doctype": "Event",
+				"owner": "email.kadam@gmail.com",
+				"subject": "FTV Assignment",
+				"description": ftv +" is assigned to you for followup",
+				"starts_on": add_days(now(), 3),
+				"event_type": "Private",
+				"ref_type": "First Time Visitor",
+				"ref_name": ftv
+	})
+	event.insert(ignore_permissions=True)
+	frappe.errprint(event.name)
+	#frappe.sendmail(recipients=member[0][1], sender='gangadhar.k@indictranstech.com', content=msg_member, subject='Assign for follow up')
+	#frappe.sendmail(recipients=ftvdetails[0][1], sender='gangadhar.k@indictranstech.com', content=msg_ftv, subject='Assign for follow up')
+
 	return "Done"

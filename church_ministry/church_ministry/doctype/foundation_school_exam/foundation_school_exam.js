@@ -13,20 +13,20 @@ cur_frm.cscript.score = function(doc, cdt, cdn) {
 	return get_server_fields('get_grade', d.score, '', doc, cdt, cdn, 1);
 }
 
-cur_frm.cscript.cell = function(doc, cdt, cdn) {
+frappe.ui.form.on("Foundation School Exam", "cell", function(frm,cdt,cdn,doc) {
 		var d = locals[cdt][cdn];
 		frappe.call({
 				method:"church_ministry.church_ministry.doctype.foundation_school_exam.foundation_school_exam.loadftv",
 				args:{
-	        	"cell":doc.cell,
-	        	"visitor_type":doc.visitor_type
+	        	"cell":frm.doc.cell,
+	        	"visitor_type":frm.doc.visitor_type
 	        	},
 				callback: function(r) {
 					if (r.message.ftv[0].length>0){
-						frappe.model.clear_table(doc, "attendance");
+						frappe.model.clear_table(frm.doc, "attendance");
 			           for (i=0;i<r.message.ftv[0].length;i++){
-			           	    var child = frappe.model.add_child(doc,"Foundation School Exam Details","attendance");
-			           	    if (doc.visitor_type=='FTV'){
+			           	    var child = frappe.model.add_child(frm.doc,"Foundation School Exam Details","attendance");
+			           	    if (frm.doc.visitor_type=='FTV'){
 			           	    	child.ftv_id=r.message.ftv[0][i][0];
 			           	    }
 			           	    else{
@@ -37,15 +37,15 @@ cur_frm.cscript.cell = function(doc, cdt, cdn) {
 			           refresh_field("attendance");
 			        }
 			 }
-	    });
-}
+	    })
+});
 
-cur_frm.cscript.visitor_type = function(doc, cdt, cdn) {
-	frappe.model.clear_table(doc, "attendance");
-	cur_frm.cscript.toggle_related_fields(doc);
+frappe.ui.form.on("Foundation School Exam", "visitor_type", function(frm,doc) {
+	frappe.model.clear_table(frm.doc, "attendance");
+	cur_frm.cscript.toggle_related_fields(frm.doc);
 	//frappe.model.clear_table(doc, "attendance");
 
-}
+});
 
 
 cur_frm.cscript.toggle_related_fields = function(doc) {

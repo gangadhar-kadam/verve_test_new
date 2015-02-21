@@ -74,7 +74,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-20 12:44:31.388138", 
+ "modified": "2015-02-19 13:00:39.380454", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Grade Master", 
@@ -96,7 +96,50 @@
    "report": 1, 
    "role": "System Manager", 
    "set_user_permissions": 0, 
+   "share": 1, 
    "submit": 0, 
+   "write": 1
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Regional Pastor", 
+   "write": 1
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Zonal Pastor", 
+   "write": 1
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Group Church Pastor", 
+   "write": 1
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Church Pastor", 
+   "write": 1
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "PCF Leader", 
+   "write": 1
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Senior Cell Leader", 
+   "write": 1
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Cell Leader", 
    "write": 1
   }
  ], 

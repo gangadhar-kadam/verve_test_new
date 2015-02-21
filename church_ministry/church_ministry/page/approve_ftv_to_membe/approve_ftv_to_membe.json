@@ -1,0 +1,21 @@
+{
+ "content": null, 
+ "creation": "2015-02-19 12:36:57.212524", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "modified": "2015-02-19 12:38:04.016219", 
+ "modified_by": "Administrator", 
+ "module": "Church Ministry", 
+ "name": "approve-ftv-to-membe", 
+ "owner": "Administrator", 
+ "page_name": "Approve FTV to Member", 
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "title": "Approve FTV to Member"
+}
