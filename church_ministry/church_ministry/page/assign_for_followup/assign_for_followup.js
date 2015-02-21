@@ -1,4 +1,4 @@
-frappe.pages['assign-for-followup'].onload = function(wrapper) {
+frappe.pages['assign-for-followup'].on_page_load = function(wrapper) {
 	frappe.ui.make_app_page({
 		parent: wrapper,
 		title: 'Assign For Followup',
