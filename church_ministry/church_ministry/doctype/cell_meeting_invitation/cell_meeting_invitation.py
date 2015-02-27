@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
+from frappe import throw, _, msgprint
 
 class CellMeetingInvitation(Document):
 	
@@ -20,6 +21,28 @@ class CellMeetingInvitation(Document):
 			child.member_name = d[1]
 			child.email_id = d[2]
 
+	# def on_update(self):
+	# 	fdate=self.from_date.split(" ")
+	# 	f_date=fdate[0]
+	# 	tdate=self.to_date.split(" ")
+	# 	t_date=tdate[0]
+	# 	res=frappe.db.sql("select name from `tabCell Meeting Invitation` where (cell='%s' or church='%s') and from_date like '%s%%' and to_date like '%s%%'"%(self.cell,self.church,f_date,t_date))
+	# 	frappe.errprint(res)
+	# 	if res:
+	# 		frappe.throw(("Cell Meeting Invitation '{0}' is already created for same details on same date '{1}'").format(res[0][0],f_date))
+		
+def validate_duplicate(doc,method):
+	if doc.get("__islocal"):
+		fdate=doc.from_date.split(" ")
+		f_date=fdate[0]
+		frappe.errprint(f_date)
+		tdate=doc.to_date.split(" ")
+		t_date=tdate[0]
+		frappe.errprint(t_date)
+		res=frappe.db.sql("select name from `tabCell Meeting Invitation` where (cell='%s' or church='%s') and from_date like '%s%%' and to_date like '%s%%'"%(doc.cell,doc.church,f_date,t_date))
+		frappe.errprint(res)
+		if res:
+			frappe.throw(_("Cell Meeting Invitation '{0}' is already created for same details on same date '{1}'").format(res[0][0],f_date))
 
 @frappe.whitelist()
 def create_attendance(source_name, target_doc=None):

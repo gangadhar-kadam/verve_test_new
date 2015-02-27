@@ -35,6 +35,7 @@ frappe.assign = Class.extend({
 	        	},
 				callback: function(r) {
 					if (r.message.ftv){
+						//console.log(r.message);
 						h1=''		            
 			            for (i=0;i<r.message.ftv[0].length;i++){
 			                        var j=i+1
@@ -47,7 +48,7 @@ frappe.assign = Class.extend({
 			                        h1 += "<td style='padding=0px;width=100%'><input type='checkbox' data-name='"+r.message.ftv[0][i][0]+"' ></td></tr>"
 			            }
 			            $('<br><button  class="btn btn-primary btn-search" id="test">Approve</button><br>').appendTo($(me.wrapper).find('.apllybtn'));    
-			            h="<br><table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'><tr><td style='padding=0px;width=100%''>Sr No.</td><td>FTV ID</td><td>FTV Name</td><td>Gender</td><td>DOB</td><td>Approve</td></tr>"+h1+"<tbody>";	               
+			            h="<br><table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'><tr><td style='padding=0px;width=100%''><b>Sr No.</b></td><td><b>FTV ID</b></td><td><b>FTV Name</b></td><td><b>Gender</b></td><td><b>DOB</b></td><td><b>Approve</b></td></tr>"+h1+"<tbody>";	               
 			            $(h).appendTo($(me.wrapper).find('.assignt'))
 					    $('.apllybtn').find('.btn-search').click(function() {
 					    	var ftv =[];
@@ -55,7 +56,7 @@ frappe.assign = Class.extend({
 											if ($(this).prop("checked")==true) { 
 												ftv[ftv.length]=$(this).attr('data-name');
 											}
-							})
+							})/
 						    assign(ftv);                      
 						}) ;
 					}

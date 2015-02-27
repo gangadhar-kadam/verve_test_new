@@ -33,6 +33,7 @@
    "depends_on": "eval:doc.meeting_category== 'Cell Meeting'", 
    "fieldname": "cell", 
    "fieldtype": "Link", 
+   "in_list_view": 1, 
    "label": "Cell", 
    "options": "Cell Master", 
    "permlevel": 0, 
@@ -68,19 +69,79 @@
    "reqd": 0
   }, 
   {
-   "fieldname": "from_date", 
-   "fieldtype": "Datetime", 
-   "label": "From Date", 
+   "depends_on": "eval:doc.meeting_category== 'Church Meeting'", 
+   "fieldname": "cell_master", 
+   "fieldtype": "Link", 
+   "in_list_view": 0, 
+   "label": "Cell", 
+   "options": "Cell Master", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "fieldname": "senior_cell", 
+   "fieldtype": "Link", 
+   "in_list_view": 1, 
+   "label": "Senior Cell", 
+   "options": "Senior Cell Master", 
    "permlevel": 0, 
    "precision": "", 
+   "read_only": 1, 
    "reqd": 1
   }, 
   {
-   "fieldname": "to_date", 
-   "fieldtype": "Datetime", 
-   "label": "To Date", 
+   "fieldname": "pcf", 
+   "fieldtype": "Link", 
+   "in_list_view": 1, 
+   "label": "PCF", 
+   "options": "PCF Master", 
    "permlevel": 0, 
    "precision": "", 
+   "read_only": 1, 
+   "reqd": 1
+  }, 
+  {
+   "fieldname": "church_master", 
+   "fieldtype": "Link", 
+   "in_list_view": 1, 
+   "label": "Church", 
+   "options": "Church Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1, 
+   "reqd": 0
+  }, 
+  {
+   "fieldname": "church_group", 
+   "fieldtype": "Link", 
+   "in_list_view": 1, 
+   "label": "Church Group", 
+   "options": "Church Group Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1, 
+   "reqd": 1
+  }, 
+  {
+   "fieldname": "zone", 
+   "fieldtype": "Link", 
+   "in_list_view": 1, 
+   "label": "Zone", 
+   "options": "Zone Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1, 
+   "reqd": 1
+  }, 
+  {
+   "fieldname": "region", 
+   "fieldtype": "Link", 
+   "in_list_view": 1, 
+   "label": "Region", 
+   "options": "Region Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1, 
    "reqd": 1
   }, 
   {
@@ -101,6 +162,22 @@
    "fieldname": "venue", 
    "fieldtype": "Data", 
    "label": "Venue", 
+   "permlevel": 0, 
+   "precision": "", 
+   "reqd": 1
+  }, 
+  {
+   "fieldname": "from_date", 
+   "fieldtype": "Datetime", 
+   "label": "From Date", 
+   "permlevel": 0, 
+   "precision": "", 
+   "reqd": 1
+  }, 
+  {
+   "fieldname": "to_date", 
+   "fieldtype": "Datetime", 
+   "label": "To Date", 
    "permlevel": 0, 
    "precision": "", 
    "reqd": 1
@@ -177,7 +254,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-20 12:55:59.297139", 
+ "modified": "2015-02-26 12:16:27.397857", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Cell Meeting Invitation", 
@@ -203,44 +280,67 @@
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Regional Pastor", 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Zonal Pastor", 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Group Church Pastor", 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Church Pastor", 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "export": 0, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "PCF Leader", 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Senior Cell Leader", 
+   "set_user_permissions": 0, 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Cell Leader", 
    "write": 1
   }

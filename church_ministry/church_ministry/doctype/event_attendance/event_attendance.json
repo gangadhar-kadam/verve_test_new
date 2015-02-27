@@ -153,7 +153,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-19 13:05:57.109281", 
+ "modified": "2015-02-26 18:47:52.198829", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Event Attendance", 
@@ -180,45 +180,72 @@
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Regional Pastor", 
+   "submit": 1, 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Zonal Pastor", 
+   "submit": 1, 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Group Church Pastor", 
+   "submit": 1, 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Church Pastor", 
+   "submit": 1, 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
    "role": "Senior Cell Leader", 
+   "submit": 1, 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Cell Leader", 
+   "submit": 1, 
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "PCF Leader", 
+   "submit": 1, 
    "write": 1
   }
  ], 

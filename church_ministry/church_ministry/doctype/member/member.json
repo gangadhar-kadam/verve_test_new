@@ -1,4 +1,5 @@
 {
+ "_starred_by": "[]", 
  "allow_copy": 0, 
  "allow_import": 0, 
  "allow_rename": 0, 
@@ -75,7 +76,7 @@
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
    "in_list_view": 0, 
-   "label": "Date of Join", 
+   "label": "Date of Joining", 
    "no_copy": 0, 
    "permlevel": 0, 
    "precision": "", 
@@ -97,6 +98,26 @@
    "label": "Sex", 
    "no_copy": 0, 
    "options": "\nMale\nFemale\nOther", 
+   "permlevel": 0, 
+   "precision": "", 
+   "print_hide": 0, 
+   "read_only": 0, 
+   "report_hide": 0, 
+   "reqd": 1, 
+   "search_index": 0, 
+   "set_only_once": 0
+  }, 
+  {
+   "allow_on_submit": 0, 
+   "fieldname": "member_designation", 
+   "fieldtype": "Select", 
+   "hidden": 0, 
+   "ignore_user_permissions": 0, 
+   "in_filter": 0, 
+   "in_list_view": 0, 
+   "label": "Member Designation", 
+   "no_copy": 0, 
+   "options": "\nFT Visitor\nMember\nBible Study Class Teacher\nCell Leader\nSr.Cell Leader\nPCF Leader\nChurch Pastor\nChurch Group Pastor\nZone Pastor\nRegion Pastor", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -138,26 +159,6 @@
    "label": "Marital Info", 
    "no_copy": 0, 
    "options": "\nSingle\nMarried\nDivorced\nWidowed", 
-   "permlevel": 0, 
-   "precision": "", 
-   "print_hide": 0, 
-   "read_only": 0, 
-   "report_hide": 0, 
-   "reqd": 0, 
-   "search_index": 0, 
-   "set_only_once": 0
-  }, 
-  {
-   "allow_on_submit": 0, 
-   "fieldname": "member_designation", 
-   "fieldtype": "Select", 
-   "hidden": 0, 
-   "ignore_user_permissions": 0, 
-   "in_filter": 0, 
-   "in_list_view": 0, 
-   "label": "Member Designation", 
-   "no_copy": 0, 
-   "options": "\nFT Visitor\nMember\nBible Study Class Teacher\nCell Leader\nSr.Cell Leader\nPCF Leader\nChurch Pastor\nChurch Group Pastor\nZone Pastor\nRegion Pastor", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -475,7 +476,7 @@
    "print_hide": 0, 
    "read_only": 0, 
    "report_hide": 0, 
-   "reqd": 0, 
+   "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
   }, 
@@ -596,14 +597,14 @@
   }, 
   {
    "allow_on_submit": 0, 
-   "description": "Foundation School  baptism details", 
+   "description": "Foundation School  Baptism Details", 
    "fieldname": "foundation_school__baptism_details", 
    "fieldtype": "Section Break", 
    "hidden": 0, 
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
    "in_list_view": 0, 
-   "label": "Foundation School  baptism details", 
+   "label": "Foundation School  Baptism Details", 
    "no_copy": 0, 
    "permlevel": 0, 
    "precision": "", 
@@ -889,6 +890,16 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "default": "not", 
+   "fieldname": "flag", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "Flag", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
   }
  ], 
  "hide_heading": 0, 
@@ -898,7 +909,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-20 17:33:48.248429", 
+ "modified": "2015-02-27 17:32:45.520922", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
@@ -926,43 +937,55 @@
   }, 
   {
    "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Regional Pastor", 
    "write": 1
   }, 
   {
    "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Zonal Pastor", 
    "write": 1
   }, 
   {
    "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Group Church Pastor", 
    "write": 1
   }, 
   {
    "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Church Pastor", 
    "write": 1
   }, 
   {
    "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "PCF Leader", 
    "write": 1
   }, 
   {
    "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Senior Cell Leader", 
    "write": 1
   }, 
@@ -970,7 +993,7 @@
    "amend": 0, 
    "apply_user_permissions": 1, 
    "cancel": 0, 
-   "create": 0, 
+   "create": 1, 
    "delete": 0, 
    "email": 1, 
    "export": 1, 
@@ -989,6 +1012,71 @@
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
+   "role": "Member", 
+   "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "System Manager"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Regional Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Zonal Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Group Church Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Church Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "PCF Leader"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Senior Cell Leader"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Cell Leader"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
    "role": "Member"
   }
  ], 

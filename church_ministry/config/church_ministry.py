@@ -16,11 +16,7 @@ def get_data():
 					"name": "Member",
 					"description": _("Member Database")
 				},				
-				{
-					"type":"doctype",
-					"name": "Event Attendance",
-					"description": _("Event Attendance Database")
-				},
+				
 				{
 					"type":"doctype",
 					"name": "Cell Meeting Invitation",
@@ -47,10 +43,15 @@ def get_data():
 					"name": "Event",
 					"description": _("Event")
 				},
+				{
+					"type":"doctype",
+					"name": "Event Attendance",
+					"description": _("Event Attendance Database")
+				},
 			]
 		},
 		{
-			"label": _("page"),
+			"label": _("Page"),
 			"icon": "icon-star",
 			"items": [
 				{
@@ -63,9 +64,9 @@ def get_data():
 				{
 					"type": "page",
 					"name": "approve-ftv-to-membe",
-					"label": _("Approve FTV to Member"),
+					"label": _("Eligible FTV's to Member"),
 					"icon": "icon-bar-chart",
-					"description": _("Support Analytics")
+					"description": _("Eligible FTV's to Member")
 				},
 				{
 					"type": "page",
@@ -73,7 +74,14 @@ def get_data():
 					"label": _("Convert FTV to Member"),
 					"icon": "icon-bar-chart",
 					"description": _("Convert FTV to Member")
-				},				
+				},
+				{
+					"type": "page",
+					"name": "dashboard",
+					"label": _("Dashboard"),
+					"icon": "icon-bar-chart",
+					"description": _("Dashboard")
+				},			
 			]
 		},
 		{

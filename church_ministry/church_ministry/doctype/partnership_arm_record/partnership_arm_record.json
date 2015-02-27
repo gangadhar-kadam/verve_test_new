@@ -77,6 +77,52 @@
    "reqd": 1
   }, 
   {
+   "depends_on": "eval:doc.is_member==0", 
+   "fieldname": "member1", 
+   "fieldtype": "Link", 
+   "label": "Member", 
+   "options": "Member", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "cell", 
+   "fieldtype": "Link", 
+   "label": "Cell", 
+   "options": "Cell Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "senior_cell", 
+   "fieldtype": "Link", 
+   "label": "Senior Cell", 
+   "options": "Senior Cell Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "pcf", 
+   "fieldtype": "Link", 
+   "label": "PCF", 
+   "options": "PCF Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "church", 
+   "fieldtype": "Link", 
+   "label": "Church", 
+   "options": "Church Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
    "fieldname": "column_break_5", 
    "fieldtype": "Column Break", 
    "permlevel": 0, 
@@ -121,6 +167,33 @@
    "label": "Equated Amount", 
    "permlevel": 0, 
    "precision": ""
+  }, 
+  {
+   "fieldname": "church_group", 
+   "fieldtype": "Link", 
+   "label": "Church Group", 
+   "options": "Church Group Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "zone", 
+   "fieldtype": "Link", 
+   "label": "Zone", 
+   "options": "Zone Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "region", 
+   "fieldtype": "Link", 
+   "label": "Region", 
+   "options": "Region Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
   }
  ], 
  "hide_heading": 0, 
@@ -130,7 +203,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-19 18:05:48.457056", 
+ "modified": "2015-02-26 12:38:33.427174", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Arm Record", 
@@ -159,42 +232,52 @@
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Regional Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Zonal Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "PCF Leader", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Group Church Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Church Pastor", 
    "write": 1
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Senior Cell Leader", 
-   "write": 1
+   "write": 0
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Cell Leader", 
    "write": 1
   }

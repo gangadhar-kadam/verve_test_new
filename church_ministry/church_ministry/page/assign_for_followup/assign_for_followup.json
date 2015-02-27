@@ -3,7 +3,7 @@
  "creation": "2015-02-04 15:37:51.066899", 
  "docstatus": 0, 
  "doctype": "Page", 
- "modified": "2015-02-04 15:37:54.468804", 
+ "modified": "2015-02-26 19:04:40.421626", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "assign-for-followup", 
@@ -11,7 +11,13 @@
  "page_name": "Assign For Followup", 
  "roles": [
   {
-   "role": "All"
+   "role": "Senior Cell Leader"
+  }, 
+  {
+   "role": "Cell Leader"
+  }, 
+  {
+   "role": "System Manager"
   }
  ], 
  "script": null, 

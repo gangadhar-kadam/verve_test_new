@@ -76,7 +76,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-20 17:27:54.942346", 
+ "modified": "2015-02-27 12:35:15.964081", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Region Master", 
@@ -105,8 +105,10 @@
   {
    "apply_user_permissions": 1, 
    "create": 1, 
+   "delete": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "System Manager", 
    "share": 1, 
    "write": 1

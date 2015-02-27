@@ -31,7 +31,7 @@
   {
    "allow_on_submit": 0, 
    "fieldname": "from_score", 
-   "fieldtype": "Data", 
+   "fieldtype": "Int", 
    "hidden": 0, 
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
@@ -50,7 +50,7 @@
   {
    "allow_on_submit": 0, 
    "fieldname": "to_score", 
-   "fieldtype": "Data", 
+   "fieldtype": "Int", 
    "hidden": 0, 
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
@@ -74,7 +74,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-19 13:00:39.380454", 
+ "modified": "2015-02-27 12:47:08.860167", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Grade Master", 
@@ -103,42 +103,50 @@
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Regional Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Zonal Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Group Church Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Church Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "PCF Leader", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Senior Cell Leader", 
-   "write": 1
+   "write": 0
   }, 
   {
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Cell Leader", 
    "write": 1
   }

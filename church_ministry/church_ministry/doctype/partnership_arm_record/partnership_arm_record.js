@@ -1,6 +1,23 @@
 cur_frm.add_fetch("member", "member_name", "member_name");
 cur_frm.add_fetch("ftv", "ftv_name", "ftv_name");
 
+cur_frm.add_fetch("member", "cell", "cell");
+cur_frm.add_fetch("member", "senior_cell", "senior_cell");
+cur_frm.add_fetch("member", "pcf", "pcf");
+cur_frm.add_fetch("member", "church", "church");
+cur_frm.add_fetch("member", "church_group", "church_group");
+cur_frm.add_fetch("member", "zone", "zone");
+cur_frm.add_fetch("member", "region", "region");
+
+cur_frm.add_fetch("ftv", "ftv_owner", "member1");
+cur_frm.add_fetch("ftv", "cell", "cell");
+cur_frm.add_fetch("ftv", "senior_cell", "senior_cell");
+cur_frm.add_fetch("ftv", "pcf", "pcf");
+cur_frm.add_fetch("ftv", "church", "church");
+cur_frm.add_fetch("ftv", "church_group", "church_group");
+cur_frm.add_fetch("ftv", "zone", "zone");
+cur_frm.add_fetch("ftv", "region", "region");
+
 frappe.ui.form.on("Partnership Arm Record", "validate", function(frm,doc) {
 	if(frm.doc.is_member==1){
 		console.log("1")

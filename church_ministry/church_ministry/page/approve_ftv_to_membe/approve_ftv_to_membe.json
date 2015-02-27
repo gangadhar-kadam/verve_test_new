@@ -3,7 +3,7 @@
  "creation": "2015-02-19 12:36:57.212524", 
  "docstatus": 0, 
  "doctype": "Page", 
- "modified": "2015-02-19 12:38:04.016219", 
+ "modified": "2015-02-26 19:04:56.389617", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "approve-ftv-to-membe", 
@@ -12,6 +12,12 @@
  "roles": [
   {
    "role": "System Manager"
+  }, 
+  {
+   "role": "Senior Cell Leader"
+  }, 
+  {
+   "role": "Cell Leader"
   }
  ], 
  "script": null, 

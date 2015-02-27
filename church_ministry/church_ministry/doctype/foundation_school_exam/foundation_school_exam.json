@@ -104,6 +104,15 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "zone", 
+   "fieldtype": "Link", 
+   "label": "Zone", 
+   "options": "Zone Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "column_break_6", 
    "fieldtype": "Column Break", 
@@ -141,6 +150,15 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "region", 
+   "fieldtype": "Link", 
+   "label": "Region", 
+   "options": "Region Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
    "fieldname": "column_break_9", 
    "fieldtype": "Column Break", 
    "permlevel": 0, 
@@ -153,6 +171,24 @@
    "options": "FTV\nMember", 
    "permlevel": 0, 
    "precision": ""
+  }, 
+  {
+   "fieldname": "senior_cell", 
+   "fieldtype": "Link", 
+   "label": "Senior Cell", 
+   "options": "Senior Cell Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "church", 
+   "fieldtype": "Link", 
+   "label": "Church", 
+   "options": "Church Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
   }, 
   {
    "allow_on_submit": 0, 
@@ -192,6 +228,24 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "pcf", 
+   "fieldtype": "Link", 
+   "label": "PCF", 
+   "options": "PCF Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "church_group", 
+   "fieldtype": "Link", 
+   "label": "Church Group", 
+   "options": "Church Group master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
   }, 
   {
    "allow_on_submit": 0, 
@@ -251,7 +305,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-19 13:09:55.528565", 
+ "modified": "2015-02-26 13:27:37.161382", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Foundation School Exam", 
@@ -285,44 +339,54 @@
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Regional Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Zonal Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Group Church Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Church Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
+   "apply_user_permissions": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Senior Cell Leader", 
-   "write": 1
+   "write": 0
   }, 
   {
+   "apply_user_permissions": 1, 
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Cell Leader", 
    "write": 1
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "PCF Leader", 
-   "write": 1
+   "write": 0
   }
  ], 
  "read_only": 0, 

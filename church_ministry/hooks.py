@@ -13,7 +13,7 @@ app_version = "0.0.1"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/church_ministry/css/church_ministry.css"
-#app_include_js = "/assets/js/google.js"
+#app_include_js = "/assets/js/chart.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/church_ministry/css/church_ministry.css"
@@ -64,6 +64,9 @@ app_version = "0.0.1"
 # ---------------
 # Hook on document methods and events
 
+
+fixtures = ["Custom Field"]
+
 doc_events = {
 	"Region Master": {
 		"validate": "church_ministry.church_ministry.doctype.region_master.region_master.validate_duplicate"		
@@ -101,6 +104,9 @@ doc_events = {
 	"Foundation School Exam": {
 		"validate": "church_ministry.church_ministry.doctype.foundation_school_exam.foundation_school_exam.validate_duplicate",
 		"on_submit": "church_ministry.church_ministry.doctype.foundation_school_exam.foundation_school_exam.update_attendance",		
+	},
+	"Cell Meeting Invitation": {
+		"validate": "church_ministry.church_ministry.doctype.cell_meeting_invitation.cell_meeting_invitation.validate_duplicate"		
 	}
 }
 

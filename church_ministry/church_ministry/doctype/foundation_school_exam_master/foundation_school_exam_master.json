@@ -113,7 +113,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-19 12:59:04.882867", 
+ "modified": "2015-02-21 12:31:39.077809", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Foundation School Exam Master", 
@@ -142,45 +142,53 @@
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Regional Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Zonal Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "create": 0, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Group Church Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Church Pastor", 
-   "write": 1
+   "write": 0
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Senior Cell Leader", 
-   "write": 1
+   "write": 0
   }, 
   {
+   "create": 1, 
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "Cell Leader", 
    "write": 1
   }, 
   {
    "permlevel": 0, 
    "read": 1, 
+   "report": 1, 
    "role": "PCF Leader", 
-   "write": 1
+   "write": 0
   }
  ], 
  "read_only": 0, 

@@ -37,7 +37,7 @@ class EventAttendance(Document):
 
 		self.set('event_attendace_details', [])
 		member_ftv = frappe.db.sql("select name,ftv_name from `tabFirst Time Visitor` where %s='%s' union select \
-		name,member_name from `tabMember` where %s='%s'"%(key,value,key,value),debug=1)
+		name,member_name from `tabMember` where %s='%s'"%(key,value,key,value))
 		for d in member_ftv:
 			child = self.append('event_attendace_details', {})
 			child.id = d[0]

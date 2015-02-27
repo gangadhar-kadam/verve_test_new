@@ -45,7 +45,6 @@ def ftvdetails(ftv):
 @frappe.whitelist()
 def loadmembers(ftv):
 	a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Time Visitor` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' order by distance asc ,age desc "
-	#frappe.errprint(a)
 	return {
 		"members": [frappe.db.sql(a)]
 	}
@@ -61,14 +60,13 @@ def assignmember(memberid,ftv):
 
 	msg_member="""Hello %s,<br>
 	The First Time visitor '%s' name: '%s' Email ID: '%s' is assigned to you for follow up <br>Regrds,<br>Varve
-	"""%(member[0][0],ftv,ftvdetails[0][0],ftvdetails[0][0])
+	"""%(member[0][0],ftv,ftvdetails[0][0],ftvdetails[0][1])
 	msg_ftv="""Hello %s,<br>
 	The Member '%s' name: '%s' Email ID: '%s' is assigned to you for follow up <br>Regrds,<br>Varve
-	"""%(ftvdetails[0][0],memberid,member[0][0],member[0][0])
-	#frappe.errprint(cstr(nowdate)+" 10:00:00")
+	"""%(ftvdetails[0][0],memberid,member[0][0],member[0][1])
 	event = frappe.get_doc({
 				"doctype": "Event",
-				"owner": "email.kadam@gmail.com",
+				"owner": frappe.session.user,
 				"subject": "FTV Assignment",
 				"description": ftv +" is assigned to you for followup",
 				"starts_on": add_days(now(), 3),
@@ -77,8 +75,10 @@ def assignmember(memberid,ftv):
 				"ref_name": ftv
 	})
 	event.insert(ignore_permissions=True)
-	frappe.errprint(event.name)
-	#frappe.sendmail(recipients=member[0][1], sender='gangadhar.k@indictranstech.com', content=msg_member, subject='Assign for follow up')
-	#frappe.sendmail(recipients=ftvdetails[0][1], sender='gangadhar.k@indictranstech.com', content=msg_ftv, subject='Assign for follow up')
-
+	if frappe.db.exists("User", ftvdetails[0][1]):
+		frappe.share("Event", event.name, ftvdetails[0][1])
+	if frappe.db.exists("User", member[0][1]):	
+		frappe.share("Event", event.name, member[0][1])
+	frappe.sendmail(recipients=member[0][1], sender='gangadhar.k@indictranstech.com', content=msg_member, subject='Assign for follow up')
+	frappe.sendmail(recipients=ftvdetails[0][1], sender='gangadhar.k@indictranstech.com', content=msg_ftv, subject='Assign for follow up')
 	return "Done"

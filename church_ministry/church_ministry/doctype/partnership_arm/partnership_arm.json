@@ -36,7 +36,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-18 15:14:48.364082", 
+ "modified": "2015-02-21 12:12:48.021262", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Arm", 
@@ -60,6 +60,14 @@
    "set_user_permissions": 0, 
    "share": 0, 
    "submit": 0, 
+   "write": 1
+  }, 
+  {
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Cell Leader", 
    "write": 1
   }
  ], 

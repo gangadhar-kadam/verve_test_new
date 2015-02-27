@@ -1,3 +1,32 @@
+cur_frm.add_fetch("cell", "pcf", "pcf");
+cur_frm.add_fetch("cell", "church", "church_master");
+cur_frm.add_fetch("cell", "church_group", "church_group");
+cur_frm.add_fetch("cell", "region", "region");
+cur_frm.add_fetch("cell", "zone", "zone");
+cur_frm.add_fetch("cell", "senior_cell", "senior_cell");
+
+cur_frm.add_fetch("cell_master", "pcf", "pcf");
+// cur_frm.add_fetch("cell_master", "church", "church_master");
+cur_frm.add_fetch("cell_master", "church_group", "church_group");
+cur_frm.add_fetch("cell_master", "region", "region");
+cur_frm.add_fetch("cell_master", "zone", "zone");
+cur_frm.add_fetch("cell_master", "senior_cell", "senior_cell");
+
+// cur_frm.add_fetch("church", "pcf", "pcf");
+// cur_frm.add_fetch("church", "cell", "cell_master");
+cur_frm.add_fetch("church", "church_group", "church_group");
+cur_frm.add_fetch("church", "region", "region");
+cur_frm.add_fetch("church", "zone", "zone");
+// cur_frm.add_fetch("church", "senior_cell", "senior_cell");
+
+cur_frm.fields_dict['cell_master'].get_query = function(doc) {
+  return {
+    filters: {
+      "church": doc.church
+    }
+  }
+}
+
 cur_frm.fields_dict["invitation_member_details"].grid.set_column_disp("present", 0);
 
 frappe.ui.form.on("Cell Meeting Invitation", "validate", function(frm,doc) {
