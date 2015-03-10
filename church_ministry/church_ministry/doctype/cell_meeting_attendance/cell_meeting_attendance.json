@@ -380,7 +380,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-26 18:46:51.434627", 
+ "modified": "2015-03-04 12:09:22.382035", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Cell Meeting Attendance", 
@@ -475,6 +475,41 @@
    "role": "Cell Leader", 
    "submit": 1, 
    "write": 1
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Regional Pastor"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Zonal Pastor"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Group Church Pastor"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Church Pastor"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "PCF Leader"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Senior Cell Leader"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Cell Leader"
   }
  ], 
  "read_only": 0, 

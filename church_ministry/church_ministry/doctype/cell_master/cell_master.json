@@ -94,7 +94,7 @@
   {
    "fieldname": "church_group", 
    "fieldtype": "Link", 
-   "label": "Church Group", 
+   "label": "Group Church", 
    "options": "Church Group Master", 
    "permlevel": 0, 
    "precision": "", 
@@ -129,7 +129,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-27 12:38:11.080972", 
+ "modified": "2015-03-07 11:03:16.804191", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Cell Master", 
@@ -279,6 +279,42 @@
    "submit": 0, 
    "user_permission_doctypes": "[\"Cell Master\"]", 
    "write": 0
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Regional Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Zonal Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Group Church Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Church Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "PCF Leader"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Senior Cell Leader"
   }
  ], 
  "read_only": 0, 

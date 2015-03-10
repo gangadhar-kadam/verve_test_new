@@ -20,6 +20,24 @@ class ChurchGroupMaster(Document):
 		}
 		return ret
 
+	def set_higher_values(self):
+		if self.region:
+			value = frappe.db.sql("select name from `tabZone Master` where region='%s'"%(self.region),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"zone": value[0][0]
+				}
+			return ret
+		elif self.zone:
+			value = frappe.db.sql("select region from `tabZone Master` where name='%s'"%(self.zone),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0]
+				}
+			return ret
+
 
 def validate_duplicate(doc,method):
 	if doc.get("__islocal"):

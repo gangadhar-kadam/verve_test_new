@@ -7,8 +7,80 @@ from frappe.model.document import Document
 from frappe import throw, _, msgprint
 
 class CellMaster(Document):
-	pass
-
+	# pass
+	def set_higher_values(self):
+		if self.region:
+			value = frappe.db.sql("select zone,church_group,church,pcf,name from `tabSenior Cell Master` where region='%s'"%(self.region),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"zone": value[0][0],
+					"church_group" : value[0][1],
+					"church" : value[0][2],
+					"pcf" : value[0][3],
+					"senior_cell" : value[0][4]
+				}
+			return ret
+		elif self.zone:
+			value = frappe.db.sql("select region,church_group,church,pcf,name from `tabSenior Cell Master` where zone='%s'"%(self.zone),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"church_group" : value[0][1],
+					"church" : value[0][2],
+					"pcf" : value[0][3],
+					"senior_cell" : value[0][4]
+				}
+			return ret
+		elif self.church_group:
+			value = frappe.db.sql("select region,zone,church,pcf,name from `tabSenior Cell Master` where church_group='%s'"%(self.church_group),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church" : value[0][2],
+					"pcf" : value[0][3],
+					"senior_cell" : value[0][4]
+				}
+			return ret
+		elif self.church:
+			value = frappe.db.sql("select region,zone,church_group,pcf,name from `tabSenior Cell Master` where church='%s'"%(self.church),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church_group" : value[0][2],
+					"pcf" : value[0][3],
+					"senior_cell" : value[0][4]
+				}
+			return ret
+		elif self.pcf:
+			value = frappe.db.sql("select region,zone,church_group,church,name from `tabSenior Cell Master` where pcf='%s'"%(self.pcf),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church_group" : value[0][2],
+					"church" : value[0][3],
+					"senior_cell" : value[0][4]
+				}
+			return ret
+		elif self.senior_cell:
+			value = frappe.db.sql("select region,zone,church_group,church,pcf from `tabSenior Cell Master` where name='%s'"%(self.senior_cell),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church_group" : value[0][2],
+					"church" : value[0][3],
+					"pcf" : value[0][4]
+				}
+			return ret
 
 def validate_duplicate(doc,method):
 	if doc.get("__islocal"):

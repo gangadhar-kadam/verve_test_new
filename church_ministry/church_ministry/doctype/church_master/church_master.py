@@ -7,7 +7,35 @@ from frappe.model.document import Document
 from frappe import throw, _, msgprint
 
 class ChurchMaster(Document):
-	pass
+	# pass
+	def set_higher_values(self):
+		if self.region:
+			value = frappe.db.sql("select zone,name from `tabChurch Group Master` where region='%s'"%(self.region),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"zone": value[0][0],
+					"church_group" : value[0][1]
+				}
+			return ret
+		elif self.zone:
+			value = frappe.db.sql("select region,name from `tabChurch Group Master` where zone='%s'"%(self.zone),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"church_group" : value[0][1]
+				}
+			return ret
+		elif self.church_group:
+			value = frappe.db.sql("select region,zone from `tabChurch Group Master` where name='%s'"%(self.church_group),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1]
+				}
+			return ret
 
 
 def validate_duplicate(doc,method):

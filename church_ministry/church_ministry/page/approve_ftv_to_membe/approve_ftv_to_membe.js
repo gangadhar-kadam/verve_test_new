@@ -1,7 +1,7 @@
 frappe.pages['approve-ftv-to-membe'].on_page_load = function(wrapper) {
 	frappe.ui.make_app_page({
 		parent: wrapper,
-		title: 'Eligible FTV to Member',
+		title: 'Eligible FT List  for Membership',
 		single_column: true
 	});
 	$("<div class='apllybtn' style='min-height: 20px;padding-left: 20px;padding-right: 20px;align:right;'  align='right'></div><div class='assignt' style='min-height: 20px;padding-left: 20px;padding-right: 20px;padding-bottom: 20px;'></div>").appendTo($(wrapper).find('.layout-main-section'));
@@ -48,7 +48,7 @@ frappe.assign = Class.extend({
 			                        h1 += "<td style='padding=0px;width=100%'><input type='checkbox' data-name='"+r.message.ftv[0][i][0]+"' ></td></tr>"
 			            }
 			            $('<br><button  class="btn btn-primary btn-search" id="test">Approve</button><br>').appendTo($(me.wrapper).find('.apllybtn'));    
-			            h="<br><table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'><tr><td style='padding=0px;width=100%''><b>Sr No.</b></td><td><b>FTV ID</b></td><td><b>FTV Name</b></td><td><b>Gender</b></td><td><b>DOB</b></td><td><b>Approve</b></td></tr>"+h1+"<tbody>";	               
+			            h="<br><table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'><tr><td style='padding=0px;width=100%''><b>Sr No.</b></td><td><b>FT ID</b></td><td><b>FT Name</b></td><td><b>Gender</b></td><td><b>DOB</b></td><td><b>Approve</b></td></tr>"+h1+"<tbody>";	               
 			            $(h).appendTo($(me.wrapper).find('.assignt'))
 					    $('.apllybtn').find('.btn-search').click(function() {
 					    	var ftv =[];
@@ -82,8 +82,3 @@ var assign = function(ftv){
 	        }                     
         })  
  }
-
-  
-
-
-

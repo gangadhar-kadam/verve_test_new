@@ -19,6 +19,7 @@ def approveftv(ftv):
 	ftvs=eval(ftv)
 	for i in range(len(ftvs)):
 		ftvc=convert_ftv(ftvs[i])
+		frappe.errprint(ftvc.member_designation)
 		ftvc.save()
 	return "Done"
 
@@ -30,7 +31,8 @@ def convert_ftv(source_name, target_doc=None):
 				"ftv_name": "member_name",
 				"name": "ftv_id_no",
 				"address_manual":"home_address",
-				"date_of_visit":"date_of_join"
+				"date_of_visit":"date_of_join",
+				"member_designation":"Member"
 			}
 		}}, target_doc)
 	return target_doc

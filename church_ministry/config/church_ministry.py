@@ -30,7 +30,7 @@ def get_data():
 				{
 					"type":"doctype",
 					"name": "Partnership Arm Record",
-					"description": _("Partnership Arm Record Database")
+					"description": _("Partnership Record")
 				},								
 
 				{
@@ -48,10 +48,15 @@ def get_data():
 					"name": "Event Attendance",
 					"description": _("Event Attendance Database")
 				},
+				{
+					"type":"doctype",
+					"name": "Task",
+					"description": _("Task Database")
+				},				
 			]
 		},
 		{
-			"label": _("Page"),
+			"label": _("Tools"),
 			"icon": "icon-star",
 			"items": [
 				{
@@ -68,13 +73,13 @@ def get_data():
 					"icon": "icon-bar-chart",
 					"description": _("Eligible FTV's to Member")
 				},
-				{
-					"type": "page",
-					"name": "convert-ftv-to-membe",
-					"label": _("Convert FTV to Member"),
-					"icon": "icon-bar-chart",
-					"description": _("Convert FTV to Member")
-				},
+				# {
+				# 	"type": "page",
+				# 	"name": "convert-ftv-to-membe",
+				# 	"label": _("Convert FTV to Member"),
+				# 	"icon": "icon-bar-chart",
+				# 	"description": _("Convert FTV to Member")
+				# },
 				{
 					"type": "page",
 					"name": "dashboard",
@@ -101,7 +106,7 @@ def get_data():
 				{
 					"type":"doctype",
 					"name": "Church Group Master",
-					"description": _("Church Group Master")
+					"description": _("Group Church Master")
 				},
 				{
 					"type":"doctype",
@@ -121,7 +126,7 @@ def get_data():
 				{
 					"type":"doctype",
 					"name": "Cell Master",
-					"description": _("Cel Master")
+					"description": _("Cell Master")
 				},				
 				{
 					"type":"doctype",
@@ -131,7 +136,7 @@ def get_data():
 				{
 					"type":"doctype",
 					"name": "Grade Master",
-					"description": _("Foundation School Exam Grade Master")
+					"description": _("FS Grade Master")
 				},				
 			]
 		},

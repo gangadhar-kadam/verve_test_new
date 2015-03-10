@@ -1,6 +1,6 @@
 {
  "allow_copy": 0, 
- "allow_import": 0, 
+ "allow_import": 1, 
  "allow_rename": 0, 
  "autoname": "PA.######", 
  "creation": "2015-02-18 12:50:17.453315", 
@@ -55,7 +55,7 @@
    "permlevel": 0, 
    "precision": "", 
    "read_only": 1, 
-   "reqd": 1
+   "reqd": 0
   }, 
   {
    "depends_on": "eval:!doc.is_member", 
@@ -74,7 +74,7 @@
    "permlevel": 0, 
    "precision": "", 
    "read_only": 1, 
-   "reqd": 1
+   "reqd": 0
   }, 
   {
    "depends_on": "eval:doc.is_member==0", 
@@ -89,6 +89,7 @@
   {
    "fieldname": "cell", 
    "fieldtype": "Link", 
+   "hidden": 1, 
    "label": "Cell", 
    "options": "Cell Master", 
    "permlevel": 0, 
@@ -98,6 +99,7 @@
   {
    "fieldname": "senior_cell", 
    "fieldtype": "Link", 
+   "hidden": 1, 
    "label": "Senior Cell", 
    "options": "Senior Cell Master", 
    "permlevel": 0, 
@@ -107,6 +109,7 @@
   {
    "fieldname": "pcf", 
    "fieldtype": "Link", 
+   "hidden": 1, 
    "label": "PCF", 
    "options": "PCF Master", 
    "permlevel": 0, 
@@ -116,6 +119,7 @@
   {
    "fieldname": "church", 
    "fieldtype": "Link", 
+   "hidden": 1, 
    "label": "Church", 
    "options": "Church Master", 
    "permlevel": 0, 
@@ -138,6 +142,7 @@
    "reqd": 1
   }, 
   {
+   "depends_on": "eval:!doc.pledge", 
    "fieldname": "donation", 
    "fieldtype": "Check", 
    "label": "Donation", 
@@ -145,6 +150,7 @@
    "precision": ""
   }, 
   {
+   "depends_on": "eval:!doc.donation", 
    "fieldname": "pledge", 
    "fieldtype": "Check", 
    "label": "Pledge", 
@@ -171,6 +177,7 @@
   {
    "fieldname": "church_group", 
    "fieldtype": "Link", 
+   "hidden": 1, 
    "label": "Church Group", 
    "options": "Church Group Master", 
    "permlevel": 0, 
@@ -180,6 +187,7 @@
   {
    "fieldname": "zone", 
    "fieldtype": "Link", 
+   "hidden": 1, 
    "label": "Zone", 
    "options": "Zone Master", 
    "permlevel": 0, 
@@ -189,10 +197,21 @@
   {
    "fieldname": "region", 
    "fieldtype": "Link", 
+   "hidden": 1, 
    "label": "Region", 
    "options": "Region Master", 
    "permlevel": 0, 
    "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "amended_from", 
+   "fieldtype": "Link", 
+   "label": "Amended From", 
+   "no_copy": 1, 
+   "options": "Partnership Arm Record", 
+   "permlevel": 0, 
+   "print_hide": 1, 
    "read_only": 1
   }
  ], 
@@ -200,10 +219,10 @@
  "hide_toolbar": 0, 
  "in_create": 0, 
  "in_dialog": 0, 
- "is_submittable": 0, 
+ "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-26 12:38:33.427174", 
+ "modified": "2015-03-05 18:49:25.737408", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Arm Record", 
@@ -216,17 +235,17 @@
    "cancel": 0, 
    "create": 1, 
    "delete": 1, 
-   "email": 0, 
-   "export": 0, 
-   "import": 0, 
+   "email": 1, 
+   "export": 1, 
+   "import": 1, 
    "permlevel": 0, 
-   "print": 0, 
+   "print": 1, 
    "read": 1, 
    "report": 1, 
    "role": "Administrator", 
    "set_user_permissions": 0, 
-   "share": 0, 
-   "submit": 0, 
+   "share": 1, 
+   "submit": 1, 
    "write": 1
   }, 
   {

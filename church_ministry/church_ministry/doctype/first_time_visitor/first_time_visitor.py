@@ -18,39 +18,139 @@ class FirstTimeVisitor(Document):
 			if not self.when or self.where :
 				frappe.throw(_("When and Where is Mandatory if 'Baptisum Status' is 'Yes'..!"))
 
-	def on_update(self):
-		usr_id=frappe.db.sql("select name from `tabUser` where name='%s'"%(self.email_id),as_list=1)
-		# u_rle=frappe.db.sql("select parent from `tabUserRole` where role='First Time Visitor'")
-		if self.flag=='not':
-			if usr_id:
-				msgprint(_("User is already created for respective email_id.."), raise_exception=1)
-			else:
-				frappe.errprint("user")
-				usr = frappe.new_doc("User")
-				usr.email=self.email_id
-				usr.first_name = self.ftv_name
-				usr.new_password = 'password'
-				usr.insert() 
-				frappe.errprint("role")
-				rle=frappe.new_doc("UserRole")
-				rle.parent=self.email_id
-				rle.parentfield='user_roles'
-				rle.parenttype='User'
-				rle.role='First Time Visitor'
-				rle.insert()
 
-				value = frappe.new_doc("DefaultValue")
-				value.parentfield = 'system_defaults'
-				value.parenttype = 'User Permission'
-				value.parent = self.email_id
-				value.defkey = 'First Time Visitor'
-				value.defvalue = self.name
-				value.insert()
-			frappe.db.sql("update `tabFirst Time Visitor` set flag='SetPerm' where name='%s'"%(self.name))
-			frappe.db.commit()
+	# def on_update(self):
+	# 	# frappe.errprint(frappe.user.name)
+	# 	usr_id=frappe.db.sql("select name from `tabUser` where name='%s'"%(self.email_id),as_list=1)
+	# 	# u_rle=frappe.db.sql("select parent from `tabUserRole` where role='First Time Visitor'")
+	# 	if self.flag=='not':
+	# 		if usr_id:
+	# 			msgprint(_("User is already created for respective email_id.."), raise_exception=1)
+	# 		else:
+	# 			frappe.errprint("user")
+	# 			usr = frappe.new_doc("User")
+	# 			usr.email=self.email_id
+	# 			usr.first_name = self.ftv_name
+	# 			usr.new_password = 'password'
+	# 			usr.insert() 
+	# 			frappe.errprint("role")
+	# 			rle=frappe.new_doc("UserRole")
+	# 			rle.parent=self.email_id
+	# 			rle.parentfield='user_roles'
+	# 			rle.parenttype='User'
+	# 			rle.role='First Time Visitor'
+	# 			rle.insert()
 
-	# def get_related_fields(self):
-		
+	# 			value = frappe.new_doc("DefaultValue")
+	# 			value.parentfield = 'system_defaults'
+	# 			value.parenttype = 'User Permission'
+	# 			value.parent = self.email_id
+	# 			value.defkey = 'First Time Visitor'
+	# 			value.defvalue = self.name
+	# 			value.insert()
+	# 		frappe.db.sql("update `tabFirst Time Visitor` set flag='SetPerm' where name='%s'"%(self.name))
+	# 		frappe.db.commit()
+
+	def set_higher_values(self):
+		if self.region:
+			value = frappe.db.sql("select zone,church_group,church,pcf,senior_cell,name from `tabCell Master` where region='%s'"%(self.region),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"zone": value[0][0],
+					"church_group": value[0][1],
+					"church" : value[0][2],
+					"pcf" : value[0][3],
+					"senior_cell" : value[0][4],
+					"cell" : value[0][5]
+				}
+			return ret
+		elif self.zone:
+			value = frappe.db.sql("select region,church_group,church,pcf,senior_cell,name from `tabCell Master` where zone='%s'"%(self.zone),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"church_group": value[0][1],
+					"church" : value[0][2],
+					"pcf" : value[0][3],
+					"senior_cell" : value[0][4],
+					"cell" : value[0][5]
+				}
+			return ret
+		elif self.church_group:
+			value = frappe.db.sql("select region,zone,church,pcf,senior_cell,name from `tabCell Master` where church_group='%s'"%(self.church_group),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church" : value[0][2],
+					"pcf" : value[0][3],
+					"senior_cell" : value[0][4],
+					"cell" : value[0][5]
+				}
+			return ret
+		elif self.church:
+			value = frappe.db.sql("select region,zone,church_group,pcf,senior_cell,name from `tabCell Master` where church='%s'"%(self.church),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church_group" : value[0][2],
+					"pcf" : value[0][3],
+					"senior_cell" : value[0][4],
+					"cell" : value[0][5]
+				}
+			return ret
+		elif self.pcf:
+			value = frappe.db.sql("select region,zone,church_group,church,senior_cell,name from `tabCell Master` where pcf='%s'"%(self.pcf),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church_group" : value[0][2],
+					"church" : value[0][3],
+					"senior_cell" : value[0][4],
+					"cell" : value[0][5]
+				}
+			return ret
+		elif self.senior_cell:
+			value = frappe.db.sql("select region,zone,church_group,church,pcf,name from `tabCell Master` where senior_cell='%s'"%(self.senior_cell),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church_group" : value[0][2],
+					"church" : value[0][3],
+					"pcf" : value[0][4],
+					"cell" : value[0][5]
+				}
+			return ret
+		elif self.cell:
+			value = frappe.db.sql("select region,zone,church_group,church,pcf,senior_cell from `tabCell Master` where name='%s'"%(self.cell),as_list=1)
+			ret={}
+			if value:
+				ret={
+					"region": value[0][0],
+					"zone": value[0][1],
+					"church_group" : value[0][2],
+					"church" : value[0][3],
+					"pcf" : value[0][4],
+					"senior_cell" : value[0][5]
+				}
+			return ret
+
+def validate_duplicate(doc,method):
+	if doc.get("__islocal"):
+		res=frappe.db.sql("select name from `tabFirst Time Visitor` where email_id='%s'"%(doc.email_id))
+		if res:
+			frappe.throw(_("FTV '{0}' is created With email id '{1}'..!").format(res[0][0],doc.email_id))
+
+
 
 @frappe.whitelist()
 def make_member(source_name, target_doc=None):

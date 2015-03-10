@@ -9,7 +9,6 @@ frappe.pages['assign-for-followup'].on_page_load = function(wrapper) {
 	</tr></table></div>").appendTo($(wrapper).find('.layout-main-section'));
 	$("<div class='assignr' style='min-height: 400px; padding: 15px;'></div>").appendTo($(wrapper).find('.layout-main-section'));
 	new frappe.assign(wrapper);
-
 }	
 
 frappe.assign = Class.extend({
@@ -39,7 +38,7 @@ frappe.assign = Class.extend({
 			"options": "First Time Visitor",
 			"label": "First Time Visitor",
 			"fieldname": "ftv",
-			"placeholder": "First Time Visitor"
+			"placeholder": "FT Details (ID)"
 			},
 		"only_input":true,
 		parent:$(me.wrapper).find("#ftvi"),
