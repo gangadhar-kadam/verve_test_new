@@ -30,6 +30,19 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "ministry_year", 
+   "fieldtype": "Link", 
+   "in_filter": 1, 
+   "label": "Ministry Year", 
+   "options": "Fiscal Year", 
+   "permlevel": 0, 
+   "precision": "", 
+   "print_hide": 1, 
+   "reqd": 1, 
+   "search_index": 1, 
+   "width": "150px"
+  }, 
+  {
    "default": "1", 
    "fieldname": "is_member", 
    "fieldtype": "Check", 
@@ -87,6 +100,15 @@
    "read_only": 1
   }, 
   {
+   "default": "Today", 
+   "fieldname": "date", 
+   "fieldtype": "Date", 
+   "label": "Date", 
+   "permlevel": 0, 
+   "precision": "", 
+   "reqd": 1
+  }, 
+  {
    "fieldname": "cell", 
    "fieldtype": "Link", 
    "hidden": 1, 
@@ -142,9 +164,27 @@
    "reqd": 1
   }, 
   {
+   "fieldname": "giving_or_pledge", 
+   "fieldtype": "Select", 
+   "label": "Giving or Pledge", 
+   "options": "Giving\nPledge", 
+   "permlevel": 0, 
+   "precision": "", 
+   "reqd": 1
+  }, 
+  {
+   "fieldname": "giving_type", 
+   "fieldtype": "Select", 
+   "label": "Giving Type", 
+   "options": "Cash\nCheque\nPOS", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "depends_on": "eval:!doc.pledge", 
    "fieldname": "donation", 
    "fieldtype": "Check", 
+   "hidden": 1, 
    "label": "Donation", 
    "permlevel": 0, 
    "precision": ""
@@ -153,21 +193,23 @@
    "depends_on": "eval:!doc.donation", 
    "fieldname": "pledge", 
    "fieldtype": "Check", 
+   "hidden": 1, 
    "label": "Pledge", 
    "permlevel": 0, 
    "precision": ""
   }, 
   {
-   "depends_on": "eval:doc.pledge", 
+   "default": "", 
+   "depends_on": "eval:doc.giving_or_pledge=='Pledge'", 
    "fieldname": "type_of_pledge", 
    "fieldtype": "Select", 
    "label": "Type Of Pledge", 
-   "options": "\nMonthly\nQuarterly\nHalf Yearly\nYearly\n", 
+   "options": "\nMonthly\nQuarterly\nHalf Yearly\nYearly", 
    "permlevel": 0, 
    "precision": ""
   }, 
   {
-   "depends_on": "eval:doc.pledge", 
+   "depends_on": "eval:doc.giving_or_pledge=='Pledge'", 
    "fieldname": "equated_amount", 
    "fieldtype": "Data", 
    "label": "Equated Amount", 
@@ -222,7 +264,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-05 18:49:25.737408", 
+ "modified": "2015-03-13 18:57:43.069980", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Arm Record", 
@@ -249,55 +291,11 @@
    "write": 1
   }, 
   {
-   "permlevel": 0, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Regional Pastor", 
-   "write": 0
-  }, 
-  {
-   "permlevel": 0, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Zonal Pastor", 
-   "write": 0
-  }, 
-  {
-   "permlevel": 0, 
-   "read": 1, 
-   "report": 1, 
-   "role": "PCF Leader", 
-   "write": 0
-  }, 
-  {
-   "permlevel": 0, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Group Church Pastor", 
-   "write": 0
-  }, 
-  {
    "create": 1, 
    "permlevel": 0, 
    "read": 1, 
    "report": 1, 
-   "role": "Church Pastor", 
-   "write": 1
-  }, 
-  {
-   "permlevel": 0, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Senior Cell Leader", 
-   "write": 0
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "create": 1, 
-   "permlevel": 0, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Cell Leader", 
+   "role": "System Manager", 
    "write": 1
   }
  ], 

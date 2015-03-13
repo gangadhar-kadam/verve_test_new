@@ -23,6 +23,9 @@ frappe.assign = Class.extend({
 			module:"church_ministry.church_ministry",
 			page:"assign_for_followup",
 			method: "ftv",
+			// args:{
+	  //       	"get_ftv_member": get_ftv_member       
+	  //       	},
 			callback: function(r) {
 				me.options = r.message;
 				me.setup_page();

@@ -1,7 +1,50 @@
 cur_frm.fields_dict["invitation_member_details"].grid.set_column_disp("email_id", 0);
 cur_frm.fields_dict["invitation_member_details"].grid.set_column_disp("invitation", 0);
 
+
+cur_frm.add_fetch("cell", "pcf", "pcf");
+cur_frm.add_fetch("cell", "church", "church");
+cur_frm.add_fetch("cell", "church_group", "church_group");
+cur_frm.add_fetch("cell", "region", "region");
+cur_frm.add_fetch("cell", "zone", "zone");
+cur_frm.add_fetch("cell", "senior_cell", "senior_cell");
+
+cur_frm.add_fetch("senior_cell", "pcf", "pcf");
+cur_frm.add_fetch("senior_cell", "church", "church");
+cur_frm.add_fetch("senior_cell", "church_group", "church_group");
+cur_frm.add_fetch("senior_cell", "region", "region");
+cur_frm.add_fetch("senior_cell", "zone", "zone");
+
+
+cur_frm.add_fetch("pcf", "church", "church");
+cur_frm.add_fetch("pcf", "church_group", "church_group");
+cur_frm.add_fetch("pcf", "region", "region");
+cur_frm.add_fetch("pcf", "zone", "zone");
+cur_frm.add_fetch("pcf", "senior_cell", "senior_cell");
+
+cur_frm.add_fetch("church", "church_group", "church_group");
+cur_frm.add_fetch("church", "region", "region");
+cur_frm.add_fetch("church", "zone", "zone");
+
+cur_frm.add_fetch("church_group", "region", "region");
+cur_frm.add_fetch("church_group", "zone", "zone");
+
+cur_frm.add_fetch("zone", "region", "region");
+
+frappe.ui.form.on("Cell Meeting Attendance", "refresh", function(frm,dt,dn) {
+    get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
+      refresh_field('region');
+      refresh_field('zone');
+      refresh_field('church_group');
+      refresh_field('church_master');
+      refresh_field('pcf');
+      refresh_field('senior_cell');
+      refresh_field('cell_master');
+    });
+});
+
 frappe.ui.form.on("Cell Meeting Attendance", "onload", function(frm) {
+  console.log(user_roles);
 	if (in_list(user_roles, "Cell Leader")){
     set_field_permlevel('meeting_category',1);
     set_field_permlevel('senior_cell',2);
@@ -65,5 +108,16 @@ frappe.ui.form.on("Cell Meeting Attendance", "onload", function(frm) {
     set_field_permlevel('church_group',1);
     set_field_permlevel('zone',1);
     set_field_permlevel('region',1);
+  }
+  else if(in_list(user_roles, "System Manager")){
+    set_field_permlevel('cell',0);
+    set_field_permlevel('senior_cell',0);
+    set_field_permlevel('pcf',0);
+    set_field_permlevel('church_master',0);
+    set_field_permlevel('church_group',0);
+    set_field_permlevel('zone',0);
+    set_field_permlevel('region',0);
+    set_field_permlevel('meeting_category',0);
+
   }
 });

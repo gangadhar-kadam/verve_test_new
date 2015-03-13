@@ -10,10 +10,48 @@ from frappe.utils import cstr,now,add_days,nowdate
 from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
 
 @frappe.whitelist()
+def get_ftv_member():
+	roles=frappe.get_roles(frappe.user.name)
+	val=frappe.db.sql("select defkey,defvalue from `tabDefaultValue` where defkey in ('Cell Master','Senior Cell Master','PCF Master','Church Master','Church Group Master','Zone Master','Region Master') and parent='%s' limit 1"%(frappe.user.name),as_list=1)
+	# frappe.errprint(val)
+	if val:
+		if val[0][0]=='Cell Master':
+			key='cell'
+			value=val[0][1]
+		elif val[0][0]=='Senior Cell Master':
+			key='senior_cell'
+			value=val[0][1]
+		elif val[0][0]=='PCF Master':
+			key='pcf'
+			value=val[0][1]
+		elif val[0][0]=='Church Master':
+			key='Church'
+			value=val[0][1]
+		elif val[0][0]=='Church Group Master':
+			key='church_group'
+			value=val[0][1]
+		elif val[0][0]=='Zone Master':
+			key='zone'
+			value=val[0][1]
+		elif val[0][0]=='Region Master':
+			key='region'
+			value=val[0][1]
+		return{
+			"key" : key,
+			"value" : value
+		}
+
+@frappe.whitelist()
 def ftv():
-	return {
-		"ftv": [d[0] for d in frappe.db.sql("select name from `tabFirst Time Visitor` ")]
-	}
+	ftv_member = get_ftv_member()
+	if ftv_member:
+		return {
+			"ftv": [d[0] for d in frappe.db.sql("select name from `tabFirst Time Visitor` where %s='%s'"%(ftv_member['key'],ftv_member['value']))]
+		}
+	else:
+		return {
+			"ftv": [d[0] for d in frappe.db.sql("select name from `tabFirst Time Visitor`")]
+		}
 
 @frappe.whitelist()
 def loadftv(doctype, txt, searchfield, start, page_len, filters):
@@ -38,17 +76,31 @@ def loadftv(doctype, txt, searchfield, start, page_len, filters):
 
 @frappe.whitelist()
 def ftvdetails(ftv):
-	query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Time Visitor` where name='"+ftv+"'"
-	return {
-		"ftv": [frappe.db.sql(query)]
-	}
+	ftv_member = get_ftv_member()
+	if ftv_member:
+		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Time Visitor` where name='"+ftv+"' and %s='%s'"%(ftv_member['key'],ftv_member['value'])
+		return {
+			"ftv": [frappe.db.sql(query)]
+		}
+	else:
+		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Time Visitor` where name='"+ftv+"'"
+		return {
+			"ftv": [frappe.db.sql(query)]
+		}
 
 @frappe.whitelist()
 def loadmembers(ftv):
-	a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Time Visitor` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' order by distance asc ,age desc "
-	return {
-		"members": [frappe.db.sql(a)]
-	}
+	ftv_member = get_ftv_member()
+	if ftv_member:
+		a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Time Visitor` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' and %s='%s' order by distance asc ,age desc "%(ftv_member['key'],ftv_member['value'])
+		return {
+			"members": [frappe.db.sql(a)]
+		}
+	else:
+		a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Time Visitor` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' order by distance asc ,age desc "
+		return {
+			"members": [frappe.db.sql(a)]
+		}
 
 @frappe.whitelist()
 def assignmember(memberid,ftv):

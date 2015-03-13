@@ -19,24 +19,6 @@
    "reqd": 1
   }, 
   {
-   "fieldname": "column_break_2", 
-   "fieldtype": "Column Break", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
-   "fieldname": "column_break_3", 
-   "fieldtype": "Column Break", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
-   "fieldname": "section_break_4", 
-   "fieldtype": "Section Break", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
    "allow_on_submit": 0, 
    "fieldname": "zone_name", 
    "fieldtype": "Data", 
@@ -56,20 +38,16 @@
    "set_only_once": 0
   }, 
   {
-   "fieldname": "column_break_6", 
-   "fieldtype": "Column Break", 
+   "fieldname": "zonal_hq", 
+   "fieldtype": "Link", 
+   "label": "Zonal HQ", 
+   "options": "Church Master", 
    "permlevel": 0, 
    "precision": ""
   }, 
   {
-   "fieldname": "column_break_7", 
+   "fieldname": "column_break_10", 
    "fieldtype": "Column Break", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
-   "fieldname": "section_break_8", 
-   "fieldtype": "Section Break", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -94,14 +72,16 @@
    "set_only_once": 0
   }, 
   {
-   "fieldname": "column_break_10", 
-   "fieldtype": "Column Break", 
+   "fieldname": "contact_phone_no", 
+   "fieldtype": "Data", 
+   "label": "Contact Phone No", 
    "permlevel": 0, 
    "precision": ""
   }, 
   {
-   "fieldname": "column_break_11", 
-   "fieldtype": "Column Break", 
+   "fieldname": "contact_email_id", 
+   "fieldtype": "Data", 
+   "label": "Contact Email ID", 
    "permlevel": 0, 
    "precision": ""
   }
@@ -113,7 +93,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-02 13:19:59.540907", 
+ "modified": "2015-03-10 15:54:19.751058", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Zone Master", 

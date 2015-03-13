@@ -78,6 +78,20 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "column_break_6", 
+   "fieldtype": "Column Break", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "fieldname": "comments", 
+   "fieldtype": "Data", 
+   "in_list_view": 1, 
+   "label": "comments", 
+   "permlevel": 0, 
+   "precision": ""
   }
  ], 
  "hide_heading": 0, 
@@ -87,7 +101,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 1, 
- "modified": "2015-03-07 11:07:59.050077", 
+ "modified": "2015-03-11 19:28:08.432607", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Event Attendace Details", 

@@ -19,24 +19,6 @@
    "reqd": 1
   }, 
   {
-   "fieldname": "column_break_2", 
-   "fieldtype": "Column Break", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
-   "fieldname": "column_break_3", 
-   "fieldtype": "Column Break", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
-   "fieldname": "section_break_4", 
-   "fieldtype": "Section Break", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
    "allow_on_submit": 0, 
    "fieldname": "region_name", 
    "fieldtype": "Data", 
@@ -57,14 +39,22 @@
    "width": "40%"
   }, 
   {
-   "fieldname": "column_break_6", 
+   "fieldname": "column_break_7", 
    "fieldtype": "Column Break", 
    "permlevel": 0, 
    "precision": ""
   }, 
   {
-   "fieldname": "column_break_7", 
-   "fieldtype": "Column Break", 
+   "fieldname": "contact_phone_no", 
+   "fieldtype": "Data", 
+   "label": "Contact Phone No", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "fieldname": "contact_email_id", 
+   "fieldtype": "Data", 
+   "label": "Contact Email ID", 
    "permlevel": 0, 
    "precision": ""
   }
@@ -76,7 +66,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-27 12:35:15.964081", 
+ "modified": "2015-03-10 15:45:56.861066", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Region Master", 

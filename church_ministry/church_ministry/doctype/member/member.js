@@ -35,7 +35,7 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
     set_field_permlevel('region',2);
   }
   else if(in_list(user_roles, "Senior Cell Leader")){
-    set_field_permlevel('cell',1);
+    set_field_permlevel('cell',0);
     set_field_permlevel('senior_cell',1);
     set_field_permlevel('church',2);
     set_field_permlevel('church_group',2);
@@ -45,51 +45,50 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
   }
   else if(in_list(user_roles, "PCF Leader")){
     set_field_permlevel('cell',1);
-    set_field_permlevel('senior_cell',1);
-    set_field_permlevel('pcf',1);
+    set_field_permlevel('senior_cell',0);
+    set_field_permlevel('pcf',0);
     set_field_permlevel('church',2);
     set_field_permlevel('church_group',2);
     set_field_permlevel('zone',2);
     set_field_permlevel('region',2);
   }
   else if(in_list(user_roles, "Church Pastor")){
-    set_field_permlevel('cell',1);
-    set_field_permlevel('senior_cell',1);
-    set_field_permlevel('pcf',1);
+    set_field_permlevel('cell',0);
+    set_field_permlevel('senior_cell',0);
+    set_field_permlevel('pcf',0);
     set_field_permlevel('church',1);
     set_field_permlevel('church_group',2);
     set_field_permlevel('zone',2);
     set_field_permlevel('region',2);
   }
   else if(in_list(user_roles, "Group Church Pastor")){
-    set_field_permlevel('cell',1);
-    set_field_permlevel('senior_cell',1);
-    set_field_permlevel('pcf',1);
-    set_field_permlevel('church',1);
+    set_field_permlevel('cell',0);
+    set_field_permlevel('senior_cell',0);
+    set_field_permlevel('pcf',0);
+    set_field_permlevel('church',0);
     set_field_permlevel('church_group',1);
     set_field_permlevel('zone',2);
     set_field_permlevel('region',2);
   }
   else if(in_list(user_roles, "Zonal Pastor")){
-    set_field_permlevel('cell',1);
-    set_field_permlevel('senior_cell',1);
-    set_field_permlevel('pcf',1);
-    set_field_permlevel('church',1);
-    set_field_permlevel('church_group',1);
+    set_field_permlevel('cell',0);
+    set_field_permlevel('senior_cell',0);
+    set_field_permlevel('pcf',0);
+    set_field_permlevel('church',0);
+    set_field_permlevel('church_group',0);
     set_field_permlevel('zone',1);
     set_field_permlevel('region',2);
   }
   else if(in_list(user_roles, "Regional Pastor")){
-    set_field_permlevel('cell',1);
-    set_field_permlevel('senior_cell',1);
-    set_field_permlevel('pcf',1);
-    set_field_permlevel('church',1);
-    set_field_permlevel('church_group',1);
-    set_field_permlevel('zone',1);
+    set_field_permlevel('cell',0);
+    set_field_permlevel('senior_cell',0);
+    set_field_permlevel('pcf',0);
+    set_field_permlevel('church',0);
+    set_field_permlevel('church_group',0);
+    set_field_permlevel('zone',0);
     set_field_permlevel('region',1);
   } 
 });
-
 
 cur_frm.add_fetch("cell", "pcf", "pcf");
 cur_frm.add_fetch("cell", "church", "church");
@@ -120,16 +119,16 @@ cur_frm.add_fetch("church_group", "zone", "zone");
 cur_frm.add_fetch("zone", "region", "region");
 
 
-frappe.ui.form.on("Member", "email_id", function(frm,doc,dt,dn) {
+/*frappe.ui.form.on("Member", "email_id", function(frm,doc,dt,dn) {
    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-   check=re.test(doc.email_id)
+   check=re.test(frm.doc.email_id)
    if(check==false)
    {
         cur_frm.set_value("email_id", '')
         msgprint("Please Enter valid Email Id..! ");
-        //throw "Please Enter Correct Email ID!"
+        throw "Please Enter Correct Email ID!"
    }
-});
+});*/
 
 cur_frm.fields_dict['cell'].get_query = function(doc) {
   if (doc.senior_cell){

@@ -46,6 +46,35 @@
    "precision": ""
   }, 
   {
+   "fieldname": "address", 
+   "fieldtype": "Data", 
+   "label": "Address", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "fieldname": "lat", 
+   "fieldtype": "Data", 
+   "label": "Latitude", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "lon", 
+   "fieldtype": "Data", 
+   "label": "Longitude", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1
+  }, 
+  {
+   "fieldname": "column_break_5", 
+   "fieldtype": "Column Break", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "senior_cell", 
    "fieldtype": "Link", 
@@ -74,12 +103,6 @@
    "precision": "", 
    "read_only": 1, 
    "reqd": 1
-  }, 
-  {
-   "fieldname": "column_break_5", 
-   "fieldtype": "Column Break", 
-   "permlevel": 0, 
-   "precision": ""
   }, 
   {
    "fieldname": "church", 
@@ -120,6 +143,20 @@
    "precision": "", 
    "read_only": 1, 
    "reqd": 1
+  }, 
+  {
+   "fieldname": "contact_phone_no", 
+   "fieldtype": "Data", 
+   "label": "Contact Phone No", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "fieldname": "contact_email_id", 
+   "fieldtype": "Data", 
+   "label": "Contact Email ID", 
+   "permlevel": 0, 
+   "precision": ""
   }
  ], 
  "hide_heading": 0, 
@@ -129,7 +166,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-07 11:03:16.804191", 
+ "modified": "2015-03-10 18:34:23.429826", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Cell Master", 

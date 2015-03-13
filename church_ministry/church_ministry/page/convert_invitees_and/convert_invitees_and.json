@@ -1,0 +1,27 @@
+{
+ "content": null, 
+ "creation": "2015-03-11 16:46:40.079779", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "modified": "2015-03-11 16:46:40.079779", 
+ "modified_by": "Administrator", 
+ "module": "Church Ministry", 
+ "name": "convert-invitees-and", 
+ "owner": "Administrator", 
+ "page_name": "Convert Invitees and Contacts to FT", 
+ "roles": [
+  {
+   "role": "System Manager"
+  }, 
+  {
+   "role": "Senior Cell Leader"
+  }, 
+  {
+   "role": "Cell Leader"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "title": "Convert Invitees and Contacts to FT"
+}

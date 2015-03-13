@@ -8,6 +8,12 @@ def get_data():
 			"items": [
 				{
 					"type":"doctype",
+					"name": "Invitees and Contacts",
+					"description": _("Invitees & Contacts")
+				},
+
+				{
+					"type":"doctype",
 					"name": "First Time Visitor",
 					"description": _("First Time Visitor Database")
 				},			
@@ -15,13 +21,12 @@ def get_data():
 					"type":"doctype",
 					"name": "Member",
 					"description": _("Member Database")
-				},				
-				
-				{
-					"type":"doctype",
-					"name": "Cell Meeting Invitation",
-					"description": _("Cell Meeting Invitation Database")
-				},
+				},					
+				# {
+				# 	"type":"doctype",
+				# 	"name": "Cell Meeting Invitation",
+				# 	"description": _("Cell Meeting Invitation Database")
+				# },
 				{
 					"type":"doctype",
 					"name": "Cell Meeting Attendance",
@@ -31,7 +36,12 @@ def get_data():
 					"type":"doctype",
 					"name": "Partnership Arm Record",
 					"description": _("Partnership Record")
-				},								
+				},	
+				{
+					"type":"doctype",
+					"name": "Foundation School Class Attendance",
+					"description": _("Foundation School Class Attendance")
+				},											
 
 				{
 					"type":"doctype",
@@ -42,11 +52,6 @@ def get_data():
 					"type":"doctype",
 					"name": "Event",
 					"description": _("Event")
-				},
-				{
-					"type":"doctype",
-					"name": "Event Attendance",
-					"description": _("Event Attendance Database")
 				},
 				{
 					"type":"doctype",
@@ -68,10 +73,17 @@ def get_data():
 				},
 				{
 					"type": "page",
-					"name": "approve-ftv-to-membe",
-					"label": _("Eligible FTV's to Member"),
+					"name": "convert-invitees-and",
+					"label": _("Convert Invitees & Contacts to FT"),
 					"icon": "icon-bar-chart",
-					"description": _("Eligible FTV's to Member")
+					"description": _("Convert Invitees & Contacts to FT")
+				},
+				{
+					"type": "page",
+					"name": "approve-ftv-to-membe",
+					"label": _("Eligible FT List  for Membership"),
+					"icon": "icon-bar-chart",
+					"description": _("Eligible FT List  for Membership")
 				},
 				# {
 				# 	"type": "page",
@@ -80,6 +92,11 @@ def get_data():
 				# 	"icon": "icon-bar-chart",
 				# 	"description": _("Convert FTV to Member")
 				# },
+				{
+					"type":"doctype",
+					"name": "Event Attendance",
+					"description": _("Event Attendance Database")
+				},
 				{
 					"type": "page",
 					"name": "dashboard",

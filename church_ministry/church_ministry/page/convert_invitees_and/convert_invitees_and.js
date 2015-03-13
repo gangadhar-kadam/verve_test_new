@@ -1,12 +1,13 @@
-frappe.pages['approve-ftv-to-membe'].on_page_load = function(wrapper) {
-	frappe.ui.make_app_page({
+frappe.pages['convert-invitees-and'].on_page_load = function(wrapper) {
+	var page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: 'Eligible FT List  for Membership',
+		title: 'Convert Invitees and Contacts to FT',
 		single_column: true
 	});
 	$("<div class='apllybtn' style='min-height: 20px;padding-left: 20px;padding-right: 20px;align:right;'  align='right'></div><div class='assignt' style='min-height: 20px;padding-left: 20px;padding-right: 20px;padding-bottom: 20px;'></div>").appendTo($(wrapper).find('.layout-main-section'));
 	new frappe.assign(wrapper);
-}	
+}
+
 
 frappe.assign = Class.extend({
 	init: function(wrapper) {
@@ -30,7 +31,7 @@ frappe.assign = Class.extend({
 		var me = this;
 		$(me.wrapper).find('.assignt').empty();
 		frappe.call({
-				method:"church_ministry.church_ministry.page.approve_ftv_to_membe.approve_ftv_to_membe.loadftv",
+				method:"church_ministry.church_ministry.page.convert_invitees_and.convert_invitees_and.loadftv",
 				args:{
 	        	},
 				callback: function(r) {
@@ -48,7 +49,7 @@ frappe.assign = Class.extend({
 			                        h1 += "<td style='padding=0px;width=100%'><input type='checkbox' data-name='"+r.message.ftv[0][i][0]+"' ></td></tr>"
 			            }
 			            $('<br><button  class="btn btn-primary btn-search" id="test">Convert</button><br>').appendTo($(me.wrapper).find('.apllybtn'));    
-			            h="<br><table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'><tr><td style='padding=0px;width=100%''><b>Sr No.</b></td><td><b>FT ID</b></td><td><b>FT Name</b></td><td><b>Gender</b></td><td><b>DOB</b></td><td><b>Approve</b></td></tr>"+h1+"<tbody>";	               
+			            h="<br><table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'><tr><td style='padding=0px;width=100%''><b>Sr No.</b></td><td><b>Invitees and Contacts ID</b></td><td><b>Invitees and Contacts Name</b></td><td><b>Gender</b></td><td><b>DOB</b></td><td><b>Convert</b></td></tr>"+h1+"<tbody>";	               
 			            $(h).appendTo($(me.wrapper).find('.assignt'))
 					    $('.apllybtn').find('.btn-search').click(function() {
 					    	var ftv =[];
@@ -67,17 +68,17 @@ frappe.assign = Class.extend({
 
 var assign = function(ftv){
 	frappe.call({
-	        method:"church_ministry.church_ministry.page.approve_ftv_to_membe.approve_ftv_to_membe.approveftv",
+	        method:"church_ministry.church_ministry.page.convert_invitees_and.convert_invitees_and.approveftv",
 	        args:{
 	        	"ftv":ftv      
 	        },        
 	        callback: function(r) {
 	            if (r.message=='Done'){
-	                alert("The First Timer Visitors are successfully approved for member conversion ..!");
+	                alert("The Invitees and Contacts are successfully Converted To FT..!");
 	                location.reload();
 	            }
 	            else{
-	                alert("Invalid Assignment ");
+	                alert("Invalid Conversion...!");
 	            }
 	        }                     
         })  

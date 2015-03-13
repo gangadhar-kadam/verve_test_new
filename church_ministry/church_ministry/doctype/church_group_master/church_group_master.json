@@ -19,12 +19,6 @@
    "reqd": 1
   }, 
   {
-   "fieldname": "column_break_2", 
-   "fieldtype": "Column Break", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
    "allow_on_submit": 0, 
    "fieldname": "church_group", 
    "fieldtype": "Data", 
@@ -44,8 +38,10 @@
    "set_only_once": 0
   }, 
   {
-   "fieldname": "section_break_4", 
-   "fieldtype": "Section Break", 
+   "fieldname": "group_church_hq", 
+   "fieldtype": "Link", 
+   "label": "Group Church HQ", 
+   "options": "Church Master", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -94,6 +90,20 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "contact_phone_no", 
+   "fieldtype": "Data", 
+   "label": "Contact Phone No", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "fieldname": "contact_email_id", 
+   "fieldtype": "Data", 
+   "label": "Contact Email ID", 
+   "permlevel": 0, 
+   "precision": ""
   }
  ], 
  "hide_heading": 0, 
@@ -103,7 +113,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-07 10:59:35.222523", 
+ "modified": "2015-03-10 17:45:55.516072", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Church Group Master", 
