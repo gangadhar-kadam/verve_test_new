@@ -168,6 +168,11 @@ def validate_birth(doc,method):
 		#frappe.errprint("in date of birth ")
 		if doc.date_of_birth and doc.date_of_join and getdate(doc.date_of_birth) >= getdate(doc.date_of_join):		
 			frappe.throw(_("Date of Joining '{0}' must be greater than Date of Birth '{1}'").format(doc.date_of_join, doc.date_of_birth))
+		
 		if doc.baptisum_status=='Yes':
 			if not doc.baptism_when or doc.baptism_where :
 				frappe.throw(_("When and Where is Mandatory if 'Baptisum Status' is 'Yes'..!"))
+
+		if self.email_id:
+			if not validate_email_add(self.email_id):
+				frappe.throw(_('{0} is not a valid email id').format(self.email_id))

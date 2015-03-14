@@ -173,10 +173,44 @@
    "reqd": 1
   }, 
   {
+   "depends_on": "eval:doc.giving_or_pledge=='Giving'", 
    "fieldname": "giving_type", 
    "fieldtype": "Select", 
    "label": "Giving Type", 
    "options": "Cash\nCheque\nPOS", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "depends_on": "eval:doc.giving_or_pledge=='Giving'", 
+   "fieldname": "instrument__no", 
+   "fieldtype": "Data", 
+   "label": "Instrument  No", 
+   "permlevel": 0, 
+   "precision": "", 
+   "reqd": 0
+  }, 
+  {
+   "depends_on": "eval:doc.giving_or_pledge=='Giving'", 
+   "fieldname": "instrument_date", 
+   "fieldtype": "Date", 
+   "label": "Instrument Date", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "depends_on": "eval:doc.giving_or_pledge=='Giving'", 
+   "fieldname": "bank_name", 
+   "fieldtype": "Data", 
+   "label": "Bank Name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "depends_on": "eval:doc.giving_or_pledge=='Giving'", 
+   "fieldname": "branch", 
+   "fieldtype": "Data", 
+   "label": "Branch", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -212,6 +246,7 @@
    "depends_on": "eval:doc.giving_or_pledge=='Pledge'", 
    "fieldname": "equated_amount", 
    "fieldtype": "Data", 
+   "hidden": 1, 
    "label": "Equated Amount", 
    "permlevel": 0, 
    "precision": ""
@@ -264,7 +299,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-13 18:57:43.069980", 
+ "modified": "2015-03-14 12:34:11.839608", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Arm Record", 

@@ -103,11 +103,12 @@
   {
    "fieldname": "designation", 
    "fieldtype": "Select", 
+   "hidden": 1, 
    "label": "Designation", 
    "options": "\nFT Visitor\nMember", 
    "permlevel": 0, 
    "precision": "", 
-   "reqd": 1
+   "reqd": 0
   }, 
   {
    "allow_on_submit": 0, 
@@ -395,14 +396,6 @@
    "reqd": 0
   }, 
   {
-   "fieldname": "is_new_born", 
-   "fieldtype": "Check", 
-   "hidden": 0, 
-   "label": "Is New Born", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
    "allow_on_submit": 0, 
    "fieldname": "column_break_29", 
    "fieldtype": "Column Break", 
@@ -572,6 +565,15 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "is_new_born", 
+   "fieldtype": "Select", 
+   "hidden": 0, 
+   "label": "Is New Born", 
+   "options": "\nYes\nNo", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "baptisum_status", 
    "fieldtype": "Select", 
@@ -630,8 +632,16 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "is_new_convert", 
+   "fieldtype": "Select", 
+   "label": "Is New Convert", 
+   "options": "\nYes\nNo", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
-   "depends_on": "eval:(doc.baptisum_status==\"Yes\")", 
+   "depends_on": "eval:doc.baptisum_status=='Yes'", 
    "fieldname": "when", 
    "fieldtype": "Date", 
    "hidden": 0, 
@@ -1048,7 +1058,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-12 11:43:40.298159", 
+ "modified": "2015-03-14 13:14:01.852353", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Time Visitor", 

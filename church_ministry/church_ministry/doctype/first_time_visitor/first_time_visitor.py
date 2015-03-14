@@ -8,6 +8,7 @@ from frappe.utils import getdate, validate_email_add, cint
 from frappe import throw, _, msgprint
 from frappe.model.mapper import get_mapped_doc
 from frappe import msgprint, _
+import frappe, os, json
 
 class FirstTimeVisitor(Document):
 	
@@ -18,38 +19,10 @@ class FirstTimeVisitor(Document):
 			if not self.baptism_when or self.baptism_where :
 				frappe.throw(_("When and Where is Mandatory if 'Baptisum Status' is 'Yes'..!"))
 
+		if self.email_id:
+			if not validate_email_add(self.email_id):
+				frappe.throw(_('{0} is not a valid email id').format(self.email_id))
 
-	# def on_update(self):
-	# 	# frappe.errprint(frappe.user.name)
-	# 	usr_id=frappe.db.sql("select name from `tabUser` where name='%s'"%(self.email_id),as_list=1)
-	# 	# u_rle=frappe.db.sql("select parent from `tabUserRole` where role='First Time Visitor'")
-	# 	if self.flag=='not':
-	# 		if usr_id:
-	# 			msgprint(_("User is already created for respective email_id.."), raise_exception=1)
-	# 		else:
-	# 			frappe.errprint("user")
-	# 			usr = frappe.new_doc("User")
-	# 			usr.email=self.email_id
-	# 			usr.first_name = self.ftv_name
-	# 			usr.new_password = 'password'
-	# 			usr.insert() 
-	# 			frappe.errprint("role")
-	# 			rle=frappe.new_doc("UserRole")
-	# 			rle.parent=self.email_id
-	# 			rle.parentfield='user_roles'
-	# 			rle.parenttype='User'
-	# 			rle.role='First Time Visitor'
-	# 			rle.insert()
-
-	# 			value = frappe.new_doc("DefaultValue")
-	# 			value.parentfield = 'system_defaults'
-	# 			value.parenttype = 'User Permission'
-	# 			value.parent = self.email_id
-	# 			value.defkey = 'First Time Visitor'
-	# 			value.defvalue = self.name
-	# 			value.insert()
-	# 		frappe.db.sql("update `tabFirst Time Visitor` set flag='SetPerm' where name='%s'"%(self.name))
-	# 		frappe.db.commit()
 
 	def set_higher_values(self):
 		if self.region:
@@ -178,3 +151,15 @@ def ismember(name):
 		return "Yes"
 	else:
 		return "No"
+
+
+@frappe.whitelist()
+def set_higher_values(args):
+    args = json.loads(args)
+    keys = ["region", "zone", "church_group", "church", "pcf", "senior_cell", "name"]
+    out = frappe.db.get_all("Cell Master", fields=keys, filters={'name':args['name']})
+    if out:
+          return out[0]
+
+
+

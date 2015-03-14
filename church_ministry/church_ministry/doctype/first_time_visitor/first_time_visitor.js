@@ -58,16 +58,40 @@ frappe.ui.form.on("First Time Visitor", "onload", function(frm,cdt, cdn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
   }
-  else{
-    get_server_fields('set_higher_values','','',frm.doc, cdt, cdn, 1, function(r){
-      refresh_field('region');
-      refresh_field('zone');
-      refresh_field('church_group');
-      refresh_field('church');
-      refresh_field('pcf');
-      refresh_field('senior_cell');
-      refresh_field('cell');
-    });
+  else if(frm.doc.__islocal && frm.doc.cell ){   
+    argmnt={
+/*              "region": frm.doc.region,
+              "zone": frm.doc.zone,
+              "church_group": frm.doc.church_group,
+              "church": frm.doc.church ,
+              "pcf": frm.doc.pcf,
+              "senior_cell": frm.doc.senior_cell,*/
+              "name": frm.doc.cell  
+            }
+ 
+    frappe.call({
+        method:"church_ministry.church_ministry.doctype.first_time_visitor.first_time_visitor.set_higher_values",
+        args:{"args":argmnt},
+        callback: function(r) {
+          if (r.message){
+            console.log(r.message);
+            frm.doc.region=r.message.region
+            frm.doc.zone=r.message.zone
+            frm.doc.church_group=r.message.church_group
+            frm.doc.church=r.message.church
+            frm.doc.pcf=r.message.pcf
+            frm.doc.senior_cell=r.message.senior_cell
+            //frm.doc.cell=r.message.name
+            refresh_field('region');              
+            refresh_field('zone');
+            refresh_field('church_group');              
+            refresh_field('church');
+            refresh_field('pcf');              
+            refresh_field('senior_cell');
+           // refresh_field('cell');
+          }
+        }
+      });
   }
 
   if (in_list(user_roles, "Cell Leader")){
@@ -135,7 +159,7 @@ frappe.ui.form.on("First Time Visitor", "onload", function(frm,cdt, cdn) {
   }
  
   $( "#map-canvas" ).remove();
-  $(cur_frm.get_field("lon").wrapper).append('<div id="map-canvas" style="width: 425px; height: 425px;">Google Map</div>');
+  $(cur_frm.get_field("lon").wrapper).append('<div id="map-canvas" style="width: 425px; height: 225px;">Google Map</div>');
     if(frm.doc.__islocal || (!frm.doc.lat || ! frm.doc.lon)){
       cur_frm.cscript.create_pin_on_map(frm.doc,'9.072264','7.491302');
     }
@@ -169,15 +193,8 @@ frappe.ui.form.on("First Time Visitor", "create_member", function(frm,doc) {
     })
 });
 
-frappe.ui.form.on("First Time Visitor", "email_id", function(frm) {
-   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-   check=re.test(frm.doc.email_id)
-   if(check==false)
-   {
-        cur_frm.set_value("email_id", '')
-        msgprint("Please Enter valid Email Id..! ");
-        //throw "Please Enter valid Email Id.!"
-   }
+
+frappe.ui.form.on("First Time Visitor", "baptism_status", function(frm,doc) {
 });
 
 cur_frm.add_fetch("cell", "pcf", "pcf");
@@ -297,7 +314,7 @@ gmap = Class.extend({
                   });
         },
         codeAddress: function (addr,str) {
-                console.log(['address in codeAddress ',addr])
+/*                console.log(['address in codeAddress ',addr])*/
                 me= this;
                 var sAddress = addr
                 geocoder.geocode( { 'address': sAddress}, function(results, status) {
@@ -398,7 +415,7 @@ var getLatLng = function(lat, lng) {
 
 cur_frm.cscript.map =function(doc, dt, dn){
         var searchBox;
-        console.log(['map doc',doc]);
+/*        console.log(['map doc',doc]);*/
         //ip = $(this.frm.parent)[0].childNodes[6].childNodes[5].childNodes[1].childNodes[1].childNodes[0].childNodes[4].childNodes[2].childNodes[0].childNodes[1].childNodes[2].childNodes[1].childNodes[3].childNodes[1].childNodes
         geocoder.geocode( { 'address': cstr(cur_frm.doc.state)}, function(results, status) {
                          var latlong = results[0].geometry.location
@@ -425,9 +442,9 @@ cur_frm.cscript.callback = function(doc, dt, dn, ltln, ip){
 }
 
 cur_frm.cscript.address = function(doc, dt, dn){
-        console.log(['in address trigger ',doc.address]);
+/*        console.log(['in address trigger ',doc.address]);*/
         var o = new gmap(this.frm.doc);
-        console.log(['o gmap after address trigger ',o]);
+/*        console.log(['o gmap after address trigger ',o]);*/
         o.codeAddress(doc.address)
 }
 
