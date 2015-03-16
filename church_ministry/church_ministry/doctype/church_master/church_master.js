@@ -3,48 +3,6 @@ cur_frm.add_fetch("church_group", "region", "region");
 cur_frm.add_fetch("church_group", "zone", "zone");
 cur_frm.add_fetch("zone", "region", "region");
 
-cur_frm.fields_dict['cell_master'].get_query = function(doc) {
-  return {
-    filters: {
-      "senior_cell": doc.senior_cell
-  }
-}
-
-// cur_frm.fields_dict['cell'].get_query = function(doc) {
-//   if (doc.senior_cell){
-//     return "select name from `tabCell Master` where senior_cell='"+doc.senior_cell+"'"
-//   }
-//   else{
-//     return "select name from `tabCell Master`"
-//   }
-// }
-
-cur_frm.fields_dict['senior_cell'].get_query = function(doc) {
-  if (doc.pcf){
-    return "select name from `tabSenior Cell Master` where pcf='"+doc.pcf+"'"
-  }
-  else{
-    return "select name from `tabSenior Cell Master`"
-  }
-}
-
-cur_frm.fields_dict['pcf'].get_query = function(doc) {
-  if (doc.church){
-    return "select name from `tabPCF Master` where church='"+doc.church+"'"
-  }
-  else{
-    return "select name from `tabPCF Master`"
-  }
-}
-
-cur_frm.fields_dict['church'].get_query = function(doc) {
-  if (doc.church_group){
-    return "select name from `tabChurch Master` where church_group='"+doc.church_group+"'"
-  }
-  else{
-    return "select name from `tabChurch Master`"
-  }
-}
 cur_frm.fields_dict['church_group'].get_query = function(doc) {
   if (doc.zone){
     return "select name from `tabChurch Group Master` where zone='"+doc.zone+"'"

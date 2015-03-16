@@ -71,98 +71,6 @@ class Member(Document):
 			frappe.db.sql("update `tabMember` set flag='SetPerm' where name='%s'"%(self.name))
 			frappe.db.commit()
 
-	def set_higher_values(self):
-		if self.region:
-			value = frappe.db.sql("select zone,church_group,church,pcf,senior_cell,name from `tabCell Master` where region='%s'"%(self.region),as_list=1)
-			ret={}
-			if value:
-				ret={
-					"zone": value[0][0],
-					"church_group": value[0][1],
-					"church" : value[0][2],
-					"pcf" : value[0][3],
-					"senior_cell" : value[0][4],
-					"cell" : value[0][5]
-				}
-			return ret
-		elif self.zone:
-			value = frappe.db.sql("select region,church_group,church,pcf,senior_cell,name from `tabCell Master` where zone='%s'"%(self.zone),as_list=1)
-			ret={}
-			if value:
-				ret={
-					"region": value[0][0],
-					"church_group": value[0][1],
-					"church" : value[0][2],
-					"pcf" : value[0][3],
-					"senior_cell" : value[0][4],
-					"cell" : value[0][5]
-				}
-			return ret
-		elif self.church_group:
-			value = frappe.db.sql("select region,zone,church,pcf,senior_cell,name from `tabCell Master` where church_group='%s'"%(self.church_group),as_list=1)
-			ret={}
-			if value:
-				ret={
-					"region": value[0][0],
-					"zone": value[0][1],
-					"church" : value[0][2],
-					"pcf" : value[0][3],
-					"senior_cell" : value[0][4],
-					"cell" : value[0][5]
-				}
-			return ret
-		elif self.church:
-			value = frappe.db.sql("select region,zone,church_group,pcf,senior_cell,name from `tabCell Master` where church='%s'"%(self.church),as_list=1)
-			ret={}
-			if value:
-				ret={
-					"region": value[0][0],
-					"zone": value[0][1],
-					"church_group" : value[0][2],
-					"pcf" : value[0][3],
-					"senior_cell" : value[0][4],
-					"cell" : value[0][5]
-				}
-			return ret
-		elif self.pcf:
-			value = frappe.db.sql("select region,zone,church_group,church,senior_cell,name from `tabCell Master` where pcf='%s'"%(self.pcf),as_list=1)
-			ret={}
-			if value:
-				ret={
-					"region": value[0][0],
-					"zone": value[0][1],
-					"church_group" : value[0][2],
-					"church" : value[0][3],
-					"senior_cell" : value[0][4],
-					"cell" : value[0][5]
-				}
-			return ret
-		elif self.senior_cell:
-			value = frappe.db.sql("select region,zone,church_group,church,pcf,name from `tabCell Master` where senior_cell='%s'"%(self.senior_cell),as_list=1)
-			ret={}
-			if value:
-				ret={
-					"region": value[0][0],
-					"zone": value[0][1],
-					"church_group" : value[0][2],
-					"church" : value[0][3],
-					"pcf" : value[0][4],
-					"cell" : value[0][5]
-				}
-			return ret
-		elif self.cell:
-			value = frappe.db.sql("select region,zone,church_group,church,pcf,senior_cell from `tabCell Master` where name='%s'"%(self.cell),as_list=1)
-			ret={}
-			if value:
-				ret={
-					"region": value[0][0],
-					"zone": value[0][1],
-					"church_group" : value[0][2],
-					"church" : value[0][3],
-					"pcf" : value[0][4],
-					"senior_cell" : value[0][5]
-				}
-			return ret
 
 def validate_birth(doc,method):
 		#frappe.errprint("in date of birth ")
@@ -170,7 +78,7 @@ def validate_birth(doc,method):
 			frappe.throw(_("Date of Joining '{0}' must be greater than Date of Birth '{1}'").format(doc.date_of_join, doc.date_of_birth))
 		
 		if doc.baptisum_status=='Yes':
-			if not doc.baptism_when or  not doc.baptism_where :
+			if not doc.baptism_when or not doc.baptism_where :
 				frappe.throw(_("When and Where is Mandatory if 'Baptisum Status' is 'Yes'..!"))
 
 		if doc.email_id:
