@@ -10,7 +10,7 @@ class ChurchMaster(Document):
 	# pass
 	def set_higher_values(self):
 		if self.region:
-			value = frappe.db.sql("select zone,name from `tabChurch Group Master` where region='%s'"%(self.region),as_list=1)
+			value = frappe.db.sql("select zone,name from `tabGroup Church Master` where region='%s'"%(self.region),as_list=1)
 			ret={}
 			if value:
 				ret={
@@ -19,7 +19,7 @@ class ChurchMaster(Document):
 				}
 			return ret
 		elif self.zone:
-			value = frappe.db.sql("select region,name from `tabChurch Group Master` where zone='%s'"%(self.zone),as_list=1)
+			value = frappe.db.sql("select region,name from `tabGroup Church Master` where zone='%s'"%(self.zone),as_list=1)
 			ret={}
 			if value:
 				ret={
@@ -28,7 +28,7 @@ class ChurchMaster(Document):
 				}
 			return ret
 		elif self.church_group:
-			value = frappe.db.sql("select region,zone from `tabChurch Group Master` where name='%s'"%(self.church_group),as_list=1)
+			value = frappe.db.sql("select region,zone from `tabGroup Church Master` where name='%s'"%(self.church_group),as_list=1)
 			ret={}
 			if value:
 				ret={

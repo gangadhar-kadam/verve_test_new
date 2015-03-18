@@ -9,7 +9,7 @@ from frappe.model.mapper import get_mapped_doc
 
 @frappe.whitelist()
 def loadftv():
-	query="select name,ftv_name,sex,date_of_birth from `tabFirst Time Visitor` where approved=1 and name not in (select ftv_id_no from tabMember)"
+	query="select name,ftv_name,sex,date_of_birth from `tabFirst Timer` where approved=1 and name not in (select ftv_id_no from tabMember)"
 	return {
 		"ftv": [frappe.db.sql(query)]
 	}
@@ -24,8 +24,8 @@ def approveftv(ftv):
 	return "Done"
 
 def convert_ftv(source_name, target_doc=None):
-	target_doc = get_mapped_doc("First Time Visitor", source_name,
-		{"First Time Visitor": {
+	target_doc = get_mapped_doc("First Timer", source_name,
+		{"First Timer": {
 			"doctype": "Member",
 			"field_map": {
 				"ftv_name": "member_name",

@@ -74,8 +74,8 @@ doc_events = {
 	"Zone Master": {
 		"validate": "church_ministry.church_ministry.doctype.zone_master.zone_master.validate_duplicate"		
 	},
-	"Church Group Master": {
-		"validate": "church_ministry.church_ministry.doctype.church_group_master.church_group_master.validate_duplicate"		
+	"Group Church Master": {
+		"validate": "church_ministry.church_ministry.doctype.group_church_master.group_church_master.validate_duplicate"		
 	},
 	"Church Master": {
 		"validate": "church_ministry.church_ministry.doctype.church_master.church_master.validate_duplicate"		
@@ -92,14 +92,14 @@ doc_events = {
 	"Foundation School Exam Master": {
 		"validate": "church_ministry.church_ministry.doctype.foundation_school_exam_master.foundation_school_exam_master.validate_duplicate"		
 	},
-	"Grade Master": {
+	"FS Grade Master": {
 		"validate": "church_ministry.church_ministry.doctype.grade_master.grade_master.validate_duplicate"		
 	},
 	"Member": {
 		"validate": "church_ministry.church_ministry.doctype.member.member.validate_birth"		
 	},
-	"First Time Visitor": {
-		"validate": "church_ministry.church_ministry.doctype.first_time_visitor.first_time_visitor.validate_birth"		
+	"First Timer": {
+		"validate": "church_ministry.church_ministry.doctype.first_timer.first_timer.validate_birth"		
 	},
 	"Foundation School Exam": {
 		"validate": "church_ministry.church_ministry.doctype.foundation_school_exam.foundation_school_exam.validate_duplicate",

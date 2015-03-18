@@ -179,10 +179,10 @@ cur_frm.fields_dict['church'].get_query = function(doc) {
 }
 cur_frm.fields_dict['church_group'].get_query = function(doc) {
   if (doc.zone){
-    return "select name from `tabChurch Group Master` where zone='"+doc.zone+"'"
+    return "select name from `tabGroup Church Master` where zone='"+doc.zone+"'"
   }
   else{
-    return "select name from `tabChurch Group Master`"
+    return "select name from `tabGroup Church Master`"
   }
 }
 

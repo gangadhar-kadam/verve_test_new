@@ -4,7 +4,7 @@ frappe.pages['assign-for-followup'].on_page_load = function(wrapper) {
 		title: 'Assign For Followup',
 		single_column: true
 	});
-	$("<div class='assignt' style='min-height: 20px;padding-left: 20px;'><table class='table' style='width:100%; border-right: 1px solid;padding-left: 20px;' >First Time Visitor Details<tr>\
+	$("<div class='assignt' style='min-height: 20px;padding-left: 20px;'><table class='table' style='width:100%; border-right: 1px solid;padding-left: 20px;' >First Timer Details<tr>\
 	<td ><div id ='ftvi' style='min-height: 10px;padding-left: 20px;width:20%;display: inline-block;'></div><div id ='dtl' style='min-height: 10px;padding-top: 20px;padding-left: 20px;width:60%;display: inline-block;'></div><div id ='apllybtn' style='min-height: 10px;padding-top: 10px;padding-left: 20px;width:10%;display: inline-block;'></div></td>\
 	</tr></table></div>").appendTo($(wrapper).find('.layout-main-section'));
 	$("<div class='assignr' style='min-height: 400px; padding: 15px;'></div>").appendTo($(wrapper).find('.layout-main-section'));
@@ -38,8 +38,8 @@ frappe.assign = Class.extend({
 		this.ftv=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Link",
-			"options": "First Time Visitor",
-			"label": "First Time Visitor",
+			"options": "First Timer",
+			"label": "First Timer",
 			"fieldname": "ftv",
 			"placeholder": "FT Details (ID)"
 			},

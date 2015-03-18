@@ -41,7 +41,7 @@ frappe.assign = Class.extend({
 			                        var j=i+1
 			                        h1 += '<tr >'
 			                        h1 += '<td style="padding=0px;width=100%">'+j+'</td>'
-			                        h1 += '<td style="padding=0px;width=100%"><a href="desk#Form/First Time Visitor/'+r.message.ftv[0][i][0]+'">'+r.message.ftv[0][i][0]+'</a></td>'
+			                        h1 += '<td style="padding=0px;width=100%"><a href="desk#Form/First Timer/'+r.message.ftv[0][i][0]+'">'+r.message.ftv[0][i][0]+'</a></td>'
 			                        h1 += '<td style="padding=0px;width=100%">'+r.message.ftv[0][i][1]+'</td>'
 			                        h1 += '<td style="padding=0px;width=100%">'+r.message.ftv[0][i][2]+'</td>'
 			                        h1 += '<td style="padding=0px;width=100%">'+r.message.ftv[0][i][3]+'</td>'                      

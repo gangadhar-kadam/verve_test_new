@@ -20,10 +20,10 @@ class Member(Document):
 				c_user = self.zone
 				r_user = 'Zonal Pastor'
 				perm = 'Zone Master'
-			elif self.member_designation=='Church Group Pastor':
+			elif self.member_designation=='Group Church Pastor':
 				c_user = self.church_group
 				r_user = 'Group Church Pastor'
-				perm = 'Church Group Master'
+				perm = 'Group Church Master'
 			elif self.member_designation=='Church Pastor':
 				c_user = self.church
 				r_user = 'Church Pastor'

@@ -38,10 +38,10 @@ cur_frm.fields_dict['church'].get_query = function(doc) {
 }
 cur_frm.fields_dict['church_group'].get_query = function(doc) {
   if (doc.zone){
-    return "select name from `tabChurch Group Master` where zone='"+doc.zone+"'"
+    return "select name from `tabGroup Church Master` where zone='"+doc.zone+"'"
   }
   else{
-    return "select name from `tabChurch Group Master`"
+    return "select name from `tabGroup Church Master`"
   }
 }
 
@@ -54,7 +54,7 @@ cur_frm.fields_dict['zone'].get_query = function(doc) {
   }
 }
 
-frappe.ui.form.on("First Time Visitor", "onload", function(frm,cdt, cdn) {
+frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
   }
@@ -169,7 +169,7 @@ frappe.ui.form.on("First Time Visitor", "onload", function(frm,cdt, cdn) {
     }   
 });
 
-frappe.ui.form.on("First Time Visitor", "refresh", function(frm,doc,dt,dn) {
+frappe.ui.form.on("First Timer", "refresh", function(frm,doc,dt,dn) {
     if(!frm.doc.__islocal && frm.doc.approved) {
         frappe.call({
               method:"church_ministry.church_ministry.doctype.first_time_visitor.first_time_visitor.ismember",
@@ -186,7 +186,7 @@ frappe.ui.form.on("First Time Visitor", "refresh", function(frm,doc,dt,dn) {
     
 });
 
-frappe.ui.form.on("First Time Visitor", "create_member", function(frm,doc) {
+frappe.ui.form.on("First Timer", "create_member", function(frm,doc) {
     frappe.model.open_mapped_doc({
       method: "church_ministry.church_ministry.doctype.first_time_visitor.first_time_visitor.make_member",
       frm: cur_frm
@@ -194,7 +194,7 @@ frappe.ui.form.on("First Time Visitor", "create_member", function(frm,doc) {
 });
 
 
-frappe.ui.form.on("First Time Visitor", "baptism_status", function(frm,doc) {
+frappe.ui.form.on("First Timer", "baptism_status", function(frm,doc) {
 });
 
 cur_frm.add_fetch("cell", "pcf", "pcf");

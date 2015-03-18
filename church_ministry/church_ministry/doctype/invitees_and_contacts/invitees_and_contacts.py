@@ -124,7 +124,7 @@ def _make_member(source_name, target_doc=None, ignore_permissions=False):
 	frappe.errprint("make member 3")
 	doclist = get_mapped_doc("Invitees and Contacts", source_name,
 		{"Invitees and Contacts": {
-			"doctype": "First Time Visitor",
+			"doctype": "First Timer",
 			"field_map": {				
 				"invitee_contact_name": "ftv_name",
 				"title":"address_manual",

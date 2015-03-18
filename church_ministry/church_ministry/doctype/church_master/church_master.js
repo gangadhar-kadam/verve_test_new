@@ -5,10 +5,10 @@ cur_frm.add_fetch("zone", "region", "region");
 
 cur_frm.fields_dict['church_group'].get_query = function(doc) {
   if (doc.zone){
-    return "select name from `tabChurch Group Master` where zone='"+doc.zone+"'"
+    return "select name from `tabGroup Church Master` where zone='"+doc.zone+"'"
   }
   else{
-    return "select name from `tabChurch Group Master`"
+    return "select name from `tabGroup Church Master`"
   }
 }
 
@@ -85,20 +85,20 @@ gmap = Class.extend({
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
                 map = new google.maps.Map($('.map-canvas'), myOptions);
-                console.log(['map in gmap ',map]);
+                // console.log(['map in gmap ',map]);
                 //console.log($('#map-canvas'));
                 //me.successFunction(doc.address, map)
                 me.successFunction('abuja nigeria', map)
         },
         successFunction: function(position, map) {
                   geocoder.geocode( { 'address': cstr(position)}, function(results, status) {
-                          console.log(['success fun result ',results]);
+                          // console.log(['success fun result ',results]);
                           map.setCenter(results[0].geometry.location);
                           var marker = new google.maps.Marker({
                               map: map,
                               position: results[0].geometry.location
                           });
-                          console.log(['last res ',results[0].geometry.location])
+                          // console.log(['last res ',results[0].geometry.location])
                           markers.push(marker);
                           map.setZoom(14);
                   });
@@ -162,7 +162,7 @@ gmap = Class.extend({
                   });
         },
         codeAddress: function (addr,str) {
-                console.log(['address in codeAddress ',addr])
+                // console.log(['address in codeAddress ',addr])
                 me= this;
                 var sAddress = addr
                 geocoder.geocode( { 'address': sAddress}, function(results, status) {
@@ -266,11 +266,11 @@ var getLatLng = function(lat, lng) {
 
 cur_frm.cscript.map =function(doc, dt, dn){
         var searchBox;
-        console.log(['map doc',doc]);
+        // console.log(['map doc',doc]);
         //ip = $(this.frm.parent)[0].childNodes[6].childNodes[5].childNodes[1].childNodes[1].childNodes[0].childNodes[4].childNodes[2].childNodes[0].childNodes[1].childNodes[2].childNodes[1].childNodes[3].childNodes[1].childNodes
         geocoder.geocode( { 'address': cstr(cur_frm.doc.state)}, function(results, status) {
                          var latlong = results[0].geometry.location
-                        console.log(['results in map',results])
+                         // console.log(['results in map',results])
                          cur_frm.cscript.callback(doc, dt, dn, latlong, doc.address)
                 });
  }
@@ -278,14 +278,14 @@ cur_frm.cscript.callback = function(doc, dt, dn, ltln, ip){
         var latlong = new google.maps.LatLngBounds(new google.maps.LatLng(ltln.lb , ltln.mb));
         var options = {componentRestrictions: {country: 'in'}, bounds: latlong};
         var searchBox = new google.maps.places.Autocomplete(ip[0],options);
-        console.log(['searchBox in callback ',searchBox])
+        // console.log(['searchBox in callback ',searchBox])
         var o=new gmap(this.frm.doc);
         o.get_map(searchBox);
         var plc;
         google.maps.event.addListener(searchBox, 'place_changed', function() {
                 var place = searchBox.getPlace();
                 var doc=cur_frm.doc
-                 cur_frm.cscript.create_pin_on_map(doc,place.geometry.location.k,place.geometry.location.D)
+                cur_frm.cscript.create_pin_on_map(doc,place.geometry.location.k,place.geometry.location.D)
                 cur_frm.set_value('lat',place.geometry.location.k)
                 cur_frm.set_value('lon',place.geometry.location.D)
                 cur_frm.set_value("address", place.formatted_address)
@@ -293,8 +293,8 @@ cur_frm.cscript.callback = function(doc, dt, dn, ltln, ip){
 }
 
 cur_frm.cscript.address = function(doc, dt, dn){
-        console.log(['in address trigger ',doc.address]);
+        // console.log(['in address trigger ',doc.address]);
         var o = new gmap(this.frm.doc);
-        console.log(['o gmap after address trigger ',o]);
+        // console.log(['o gmap after address trigger ',o]);
         o.codeAddress(doc.address)
 }

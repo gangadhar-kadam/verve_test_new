@@ -14,8 +14,8 @@ def get_data():
 
 				{
 					"type":"doctype",
-					"name": "First Time Visitor",
-					"description": _("First Time Visitor Database")
+					"name": "First Timer",
+					"description": _("First Timer Database")
 				},			
 				{
 					"type":"doctype",
@@ -34,14 +34,20 @@ def get_data():
 				},
 				{
 					"type":"doctype",
-					"name": "Partnership Arm Record",
+					"name": "Partnership Record",
 					"description": _("Partnership Record")
 				},	
 				{
 					"type":"doctype",
 					"name": "Foundation School Class Attendance",
 					"description": _("Foundation School Class Attendance")
-				},										
+				},											
+
+				# {
+				# 	"type":"doctype",
+				# 	"name": "Foundation School Exam",
+				# 	"description": _("Foundation School Exam Attendance/Results")
+				# },
 				{
 					"type":"doctype",
 					"name": "Event",
@@ -116,7 +122,7 @@ def get_data():
 				},
 				{
 					"type":"doctype",
-					"name": "Church Group Master",
+					"name": "Group Church Master",
 					"description": _("Group Church Master")
 				},
 				{
@@ -146,7 +152,7 @@ def get_data():
 				},							
 				{
 					"type":"doctype",
-					"name": "Grade Master",
+					"name": "FS Grade Master",
 					"description": _("FS Grade Master")
 				},				
 			]

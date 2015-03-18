@@ -10,7 +10,7 @@ from frappe import throw, _, msgprint
 class FoundationSchoolExam(Document):
 	
 	def get_grade(self,score):
-			query="select name from `tabGrade Master` where to_score>='"+cstr(score)+"' and from_score<='"+cstr(score)+"'"
+			query="select name from `tabFS Grade Master` where to_score>='"+cstr(score)+"' and from_score<='"+cstr(score)+"'"
 			grade = frappe.db.sql(query)
 			if not grade:
 				frappe.msgprint(_("Grade not found for the score {0}").format(score))
@@ -20,7 +20,7 @@ class FoundationSchoolExam(Document):
 	
 @frappe.whitelist()
 def get_grade(score):
-			query="select name from `tabGrade Master` where to_score>='"+cstr(score)+"' and from_score<='"+cstr(score)+"'"
+			query="select name from `tabFS Grade Master` where to_score>='"+cstr(score)+"' and from_score<='"+cstr(score)+"'"
 			grade = frappe.db.sql(query)
 			if not grade:
 				frappe.msgprint(_("Grade not found for the score {0}").format(score))
@@ -46,7 +46,7 @@ def loadftv(church,visitor_type,foundation__exam):
 
 	if visitor_type=='FTV':
 		return {
-		"ftv": [frappe.db.sql("select name,ftv_name from `tabFirst Time Visitor` where church='%s' and school_status='%s' and approved=0"%(church,school_status),debug=1)]
+		"ftv": [frappe.db.sql("select name,ftv_name from `tabFirst Timer` where church='%s' and school_status='%s' and approved=0"%(church,school_status),debug=1)]
 		}
 	else:
 		return {
@@ -70,7 +70,7 @@ def update_attendance(doc,method):
 		else:
 			greeting='Sorry..! You Failed.'
 		if doc.visitor_type=='FTV':
-			ftvdetails=frappe.db.sql("select ftv_name,email_id,phone_1 from `tabFirst Time Visitor` where name='%s'"%(d.ftv_id))
+			ftvdetails=frappe.db.sql("select ftv_name,email_id,phone_1 from `tabFirst Timer` where name='%s'"%(d.ftv_id))
 		else:
 			ftvdetails=frappe.db.sql("select member_name,email_id,phone_1 from `tabMember` where name='%s'"%(d.member_id))
 		msg_member="""Hello %s,<br><br>
@@ -98,7 +98,7 @@ def update_attendance(doc,method):
 			elif doc.foundation__exam=='Class 6':
 				exm='Completed All Classes and Passed Exam'
 			if doc.visitor_type=='FTV':
-				frappe.db.sql("""update `tabFirst Time Visitor` set school_status='%s' %s where name='%s' """ % (exm,baptism,d.ftv_id),debug=1)
+				frappe.db.sql("""update `tabFirst Timer` set school_status='%s' %s where name='%s' """ % (exm,baptism,d.ftv_id),debug=1)
 			else:
 				frappe.db.sql("""update `tabMember` set school_status='%s' %s where name='%s' """ % (exm, baptism, d.member_id),debug=1)
 		

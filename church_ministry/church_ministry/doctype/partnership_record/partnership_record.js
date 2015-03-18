@@ -18,44 +18,44 @@ cur_frm.add_fetch("ftv", "church_group", "church_group");
 cur_frm.add_fetch("ftv", "zone", "zone");
 cur_frm.add_fetch("ftv", "region", "region");
 
-frappe.ui.form.on("Partnership Arm Record", "validate", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "validate", function(frm,doc) {
 	if(frm.doc.is_member==1){
 		if(!frm.doc.member){
-			msgprint("Please select Member for Partnership Arm Record before save..! ");
+			msgprint("Please select Member for Partnership Record before save..! ");
         	throw "Please select Member!"
 		}
 	}
 	else if(frm.doc.is_member==0){
 		if(!frm.doc.ftv){
-			msgprint("Please select FTV for Partnership Arm Record before save..! ");
+			msgprint("Please select FTV for Partnership Record before save..! ");
         	throw "Please select FTV!"
 		}
 	}
 });
 
 
-frappe.ui.form.on("Partnership Arm Record", "onload", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "onload", function(frm,doc) {
 		frm.doc.ministry_year=frappe.defaults.get_user_default("fiscal_year");
 		refresh_field('ministry_year');	
 });
 
-frappe.ui.form.on("Partnership Arm Record", "member", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "member", function(frm,doc) {
 	if(!frm.doc.member){
 		frm.doc.member_name=" ";
 		refresh_field("member_name");
 	}
 });
 
-frappe.ui.form.on("Partnership Arm Record", "amount", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "amount", function(frm,doc) {
 	frm.doc.equated_amount=(frm.doc.amount).toFixed(2);
 });
 
-frappe.ui.form.on("Partnership Arm Record", "date", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "date", function(frm,doc) {
 		frm.doc.ministry_year=frappe.defaults.get_user_default("fiscal_year");
 		refresh_field('ministry_year');
 });
 
-frappe.ui.form.on("Partnership Arm Record", "ftv", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "ftv", function(frm,doc) {
 	if(!frm.doc.ftv){
 		frm.doc.ftv_name=" ";
 		refresh_field("ftv_name");
@@ -70,7 +70,7 @@ cur_frm.fields_dict['ftv'].get_query = function(doc) {
   }
 }
 
-frappe.ui.form.on("Partnership Arm Record", "type_of_pledge", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "type_of_pledge", function(frm,doc) {
 	frm.doc.equated_amount='0.0';
 	refresh_field("equated_amount");
 		if (frm.doc.type_of_pledge=='Monthly'){
@@ -87,13 +87,13 @@ frappe.ui.form.on("Partnership Arm Record", "type_of_pledge", function(frm,doc) 
 		}
 	refresh_field("equated_amount");
 });
-frappe.ui.form.on("Partnership Arm Record", "donation", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "donation", function(frm,doc) {
 	 if (frm.doc.donation){
 			frm.doc.equated_amount='0.0';
 			refresh_field("equated_amount");
 		}
 });
-frappe.ui.form.on("Partnership Arm Record", "pledge", function(frm,doc) {
+frappe.ui.form.on("Partnership Record", "pledge", function(frm,doc) {
 	 if (frm.doc.donation){
 			frm.doc.equated_amount='0.0';
 			refresh_field("equated_amount");

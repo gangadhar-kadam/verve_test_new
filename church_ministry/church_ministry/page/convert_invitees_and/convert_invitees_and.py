@@ -26,11 +26,11 @@ def approveftv(ftv):
 def convert_ftv(source_name, target_doc=None):
 	target_doc = get_mapped_doc("Invitees and Contacts", source_name,
 		{"Invitees and Contacts": {
-			"doctype": "First Time Visitor",
+			"doctype": "First Timer",
 			"field_map": {
 				"invitee_contact_name": "ftv_name",
-				"title":"address_manual",
-				"designation":"designation"
+				"designation":"designation",
+				"address":"address_manual"
 			}
 		}}, target_doc)
 	return target_doc

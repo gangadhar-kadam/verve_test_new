@@ -12,7 +12,7 @@ from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
 @frappe.whitelist()
 def get_ftv_member():
 	roles=frappe.get_roles(frappe.user.name)
-	val=frappe.db.sql("select defkey,defvalue from `tabDefaultValue` where defkey in ('Cell Master','Senior Cell Master','PCF Master','Church Master','Church Group Master','Zone Master','Region Master') and parent='%s' limit 1"%(frappe.user.name),as_list=1)
+	val=frappe.db.sql("select defkey,defvalue from `tabDefaultValue` where defkey in ('Cell Master','Senior Cell Master','PCF Master','Church Master','Group Church Master','Zone Master','Region Master') and parent='%s' limit 1"%(frappe.user.name),as_list=1)
 	# frappe.errprint(val)
 	if val:
 		if val[0][0]=='Cell Master':
@@ -27,7 +27,7 @@ def get_ftv_member():
 		elif val[0][0]=='Church Master':
 			key='Church'
 			value=val[0][1]
-		elif val[0][0]=='Church Group Master':
+		elif val[0][0]=='Group Church Master':
 			key='church_group'
 			value=val[0][1]
 		elif val[0][0]=='Zone Master':
@@ -40,22 +40,28 @@ def get_ftv_member():
 			"key" : key,
 			"value" : value
 		}
+	else:
+		return{
+			"key" : 1,
+			"value" : 1
+		}	
+
 
 @frappe.whitelist()
 def ftv():
 	ftv_member = get_ftv_member()
 	if ftv_member:
 		return {
-			"ftv": [d[0] for d in frappe.db.sql("select name from `tabFirst Time Visitor` where %s='%s'"%(ftv_member['key'],ftv_member['value']))]
+			"ftv": [d[0] for d in frappe.db.sql("select name,ftv_name from `tabFirst Timer` t where (ftv_owner is null or ftv_owner='') and  not exists (select ftv_id_no from tabMember where ftv_id_no=t.name) and %s='%s'"%(ftv_member['key'],ftv_member['value']))]
 		}
 	else:
 		return {
-			"ftv": [d[0] for d in frappe.db.sql("select name from `tabFirst Time Visitor`")]
+			"ftv": [d[0] for d in frappe.db.sql("select name from `tabFirst Timer` t where (ftv_owner is null or ftv_owner='') and  not exists (select ftv_id_no from tabMember where ftv_id_no=t.name)")]
 		}
 
 @frappe.whitelist()
 def loadftv(doctype, txt, searchfield, start, page_len, filters):
-		return frappe.db.sql("""select name, ftv_name from `tabFirst Time Visitor` where  ftv_owner is null or ftv_owner=''
+		return frappe.db.sql("""select name,ftv_name from `tabFirst Timer` t where (ftv_owner is null or ftv_owner='') and  not exists (select ftv_id_no from tabMember where ftv_id_no=t.name)
 			and ({key} like %(txt)s
 				or ftv_name like %(txt)s)
 			{mcond}
@@ -78,12 +84,12 @@ def loadftv(doctype, txt, searchfield, start, page_len, filters):
 def ftvdetails(ftv):
 	ftv_member = get_ftv_member()
 	if ftv_member:
-		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Time Visitor` where name='"+ftv+"' and %s='%s'"%(ftv_member['key'],ftv_member['value'])
+		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Timer` where name='"+ftv+"' and %s='%s'"%(ftv_member['key'],ftv_member['value'])
 		return {
 			"ftv": [frappe.db.sql(query)]
 		}
 	else:
-		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Time Visitor` where name='"+ftv+"'"
+		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Timer` where name='"+ftv+"'"
 		return {
 			"ftv": [frappe.db.sql(query)]
 		}
@@ -92,12 +98,12 @@ def ftvdetails(ftv):
 def loadmembers(ftv):
 	ftv_member = get_ftv_member()
 	if ftv_member:
-		a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Time Visitor` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' and %s='%s' order by distance asc ,age desc "%(ftv_member['key'],ftv_member['value'])
+		a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Timer` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' and %s='%s' order by distance asc ,age desc "%(ftv_member['key'],ftv_member['value'])
 		return {
 			"members": [frappe.db.sql(a)]
 		}
 	else:
-		a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Time Visitor` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' order by distance asc ,age desc "
+		a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Timer` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' order by distance asc ,age desc "
 		return {
 			"members": [frappe.db.sql(a)]
 		}
@@ -106,34 +112,19 @@ def loadmembers(ftv):
 def assignmember(memberid,ftv):
 	#frappe.errprint(now)
 	#return "Done"
-	frappe.db.sql("""update `tabFirst Time Visitor` set ftv_owner='%s' where name='%s' """ % (memberid,ftv))
+	frappe.db.sql("""update `tabFirst Timer` set ftv_owner='%s' where name='%s' """ % (memberid,ftv))
 	recipients='gangadhar.k@indictranstech.com'
 	member=frappe.db.sql("select member_name,email_id,phone_1 from `tabMember` where name='%s'"%(memberid))
-	ftvdetails=frappe.db.sql("select ftv_name,email_id,task_description,due_date from `tabFirst Time Visitor` where name='%s'"%(ftv))
+	ftvdetails=frappe.db.sql("select ftv_name,email_id,task_description,due_date from `tabFirst Timer` where name='%s'"%(ftv))
 
 	msg_member="""Hello %s,<br>
-	The First Time visitor '%s' name: '%s' Email ID: '%s' is assigned to you for follow up <br>Regards,<br>Varve
+	The First Timer '%s' name: '%s' Email ID: '%s' is assigned to you for follow up <br>Regards,<br>Varve
 	"""%(member[0][0],ftv,ftvdetails[0][0],ftvdetails[0][1])
 	msg_ftv="""Hello %s,<br>
 	The Member '%s' name: '%s' Email ID: '%s' is assigned to you for follow up <br>Regards,<br>Varve
 	"""%(ftvdetails[0][0],memberid,member[0][0],member[0][1])
 	
-	# event = frappe.get_doc({
-	# 			"doctype": "Event",
-	# 			"owner": frappe.session.user,
-	# 			"subject": "FTV Assignment",
-	# 			"description": ftv +" is assigned to you for followup",
-	# 			"starts_on": add_days(now(), 3),
-	# 			"event_type": "Private",
-	# 			"ref_type": "First Time Visitor",
-	# 			"ref_name": ftv
-	# })
-	# event.insert(ignore_permissions=True)
-	# if frappe.db.exists("User", ftvdetails[0][1]):
-	# 	frappe.share.add("Event", event.name, ftvdetails[0][1], "read")
-	# if frappe.db.exists("User", member[0][1]):	
-	# 	frappe.share.add("Event", event.name, member[0][1], write=1)
-	desc="""Member '%s' is assigned to First time visitor '%s' for followup."""%(memberid,ftv)
+	desc="""Member '%s' is assigned to First Timer '%s' for followup."""%(memberid,ftv)
 	task=frappe.get_doc({
 				"doctype": "Task",
 				"subject": "Assign For followup",

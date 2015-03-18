@@ -28,7 +28,7 @@ def loadftv(church,visitor_type,foundation__exam):
 		school_status='Completed Class 1, 2 , 3 , 4 & 5'
 	if visitor_type=='FTV':
 		return {
-		"ftv": [frappe.db.sql("select name,ftv_name from `tabFirst Time Visitor` where church='%s' and school_status='%s' and approved=0"%(church,school_status))]
+		"ftv": [frappe.db.sql("select name,ftv_name from `tabFirst Timer` where church='%s' and school_status='%s' and approved=0"%(church,school_status))]
 		}
 	else:
 		return {
@@ -47,7 +47,7 @@ def validate_duplicate(doc,method):
 def update_attendance(doc,method):
 	for d in doc.get('attendance'):	
 		if doc.visitor_type=='FTV':
-			ftvdetails=frappe.db.sql("select ftv_name,email_id,phone_1 from `tabFirst Time Visitor` where name='%s'"%(d.ftv_id))
+			ftvdetails=frappe.db.sql("select ftv_name,email_id,phone_1 from `tabFirst Timer` where name='%s'"%(d.ftv_id))
 		else:
 			ftvdetails=frappe.db.sql("select member_name,email_id,phone_1 from `tabMember` where name='%s'"%(d.member_id))
 		msg_member="""Hello %s,<br><br>
@@ -73,7 +73,7 @@ def update_attendance(doc,method):
 			elif doc.fc_class=='Class 6':
 				exm='Completed All Classes and Passed Exam'
 			if doc.visitor_type=='FTV':
-				frappe.db.sql("""update `tabFirst Time Visitor` set school_status='%s' %s where name='%s' """ % (exm,baptism,d.ftv_id),debug=1)
+				frappe.db.sql("""update `tabFirst Timer` set school_status='%s' %s where name='%s' """ % (exm,baptism,d.ftv_id),debug=1)
 			else:
 				frappe.db.sql("""update `tabMember` set school_status='%s' %s where name='%s' """ % (exm, baptism, d.member_id))
 		if ftvdetails[0][2]:

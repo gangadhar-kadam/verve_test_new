@@ -38,10 +38,10 @@ cur_frm.fields_dict['church'].get_query = function(doc) {
 }
 cur_frm.fields_dict['church_group'].get_query = function(doc) {
   if (doc.zone){
-    return "select name from `tabChurch Group Master` where zone='"+doc.zone+"'"
+    return "select name from `tabGroup Church Master` where zone='"+doc.zone+"'"
   }
   else{
-    return "select name from `tabChurch Group Master`"
+    return "select name from `tabGroup Church Master`"
   }
 }
 
@@ -135,9 +135,9 @@ frappe.ui.form.on("Invitees and Contacts", "onload", function(frm,cdt, cdn) {
   }  
 });
 
-frappe.ui.form.on("Invitees and Contacts", "refresh", function(frm,doc,dt,dn) {
-    if(!frm.doc.__islocal) {
-      frm.add_custom_button(__("Create Member"), cur_frm.cscript.create_member,frappe.boot.doctype_icons["Customer"], "btn-default");     
+/*frappe.ui.form.on("Invitees and Contacts", "refresh", function(frm,doc,dt,dn) {
+    if(!frm.doc.__islocal ) {
+      frm.add_custom_button(__("Create FT"), cur_frm.cscript.create_member,frappe.boot.doctype_icons["Customer"], "btn-default");     
     }
     
 });
@@ -148,22 +148,11 @@ frappe.ui.form.on("Invitees and Contacts", "create_member", function(frm,doc) {
       method: "church_ministry.church_ministry.doctype.invitees_and_contacts.invitees_and_contacts.make_member",
       frm: cur_frm
     })
-});
-
-frappe.ui.form.on("Invitees and Contacts", "email_id", function(frm) {
-   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-   check=re.test(frm.doc.email_id)
-   if(check==false)
-   {
-        cur_frm.set_value("email_id", '')
-        msgprint("Please Enter valid Email Id..! ");
-        //throw "Please Enter valid Email Id.!"
-   }
-});
+});*/
 
 cur_frm.add_fetch("cell", "pcf", "pcf");
 cur_frm.add_fetch("cell", "church", "church");
-cur_frm.add_fetch("cell", "church_group", "church_group");
+//cur_frm.add_fetch("cell", "church_group", "church_group");
 cur_frm.add_fetch("cell", "region", "region");
 cur_frm.add_fetch("cell", "zone", "zone");
 cur_frm.add_fetch("cell", "senior_cell", "senior_cell");

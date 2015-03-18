@@ -1,7 +1,7 @@
 // for setting region from zone
 cur_frm.add_fetch("zone", "region", "region");
 
-frappe.ui.form.on("Church Group Master", "onload", function(frm) {
+frappe.ui.form.on("Group Church Master", "onload", function(frm) {
 	if (in_list(user_roles, "Regional Pastor")){
     	set_field_permlevel('region',1);
   	}
@@ -15,7 +15,7 @@ frappe.ui.form.on("Church Group Master", "onload", function(frm) {
   	}
 });
 
-frappe.ui.form.on("Church Group Master", "refresh", function(frm,dt,dn) {
+frappe.ui.form.on("Group Church Master", "refresh", function(frm,dt,dn) {
     get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1);
       refresh_field('region');
       refresh_field('zone');
