@@ -41,13 +41,7 @@ def get_data():
 					"type":"doctype",
 					"name": "Foundation School Class Attendance",
 					"description": _("Foundation School Class Attendance")
-				},											
-
-				{
-					"type":"doctype",
-					"name": "Foundation School Exam",
-					"description": _("Foundation School Exam Attendance/Results")
-				},
+				},										
 				{
 					"type":"doctype",
 					"name": "Event",

@@ -634,7 +634,7 @@
   {
    "fieldname": "is_new_convert", 
    "fieldtype": "Select", 
-   "label": "Is New Convert", 
+   "label": "New Convert?", 
    "options": "\nYes\nNo", 
    "permlevel": 0, 
    "precision": ""
@@ -1066,7 +1066,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-14 15:35:41.101238", 
+ "modified": "2015-03-18 17:46:35.702320", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Time Visitor", 
