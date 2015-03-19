@@ -34,3 +34,9 @@ def convert_ftv(source_name, target_doc=None):
 			}
 		}}, target_doc)
 	return target_doc
+
+
+@frappe.whitelist()
+def loadmemberdetails(invited_by):
+	res=frappe.db.sql("select cell,senior_cell,pcf,church,church_group,zone,region from tabMember where name='%s'"%(invited_by))
+	return res

@@ -54,6 +54,36 @@ cur_frm.fields_dict['zone'].get_query = function(doc) {
   }
 }
 
+frappe.ui.form.on("Invitees and Contacts", "invited_by", function(frm,cdt, cdn) {
+frappe.call({
+        method:"church_ministry.church_ministry.page.convert_invitees_and.convert_invitees_and.loadmemberdetails",
+        args:{
+           "invited_by":frm.doc.invited_by
+            },
+        callback: function(r) {
+          if (r.message){
+            frm.doc.cell=r.message[0][0];
+            frm.doc.senior_cell=r.message[0][1];
+            frm.doc.pcf=r.message[0][2];
+            frm.doc.church=r.message[0][3];
+            frm.doc.church_group=r.message[0][4];
+            frm.doc.zone=r.message[0][5];
+            frm.doc.region=r.message[0][6];
+            refresh_field('region');
+            refresh_field('zone');
+            refresh_field('church_group');
+            refresh_field('church');
+            refresh_field('pcf');
+            refresh_field('senior_cell');
+            refresh_field('cell'); 
+          }
+        }                
+      }); 
+
+});
+
+
+
 frappe.ui.form.on("Invitees and Contacts", "onload", function(frm,cdt, cdn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
@@ -152,7 +182,7 @@ frappe.ui.form.on("Invitees and Contacts", "create_member", function(frm,doc) {
 
 cur_frm.add_fetch("cell", "pcf", "pcf");
 cur_frm.add_fetch("cell", "church", "church");
-//cur_frm.add_fetch("cell", "church_group", "church_group");
+cur_frm.add_fetch("cell", "church_group", "church_group");
 cur_frm.add_fetch("cell", "region", "region");
 cur_frm.add_fetch("cell", "zone", "zone");
 cur_frm.add_fetch("cell", "senior_cell", "senior_cell");

@@ -8,12 +8,6 @@ def get_data():
 			"items": [
 				{
 					"type":"doctype",
-					"name": "Invitees and Contacts",
-					"description": _("Invitees & Contacts")
-				},
-
-				{
-					"type":"doctype",
 					"name": "First Timer",
 					"description": _("First Timer Database")
 				},			
@@ -21,7 +15,12 @@ def get_data():
 					"type":"doctype",
 					"name": "Member",
 					"description": _("Member Database")
-				},					
+				},	
+		        {
+					"type":"doctype",
+					"name": "Invitees and Contacts",
+					"description": _("Invitees & Contacts")
+				},								
 				# {
 				# 	"type":"doctype",
 				# 	"name": "Cell Meeting Invitation",
@@ -43,11 +42,11 @@ def get_data():
 					"description": _("Foundation School Class Attendance")
 				},											
 
-				# {
-				# 	"type":"doctype",
-				# 	"name": "Foundation School Exam",
-				# 	"description": _("Foundation School Exam Attendance/Results")
-				# },
+				{
+					"type":"doctype",
+					"name": "Foundation School Exam",
+					"description": _("Foundation School Exam Attendance/Results")
+				},
 				{
 					"type":"doctype",
 					"name": "Event",

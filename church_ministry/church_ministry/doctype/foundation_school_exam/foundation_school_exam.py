@@ -29,35 +29,21 @@ def get_grade(score):
 			}
 
 @frappe.whitelist()
-def loadftv(church,visitor_type,foundation__exam):
-    	school_status=''
-	if foundation__exam=='Class 1':
-		school_status='Nil'
-	elif foundation__exam=='Class 2':
-		school_status='Completed Class 1'
-	elif foundation__exam=='Class 3':
-		school_status='Completed Class 1&2'
-	elif foundation__exam=='Class 4':
-		school_status='Completed Class 1, 2 & 3'
-	elif foundation__exam=='Class 5':
-		school_status='Completed Class 1, 2 , 3 & 4'
-	elif foundation__exam=='Class 6':
-		school_status='Completed Class 1, 2 , 3 , 4 & 5'
-
-	if visitor_type=='FTV':
+def loadftv(church,visitor_type):
+ 	if visitor_type=='FTV':
 		return {
-		"ftv": [frappe.db.sql("select name,ftv_name from `tabFirst Timer` where church='%s' and school_status='%s' and approved=0"%(church,school_status),debug=1)]
+		"ftv": [frappe.db.sql("select name,ftv_name,cell from `tabFirst Timer` where church='%s' and school_status='Completed Class 1, 2 , 3 , 4 , 5 & 6' and approved=0"%(church),debug=1)]
 		}
 	else:
 		return {
-		"ftv": [frappe.db.sql("select name,member_name from `tabMember` where church='%s' and school_status='%s'"%(church,school_status),debug=1)]
+		"ftv": [frappe.db.sql("select name,member_name,cell from `tabMember` where church='%s' and school_status='Completed Class 1, 2 , 3 , 4 , 5 & 6'"%(church),debug=1)]
 		}
 
 def validate_duplicate(doc,method):
 	if doc.get("__islocal"):
 		res=frappe.db.sql("select name from `tabFoundation School Exam` where foundation__exam='%s' and church='%s' and date='%s' and docstatus!=2"%(doc.foundation__exam,doc.church,doc.date))
 		if res:
-			frappe.throw(_("Another Foundation School Exam '{0}' With Exam Name '{1}' , church Code '{2}' and date  '{3}'..!").format(res[0][0],doc.foundation__exam,doc.church,doc.date))
+			frappe.throw(_("Another Foundation School Exam '{0}' With Exam Name '{1}' , church Code '{2}' and date  '{3}' exist..!").format(res[0][0],doc.foundation__exam,doc.church,doc.date))
 	today=nowdate()
 	if getdate(doc.date) >= getdate(today):		
 		frappe.throw(_("Exam Date Should not be Future date"))

@@ -30,27 +30,28 @@
    "set_only_once": 0
   }, 
   {
-   "fieldname": "region", 
+   "fieldname": "cell", 
    "fieldtype": "Link", 
-   "label": "Region", 
-   "options": "Region Master", 
+   "in_list_view": 1, 
+   "label": "Cell", 
+   "options": "Cell Master", 
    "permlevel": 0, 
    "precision": "", 
    "reqd": 0
   }, 
   {
-   "fieldname": "zone", 
+   "fieldname": "senior_cell", 
    "fieldtype": "Link", 
-   "label": "Zone", 
-   "options": "Zone Master", 
+   "label": "Senior Cell", 
+   "options": "Senior Cell Master", 
    "permlevel": 0, 
    "precision": ""
   }, 
   {
-   "fieldname": "church_group", 
+   "fieldname": "pcf", 
    "fieldtype": "Link", 
-   "label": "Group Church", 
-   "options": "Group Church Master", 
+   "label": "PCF", 
+   "options": "PCF Master", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -88,27 +89,26 @@
    "reqd": 0
   }, 
   {
-   "fieldname": "pcf", 
+   "fieldname": "church_group", 
    "fieldtype": "Link", 
-   "label": "PCF", 
-   "options": "PCF Master", 
+   "label": "Group Church", 
+   "options": "Group Church Master", 
    "permlevel": 0, 
    "precision": ""
   }, 
   {
-   "fieldname": "senior_cell", 
+   "fieldname": "zone", 
    "fieldtype": "Link", 
-   "label": "Senior Cell", 
-   "options": "Senior Cell Master", 
+   "label": "Zone", 
+   "options": "Zone Master", 
    "permlevel": 0, 
    "precision": ""
   }, 
   {
-   "fieldname": "cell", 
+   "fieldname": "region", 
    "fieldtype": "Link", 
-   "in_list_view": 1, 
-   "label": "Cell", 
-   "options": "Cell Master", 
+   "label": "Region", 
+   "options": "Region Master", 
    "permlevel": 0, 
    "precision": "", 
    "reqd": 0
@@ -155,7 +155,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-18 18:51:45.808933", 
+ "modified": "2015-03-19 12:41:07.117792", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Event Attendance", 
