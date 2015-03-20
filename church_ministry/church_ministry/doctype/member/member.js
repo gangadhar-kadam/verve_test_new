@@ -152,6 +152,7 @@ cur_frm.fields_dict['cell'].get_query = function(doc) {
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
     filters :{
+      'doctype':'Cell Master',
       'cell': doc.cell,
       'senior_cell' : doc.senior_cell,
       'pcf' : doc.pcf,

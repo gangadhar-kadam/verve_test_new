@@ -17,8 +17,7 @@ class CellMeetingAttendance(Document):
 		if self.cell:
 			member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where cell='%s' and approved=0 union select name,member_name,email_id from `tabMember` where cell='%s' "%(self.cell,self.cell),debug=1)
 		elif self.church:
-			member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where church='%s' and approved=0 union select name,member_name,email_id from `tabMember` where church='%s'"%(self.church,self.church),debug=1)
-		frappe.errprint(member_ftv)
+			member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where church='%s' and approved=0 union select name,member_name,email_id from `tabMember` where church='%s'"%(self.church,self.church))	
 		for d in member_ftv:
 			child = self.append('invitation_member_details', {})
 			child.member = d[0]
@@ -33,10 +32,10 @@ class CellMeetingAttendance(Document):
 				ret={
 					"zone": value[0][0],
 					"church_group": value[0][1],
-					"church_master" : value[0][2],
+					"church" : value[0][2],
 					"pcf" : value[0][3],
 					"senior_cell" : value[0][4],
-					"cell_master" : value[0][5]
+					"cell" : value[0][5]
 				}
 			return ret
 		elif self.zone:
@@ -46,10 +45,10 @@ class CellMeetingAttendance(Document):
 				ret={
 					"region": value[0][0],
 					"church_group": value[0][1],
-					"church_master" : value[0][2],
+					"church" : value[0][2],
 					"pcf" : value[0][3],
 					"senior_cell" : value[0][4],
-					"cell_master" : value[0][5]
+					"cell" : value[0][5]
 				}
 			return ret
 		elif self.church_group:
@@ -59,13 +58,13 @@ class CellMeetingAttendance(Document):
 				ret={
 					"region": value[0][0],
 					"zone": value[0][1],
-					"church_master" : value[0][2],
+					"church" : value[0][2],
 					"pcf" : value[0][3],
 					"senior_cell" : value[0][4],
-					"cell_master" : value[0][5]
+					"cell" : value[0][5]
 				}
 			return ret
-		elif self.church_master:
+		elif self.church:
 			value = frappe.db.sql("select region,zone,church_group,pcf,senior_cell,name from `tabCell Master` where church='%s'"%(self.church),as_list=1)
 			ret={}
 			if value:
@@ -75,7 +74,7 @@ class CellMeetingAttendance(Document):
 					"church_group" : value[0][2],
 					"pcf" : value[0][3],
 					"senior_cell" : value[0][4],
-					"cell_master" : value[0][5]
+					"cell" : value[0][5]
 				}
 			return ret
 		elif self.pcf:
@@ -86,9 +85,9 @@ class CellMeetingAttendance(Document):
 					"region": value[0][0],
 					"zone": value[0][1],
 					"church_group" : value[0][2],
-					"church_master" : value[0][3],
+					"church" : value[0][3],
 					"senior_cell" : value[0][4],
-					"cell_master" : value[0][5]
+					"cell" : value[0][5]
 				}
 			return ret
 		elif self.senior_cell:
@@ -104,7 +103,7 @@ class CellMeetingAttendance(Document):
 					"cell" : value[0][5]
 				}
 			return ret
-		elif self.cell_master:
+		elif self.cell:
 			value = frappe.db.sql("select region,zone,church_group,church,pcf,senior_cell from `tabCell Master` where name='%s'"%(self.cell),as_list=1)
 			ret={}
 			if value:
@@ -112,7 +111,7 @@ class CellMeetingAttendance(Document):
 					"region": value[0][0],
 					"zone": value[0][1],
 					"church_group" : value[0][2],
-					"church_master" : value[0][3],
+					"church" : value[0][3],
 					"pcf" : value[0][4],
 					"senior_cell" : value[0][5]
 				}
