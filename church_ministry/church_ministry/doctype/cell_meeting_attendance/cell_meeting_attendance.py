@@ -15,9 +15,10 @@ class CellMeetingAttendance(Document):
 		self.set('invitation_member_details', [])
 		member_ftv=''
 		if self.cell:
-			member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where cell='%s' and approved=0 union select name,member_name,email_id from `tabMember` where cell='%s' "%(self.cell,self.cell))
+			member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where cell='%s' and approved=0 union select name,member_name,email_id from `tabMember` where cell='%s' "%(self.cell,self.cell),debug=1)
 		elif self.church:
-			member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where church='%s' and approved=0 union select name,member_name,email_id from `tabMember` where church='%s'"%(self.church,self.church))
+			member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where church='%s' and approved=0 union select name,member_name,email_id from `tabMember` where church='%s'"%(self.church,self.church),debug=1)
+		frappe.errprint(member_ftv)
 		for d in member_ftv:
 			child = self.append('invitation_member_details', {})
 			child.member = d[0]

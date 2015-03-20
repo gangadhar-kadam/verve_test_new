@@ -143,11 +143,23 @@ cur_frm.add_fetch("church_group", "zone", "zone");
 cur_frm.add_fetch("zone", "region", "region");
 
 cur_frm.fields_dict['cell'].get_query = function(doc) {
-  if (doc.senior_cell){
-    return "select name from `tabCell Master` where senior_cell='"+doc.senior_cell+"'"
-  }
-  else{
-    return "select name from `tabCell Master`"
+  // if (doc.senior_cell){
+  //   return "select name from `tabCell Master` where senior_cell='"+doc.senior_cell+"'"
+  // }
+  // else{
+  //   return "select name from `tabCell Master`"
+  // }
+  return {
+    query:'church_ministry.church_ministry.doctype.member.member.get_list',
+    filters :{
+      'cell': doc.cell,
+      'senior_cell' : doc.senior_cell,
+      'pcf' : doc.pcf,
+      'church' : doc.church,
+      'church_group' : doc.church_group,
+      'zone' : doc.zone,
+      'region' : doc.region
+    }
   }
 }
 

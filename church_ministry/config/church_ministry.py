@@ -154,6 +154,11 @@ def get_data():
 					"name": "FS Grade Master",
 					"description": _("FS Grade Master")
 				},				
+				{
+					"type":"doctype",
+					"name": "Partnership Arm",
+					"description": _("Partnership Arm Master")
+				},
 			]
 		},
 	]

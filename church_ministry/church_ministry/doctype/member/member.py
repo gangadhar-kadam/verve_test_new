@@ -71,6 +71,10 @@ class Member(Document):
 			frappe.db.sql("update `tabMember` set flag='SetPerm' where name='%s'"%(self.name))
 			frappe.db.commit()
 
+def get_list(doctype, txt, searchfield, start, page_len, filters):
+	frappe.errprint([filters])
+	conditions=get_conditions(filters)
+
 
 def validate_birth(doc,method):
 		#frappe.errprint("in date of birth ")
