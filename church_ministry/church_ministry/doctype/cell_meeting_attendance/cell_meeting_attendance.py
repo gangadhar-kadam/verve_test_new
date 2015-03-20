@@ -13,6 +13,7 @@ class CellMeetingAttendance(Document):
 
 	def load_participents(self):
 		self.set('invitation_member_details', [])
+		member_ftv=''
 		if self.cell:
 			member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where cell='%s' and approved=0 union select name,member_name,email_id from `tabMember` where cell='%s' "%(self.cell,self.cell))
 		elif self.church:
