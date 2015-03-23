@@ -8,6 +8,10 @@ from frappe import throw, _, msgprint
 
 class SeniorCellMaster(Document):
 	# pass
+	def autoname(self):
+		from frappe.model.naming import make_autoname
+		self.name = make_autoname(self.zone + '/' + self.church + '/' + 'SRCELL' + '.####')
+
 	def set_higher_values(self):
 		if self.region:
 			value = frappe.db.sql("select zone,church_group,church,name from `tabPCF Master` where region='%s'"%(self.region),as_list=1)

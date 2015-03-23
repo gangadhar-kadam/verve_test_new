@@ -143,17 +143,10 @@ cur_frm.add_fetch("church_group", "zone", "zone");
 cur_frm.add_fetch("zone", "region", "region");
 
 cur_frm.fields_dict['cell'].get_query = function(doc) {
-  // if (doc.senior_cell){
-  //   return "select name from `tabCell Master` where senior_cell='"+doc.senior_cell+"'"
-  // }
-  // else{
-  //   return "select name from `tabCell Master`"
-  // }
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
     filters :{
       'doctype':'Cell Master',
-      'cell': doc.cell,
       'senior_cell' : doc.senior_cell,
       'pcf' : doc.pcf,
       'church' : doc.church,
@@ -165,46 +158,61 @@ cur_frm.fields_dict['cell'].get_query = function(doc) {
 }
 
 cur_frm.fields_dict['senior_cell'].get_query = function(doc) {
-  if (doc.pcf){
-    return "select name from `tabSenior Cell Master` where pcf='"+doc.pcf+"'"
-  }
-  else{
-    return "select name from `tabSenior Cell Master`"
+  return {
+    query:'church_ministry.church_ministry.doctype.member.member.get_list',
+    filters :{
+      'doctype':'Senior Cell Master',
+      'pcf' : doc.pcf,
+      'church' : doc.church,
+      'church_group' : doc.church_group,
+      'zone' : doc.zone,
+      'region' : doc.region
+    }
   }
 }
 
 cur_frm.fields_dict['pcf'].get_query = function(doc) {
-  if (doc.church){
-    return "select name from `tabPCF Master` where church='"+doc.church+"'"
-  }
-  else{
-    return "select name from `tabPCF Master`"
+  return {
+    query:'church_ministry.church_ministry.doctype.member.member.get_list',
+    filters :{
+      'doctype':'PCF Master',
+      'church' : doc.church,
+      'church_group' : doc.church_group,
+      'zone' : doc.zone,
+      'region' : doc.region
+    }
   }
 }
 
 cur_frm.fields_dict['church'].get_query = function(doc) {
-  if (doc.church_group){
-    return "select name from `tabChurch Master` where church_group='"+doc.church_group+"'"
-  }
-  else{
-    return "select name from `tabChurch Master`"
+  return {
+    query:'church_ministry.church_ministry.doctype.member.member.get_list',
+    filters :{
+      'doctype':'Church Master',
+      'church_group' : doc.church_group,
+      'zone' : doc.zone,
+      'region' : doc.region
+    }
   }
 }
 cur_frm.fields_dict['church_group'].get_query = function(doc) {
-  if (doc.zone){
-    return "select name from `tabGroup Church Master` where zone='"+doc.zone+"'"
-  }
-  else{
-    return "select name from `tabGroup Church Master`"
+  return {
+    query:'church_ministry.church_ministry.doctype.member.member.get_list',
+    filters :{
+      'doctype':'Group Church Master',
+      'zone' : doc.zone,
+      'region' : doc.region
+    }
   }
 }
 
 cur_frm.fields_dict['zone'].get_query = function(doc) {
-  if (doc.region){
-    return "select name from `tabZone Master` where region='"+doc.region+"'"
-  }
-  else{
-    return "select name from `tabZone Master`"
+  return {
+    query:'church_ministry.church_ministry.doctype.member.member.get_list',
+    filters :{
+      'doctype':'Zone Master',
+      'region' : doc.region
+    }
   }
 }
 

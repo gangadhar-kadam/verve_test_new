@@ -118,7 +118,6 @@ class FirstTimer(Document):
 	# 			}
 	# 		return ret
 
-
 @frappe.whitelist()
 def make_member(source_name, target_doc=None):
 	return _make_member(source_name, target_doc)

@@ -6,16 +6,17 @@ def get_data():
 			"label": _("Documents"),
 			"icon": "icon-star",
 			"items": [
-				{
-					"type":"doctype",
-					"name": "First Timer",
-					"description": _("First Timer Database")
-				},			
+				
 				{
 					"type":"doctype",
 					"name": "Member",
 					"description": _("Member Database")
 				},	
+				{
+					"type":"doctype",
+					"name": "First Timer",
+					"description": _("First Timer Database")
+				},
 		        {
 					"type":"doctype",
 					"name": "Invitees and Contacts",
@@ -28,24 +29,24 @@ def get_data():
 				# },
 				{
 					"type":"doctype",
-					"name": "Cell Meeting Attendance",
-					"description": _("Cell Meeting Attendance Database")
-				},
-				{
-					"type":"doctype",
-					"name": "Partnership Record",
-					"description": _("Partnership Record")
+					"name": "Attendance Record",
+					"description": _("Meeting Attendance Record Database")
 				},	
 				{
 					"type":"doctype",
-					"name": "Foundation School Class Attendance",
-					"description": _("Foundation School Class Attendance")
+					"name": "Foundation School Attendance",
+					"description": _("Foundation School Attendance")
 				},											
 
 				{
 					"type":"doctype",
 					"name": "Foundation School Exam",
 					"description": _("Foundation School Exam Attendance/Results")
+				},
+				{
+					"type":"doctype",
+					"name": "Partnership Record",
+					"description": _("Partnership Record")
 				},
 				{
 					"type":"doctype",

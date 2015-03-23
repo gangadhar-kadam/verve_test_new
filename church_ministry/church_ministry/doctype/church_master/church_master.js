@@ -5,10 +5,10 @@ cur_frm.add_fetch("zone", "region", "region");
 
 cur_frm.fields_dict['church_group'].get_query = function(doc) {
   if (doc.zone){
-    return "select name from `tabGroup Church Master` where zone='"+doc.zone+"'"
+    return "select name,church_group_code,church_group from `tabGroup Church Master` where zone='"+doc.zone+"'"
   }
   else{
-    return "select name from `tabGroup Church Master`"
+    return "select name,church_group_code,church_group from `tabGroup Church Master`"
   }
 }
 
@@ -25,8 +25,7 @@ frappe.ui.form.on("Church Master", "email_id", function(frm,dt,dn) {
    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
    check=re.test(frm.doc.email_id)
    if(check==false)
-   {
-        cur_frm.set_value("email_id", '')
+   {    cur_frm.set_value("email_id", '')
         msgprint("Please Enter valid Email Id..! ");
         throw "Please Enter Correct Email ID.!"
    }

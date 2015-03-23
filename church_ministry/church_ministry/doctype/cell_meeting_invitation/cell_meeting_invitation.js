@@ -43,7 +43,7 @@ frappe.ui.form.on("Cell Meeting Invitation", "onload", function(frm) {
   }
   
   if (in_list(user_roles, "Cell Leader")){
-    set_field_permlevel('meeting_category',1);
+    // set_field_permlevel('meeting_category',1);
     set_field_permlevel('senior_cell',2);
     set_field_permlevel('church_master',2);
     set_field_permlevel('church_group',2);

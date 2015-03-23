@@ -33,7 +33,7 @@
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
-   "read_only": 1, 
+   "read_only": 0, 
    "report_hide": 0, 
    "reqd": 0, 
    "search_index": 0, 
@@ -75,7 +75,7 @@
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
-   "read_only": 1, 
+   "read_only": 0, 
    "report_hide": 0, 
    "reqd": 0, 
    "search_index": 0, 
@@ -127,7 +127,7 @@
    "options": "Zone Master", 
    "permlevel": 0, 
    "precision": "", 
-   "read_only": 0, 
+   "read_only": 1, 
    "reqd": 1
   }, 
   {
@@ -142,7 +142,7 @@
   }, 
   {
    "allow_on_submit": 0, 
-   "depends_on": "eval:doc.meeting_category=='Cell Meeting'", 
+   "depends_on": "", 
    "fieldname": "meeting_subject", 
    "fieldtype": "Data", 
    "hidden": 0, 
@@ -154,7 +154,7 @@
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
-   "read_only": 1, 
+   "read_only": 0, 
    "report_hide": 0, 
    "reqd": 0, 
    "search_index": 0, 
@@ -162,7 +162,7 @@
   }, 
   {
    "allow_on_submit": 0, 
-   "depends_on": "eval:doc.meeting_category=='Church Meeting'", 
+   "depends_on": "", 
    "fieldname": "meeting_sub", 
    "fieldtype": "Select", 
    "hidden": 0, 
@@ -175,7 +175,7 @@
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
-   "read_only": 1, 
+   "read_only": 0, 
    "report_hide": 0, 
    "reqd": 0, 
    "search_index": 0, 
@@ -256,6 +256,16 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "region", 
+   "fieldtype": "Link", 
+   "label": "Region", 
+   "options": "Region Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 0, 
+   "reqd": 0
   }, 
   {
    "allow_on_submit": 0, 
@@ -372,7 +382,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-20 16:57:26.241827", 
+ "modified": "2015-03-23 12:42:26.700697", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Cell Meeting Attendance", 

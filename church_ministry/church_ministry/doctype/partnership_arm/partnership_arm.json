@@ -36,7 +36,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-02-21 12:12:48.021262", 
+ "modified": "2015-03-23 13:34:43.810146", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Arm", 
@@ -67,8 +67,13 @@
    "permlevel": 0, 
    "read": 1, 
    "report": 1, 
-   "role": "Cell Leader", 
+   "role": "Partnership Rep", 
    "write": 1
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Church Pastor"
   }
  ], 
  "read_only": 0, 

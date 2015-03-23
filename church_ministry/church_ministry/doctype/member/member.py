@@ -74,7 +74,6 @@ class Member(Document):
 def get_list(doctype, txt, searchfield, start, page_len, filters):
 	frappe.errprint([filters])
 	conditions=get_conditions(filters)
-	frappe.errprint(conditions)
 	if conditions:
 		value=frappe.db.sql("select name from `tab%s` where %s"%(filters.get('doctype'),conditions))
 		return value
@@ -86,20 +85,20 @@ def get_list(doctype, txt, searchfield, start, page_len, filters):
 def get_conditions(filters):
 	cond=[]
 	if filters.get('cell'):
-		cond.append('cell=%s'%(frappe.get('cell')))
+		cond.append('cell="%s"'%(filters.get('cell')))
 	elif filters.get('senior_cell'):
-		cond.append('senior_cell=%s'%(frappe.get('senior_cell')))
+		cond.append('senior_cell="%s"'%(filters.get('senior_cell')))
 	elif filters.get('pcf'):
-		cond.append('pcf=%s'%(frappe.get('pcf')))
+		cond.append('pcf="%s"'%(filters.get('pcf')))
 	elif filters.get('church'):
-		cond.append('church=%s'%(frappe.get('church')))
+		cond.append('church="%s"'%(filters.get('church')))
 	elif filters.get('church_group'):
-		cond.append('church_group=%s'%(frappe.get('church_group')))
+		cond.append('church_group="%s"'%(filters.get('church_group')))
 	elif filters.get('zone'):
-		cond.append('zone=%s'%(frappe.get('zone')))
+		cond.append('zone="%s"'%(filters.get('zone')))
 	elif filters.get('region'):
-		cond.append('region=%s'%(filters.get('region')))
-	return ' '.join(cond)  
+		cond.append('region="%s"'%(filters.get('region')))
+	return ' or '.join(cond)  
 
 
 def validate_birth(doc,method):

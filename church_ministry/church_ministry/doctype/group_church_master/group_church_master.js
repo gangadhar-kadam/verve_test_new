@@ -20,3 +20,12 @@ frappe.ui.form.on("Group Church Master", "refresh", function(frm,dt,dn) {
       refresh_field('region');
       refresh_field('zone');
 });
+
+cur_frm.fields_dict['group_church_hq'].get_query = function(doc) {
+  if (doc.region){
+      return "select name,church_code,church_name from `tabChurch Master` where region='"+doc.region+"'"
+    }
+    else{
+      return "select name,church_code,church_name from `tabChurch Master`"
+    }
+}

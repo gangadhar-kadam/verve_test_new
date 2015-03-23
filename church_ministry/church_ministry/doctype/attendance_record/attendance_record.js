@@ -30,7 +30,7 @@ cur_frm.add_fetch("church_group", "zone", "zone");
 
 cur_frm.add_fetch("zone", "region", "region");
 
-frappe.ui.form.on("Cell Meeting Attendance", "refresh", function(frm,dt,dn) {
+frappe.ui.form.on("Attendance Record", "refresh", function(frm,dt,dn) {
     get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
       refresh_field('region');
       refresh_field('zone');
@@ -42,7 +42,7 @@ frappe.ui.form.on("Cell Meeting Attendance", "refresh", function(frm,dt,dn) {
      });
 });
 
-frappe.ui.form.on("Cell Meeting Attendance", "meeting_category", function(frm,doc) {
+frappe.ui.form.on("Attendance Record", "meeting_category", function(frm,doc) {
   if (frm.doc.meeting_category=="Cell Meeting"){
     unhide_field('meeting_subject')
     hide_field('meeting_sub')
@@ -53,7 +53,7 @@ frappe.ui.form.on("Cell Meeting Attendance", "meeting_category", function(frm,do
   }
 });
 
-frappe.ui.form.on("Cell Meeting Attendance", "onload", function(frm) {
+frappe.ui.form.on("Attendance Record", "onload", function(frm) {
   unhide_field('meeting_subject')
   hide_field('meeting_sub')
 
