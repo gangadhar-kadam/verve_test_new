@@ -62,7 +62,7 @@
   }, 
   {
    "allow_on_submit": 0, 
-   "depends_on": "eval:doc.meeting_category== 'Church Meeting'", 
+   "depends_on": "", 
    "fieldname": "church", 
    "fieldtype": "Link", 
    "hidden": 0, 
@@ -80,6 +80,16 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "depends_on": "eval:doc.meeting_category=='Church Meeting'", 
+   "fieldname": "cell_master", 
+   "fieldtype": "Link", 
+   "label": "Cell", 
+   "options": "Cell Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 0
   }, 
   {
    "fieldname": "senior_cell", 
@@ -104,7 +114,7 @@
   {
    "fieldname": "church_group", 
    "fieldtype": "Link", 
-   "label": "Group Church", 
+   "label": "Church Group", 
    "options": "Group Church Master", 
    "permlevel": 0, 
    "precision": "", 
@@ -118,6 +128,16 @@
    "permlevel": 0, 
    "precision": "", 
    "read_only": 0, 
+   "reqd": 1
+  }, 
+  {
+   "fieldname": "region", 
+   "fieldtype": "Link", 
+   "label": "Region", 
+   "options": "Region Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "read_only": 1, 
    "reqd": 1
   }, 
   {
@@ -156,6 +176,26 @@
    "precision": "", 
    "print_hide": 0, 
    "read_only": 1, 
+   "report_hide": 0, 
+   "reqd": 0, 
+   "search_index": 0, 
+   "set_only_once": 0
+  }, 
+  {
+   "allow_on_submit": 0, 
+   "fieldname": "load_participents", 
+   "fieldtype": "Button", 
+   "hidden": 0, 
+   "ignore_user_permissions": 0, 
+   "in_filter": 0, 
+   "in_list_view": 0, 
+   "label": "Load Participents", 
+   "no_copy": 0, 
+   "options": "load_participents", 
+   "permlevel": 0, 
+   "precision": "", 
+   "print_hide": 0, 
+   "read_only": 0, 
    "report_hide": 0, 
    "reqd": 0, 
    "search_index": 0, 
@@ -233,36 +273,6 @@
    "read_only": 0, 
    "report_hide": 0, 
    "reqd": 1, 
-   "search_index": 0, 
-   "set_only_once": 0
-  }, 
-  {
-   "fieldname": "region", 
-   "fieldtype": "Link", 
-   "label": "Region", 
-   "options": "Region Master", 
-   "permlevel": 0, 
-   "precision": "", 
-   "read_only": 1, 
-   "reqd": 1
-  }, 
-  {
-   "allow_on_submit": 0, 
-   "fieldname": "load_participents", 
-   "fieldtype": "Button", 
-   "hidden": 0, 
-   "ignore_user_permissions": 0, 
-   "in_filter": 0, 
-   "in_list_view": 0, 
-   "label": "Load Participents", 
-   "no_copy": 0, 
-   "options": "load_participents", 
-   "permlevel": 0, 
-   "precision": "", 
-   "print_hide": 0, 
-   "read_only": 0, 
-   "report_hide": 0, 
-   "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
   }, 
@@ -362,7 +372,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-20 15:19:25.537783", 
+ "modified": "2015-03-20 16:57:26.241827", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Cell Meeting Attendance", 
@@ -387,6 +397,111 @@
    "share": 0, 
    "submit": 1, 
    "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Regional Pastor", 
+   "submit": 1, 
+   "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Zonal Pastor", 
+   "submit": 1, 
+   "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Group Church Pastor", 
+   "submit": 1, 
+   "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Church Pastor", 
+   "submit": 1, 
+   "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "PCF Leader", 
+   "submit": 1, 
+   "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Senior Cell Leader", 
+   "submit": 1, 
+   "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Cell Leader", 
+   "submit": 1, 
+   "write": 1
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Regional Pastor"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Zonal Pastor"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Group Church Pastor"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Church Pastor"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "PCF Leader"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Senior Cell Leader"
+  }, 
+  {
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "Cell Leader"
   }
  ], 
  "read_only": 0, 

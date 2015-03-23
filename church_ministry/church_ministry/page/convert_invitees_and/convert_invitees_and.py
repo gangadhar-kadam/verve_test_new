@@ -16,8 +16,11 @@ def loadftv():
 
 @frappe.whitelist()
 def approveftv(ftv):
+	frappe.errprint(ftv)
 	ftvs=eval(ftv)
+	frappe.errprint(ftvs)
 	for i in range(len(ftvs)):
+		frappe.errprint(ftvs[i])
 		ftvc=convert_ftv(ftvs[i])
 		ftvc.save()
 		frappe.db.sql("update `tabInvitees and Contacts` set convert_invitee_contact_to_ft=1 ,date_of_convert=CURDATE()where name='%s'"%(ftvs[i]))

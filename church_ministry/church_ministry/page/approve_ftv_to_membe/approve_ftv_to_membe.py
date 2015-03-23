@@ -38,11 +38,11 @@ def loadftv():
 			key='region'
 			value=val[0][1]
 		return {
-		"ftv": [frappe.db.sql("select name,ftv_name,sex,date_of_birth from `tabFirst Timer` where (approved=0 or  approved is null) and name in (select member from (select count(member) as count,member from `tabInvitation Member Details` where  member like 'FTV%' and present=1 group by member) a where a.count>=3) and '"+key+"'='"+value+"'")]
+		"ftv": [frappe.db.sql("select name,ftv_name,sex,date_of_birth from `tabFirst Timer` where (approved=0 or  approved is null) and name in (select member from (select count(member) as count,member from `tabInvitation Member Details` where  member like 'FT%' and present=1 group by member) a where a.count>=3) and '"+key+"'='"+value+"'",debug=1)]
 		}
 	else:
 		return {
-			"ftv": [frappe.db.sql("select name,ftv_name,sex,date_of_birth from `tabFirst Timer` where (approved=0 or  approved is null) and name in (select member from (select count(member) as count,member from `tabInvitation Member Details` where  member like 'FTV%' and present=1 group by member) a where a.count>=3)")]
+			"ftv": [frappe.db.sql("select name,ftv_name,sex,date_of_birth from `tabFirst Timer` where (approved=0 or  approved is null) and name in (select member from (select count(member) as count,member from `tabInvitation Member Details` where  member like 'FT%' and present=1 group by member) a where a.count>=3)",debug=1)]
 		}
 
 @frappe.whitelist()
