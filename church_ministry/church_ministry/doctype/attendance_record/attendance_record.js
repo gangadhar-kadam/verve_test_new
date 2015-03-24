@@ -40,23 +40,63 @@ frappe.ui.form.on("Attendance Record", "refresh", function(frm,dt,dn) {
       refresh_field('senior_cell');
       refresh_field('cell');
      });
+
+    if (frm.doc.meeting_category=="Cell Meeting"){
+      unhide_field('meeting_subject')
+      hide_field('meeting_sub')
+    }
+    else if(frm.doc.meeting_category=="Church Meeting"){
+      hide_field('meeting_subject')
+      unhide_field('meeting_sub')
+    }
+});
+
+cur_frm.fields_dict['cell'].get_query = function(doc) {
+  if (doc.church){
+    return "select name,cell_code,cell_name from `tabCell Master` where church='"+doc.church+"'"
+  }
+  else{
+    return "select name,cell_code,cell_name from `tabCell Master`"
+  }
+}
+
+frappe.ui.form.on("Attendance Record", "validate", function(frm,doc) {
+   if (frm.doc.meeting_category=="Cell Meeting"){
+    if (!frm.doc.meeting_subject){
+      msgprint("Please Enter Meeting Category before save document.! ");
+      throw "Enter Meeting Category.!"
+    }
+   }
+   else if (frm.doc.meeting_category=="Church Meeting"){
+    if (!frm.doc.meeting_sub){
+      msgprint("Please Enter Meeting Category before save document.! ");
+      throw "Enter Meeting Category.!"
+    }
+   }
 });
 
 frappe.ui.form.on("Attendance Record", "meeting_category", function(frm,doc) {
   if (frm.doc.meeting_category=="Cell Meeting"){
     unhide_field('meeting_subject')
     hide_field('meeting_sub')
+    unhide_field('cell')
+    hide_field('church')
   }
   else if(frm.doc.meeting_category=="Church Meeting"){
     hide_field('meeting_subject')
     unhide_field('meeting_sub')
+    unhide_field('church')
   }
 });
 
 frappe.ui.form.on("Attendance Record", "onload", function(frm) {
-  unhide_field('meeting_subject')
-  hide_field('meeting_sub')
-
+  if (frm.doc.__islocal){
+    unhide_field('meeting_subject')
+    hide_field('meeting_sub')
+    unhide_field('cell')
+    hide_field('church')
+  }
+  
 	if (in_list(user_roles, "Cell Leader")){
     set_field_permlevel('senior_cell',2);
     set_field_permlevel('church',2);

@@ -30,7 +30,8 @@ def get_data():
 				{
 					"type":"doctype",
 					"name": "Attendance Record",
-					"description": _("Meeting Attendance Record Database")
+					"label": _("Attendance Records"),
+					"description": _("Meeting Attendance Records Database")
 				},	
 				{
 					"type":"doctype",

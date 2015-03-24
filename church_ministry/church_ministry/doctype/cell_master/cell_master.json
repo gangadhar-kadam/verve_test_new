@@ -166,7 +166,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-16 13:10:26.913630", 
+ "modified": "2015-03-24 11:42:23.558600", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Cell Master", 
@@ -356,6 +356,7 @@
  ], 
  "read_only": 0, 
  "read_only_onload": 0, 
+ "search_fields": "cell_code,cell_name", 
  "sort_field": "modified", 
  "sort_order": "DESC"
 }
