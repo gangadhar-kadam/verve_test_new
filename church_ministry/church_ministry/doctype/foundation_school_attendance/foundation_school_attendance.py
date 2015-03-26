@@ -27,18 +27,18 @@ def loadftv(church,visitor_type,foundation__exam):
 		school_status='Completed Class 1, 2 , 3 , 4 & 5'
 	if visitor_type=='FTV':
 		return {
-		"ftv": [frappe.db.sql("select name,ftv_name from `tabFirst Timer` where church='%s' and school_status='%s' and approved=0"%(church,school_status),debug=1)]
+		"ftv": [frappe.db.sql("select name,ftv_name,cell from `tabFirst Timer` where church='%s' and school_status='%s' and approved=0"%(church,school_status))]
 		}
 	else:
 		return {
-		"ftv": [frappe.db.sql("select name,member_name from `tabMember` where church='%s' and school_status='%s'"%(church,school_status),debug=1)]
+		"ftv": [frappe.db.sql("select name,member_name,cell from `tabMember` where church='%s' and school_status='%s'"%(church,school_status))]
 		}
 
 def validate_duplicate(doc,method):
 	if doc.get("__islocal"):
 		res=frappe.db.sql("select name from `tabFoundation School Attendance` where  church='%s' and date='%s' and docstatus!=2"%(doc.church,doc.date))
 		if res:
-			frappe.throw(_("Another Foundation School Attendance '{0}' Cell Code '{2}' and date '{3}' exist..!").format(res[0][0],doc.church,doc.date))
+			frappe.throw(_("Another Foundation School Attendance '{0}' Church Code '{1}' and date '{2}' exist..!").format(res[0][0],doc.church,doc.date))
 	today=nowdate()
 	if getdate(doc.date) >= getdate(today):		
 		frappe.throw(_("Calss Date Should not be Future date"))
@@ -52,7 +52,8 @@ def update_attendance(doc,method):
 		msg_member="""Hello %s,<br><br>
 		You have '%s' for Foundation Class '%s' <br><br>Regards,<br>Verve
 		"""%(ftvdetails[0][0],d.attendance,doc.fc_class)
-		frappe.sendmail(recipients=ftvdetails[0][1], sender='gangadhar.k@indictranstech.com', content=msg_member, subject='Verve Class Attendance')
+		if ftvdetails and ftvdetails[0][1]:
+			frappe.sendmail(recipients=ftvdetails[0][1], sender='gangadhar.k@indictranstech.com', content=msg_member, subject='Verve Class Attendance')
 		from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
 		receiver_list=[]
 		baptism=''
@@ -72,10 +73,10 @@ def update_attendance(doc,method):
 			elif doc.fc_class=='Class 6':
 				exm='Completed Class 1, 2 , 3 , 4 , 5 & 6'
 			if doc.visitor_type=='FTV':
-				frappe.db.sql("""update `tabFirst Timer` set school_status='%s' %s where name='%s' """ % (exm,baptism,d.ftv_id),debug=1)
+				frappe.db.sql("""update `tabFirst Timer` set school_status='%s' %s where name='%s' """ % (exm,baptism,d.ftv_id))
 			else:
-				frappe.db.sql("""update `tabMember` set school_status='%s' %s where name='%s' """ % (exm, baptism, d.member_id),debug=1)
-		if ftvdetails[0][2]:
+				frappe.db.sql("""update `tabMember` set school_status='%s' %s where name='%s' """ % (exm, baptism, d.member_id))
+		if ftvdetails and ftvdetails[0][2]:
 			receiver_list.append(ftvdetails[0][2])			
 			send_sms(receiver_list, cstr(msg_member))
 	return "Done"

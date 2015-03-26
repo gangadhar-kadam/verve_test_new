@@ -40,7 +40,7 @@
   {
    "allow_on_submit": 0, 
    "fieldname": "address", 
-   "fieldtype": "Small Text", 
+   "fieldtype": "Data", 
    "hidden": 0, 
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
@@ -59,6 +59,7 @@
   {
    "fieldname": "lat", 
    "fieldtype": "Data", 
+   "hidden": 1, 
    "label": "Latitude", 
    "permlevel": 0, 
    "precision": "", 
@@ -67,6 +68,7 @@
   {
    "fieldname": "lon", 
    "fieldtype": "Data", 
+   "hidden": 1, 
    "label": "Longitude", 
    "permlevel": 0, 
    "precision": "", 
@@ -155,7 +157,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-23 18:31:08.931023", 
+ "modified": "2015-03-26 17:14:38.561913", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Church Master", 

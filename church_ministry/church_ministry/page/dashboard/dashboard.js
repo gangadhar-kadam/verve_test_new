@@ -125,8 +125,8 @@ frappe.assign = Class.extend({
         // table for My details
         $("<h4>Portal</h4><table class='table table-bordered' style='padding: 5px; width:100%;'>\
         	<tr width='100%'><td colspan='1'><a href='desk#Form/User/Administrator'><font color='blue'><u>My Profile</u></a></td></tr><tr width='100%'>\
-          <td colspan='2'><a href='desk#List/Cell%20Meeting%20Invitation'><font color='blue'><u>My Cell Meeting's</u></a></td></tr>\
-        	<tr width='100%'><td colspan='2'><a href='desk#List/Cell%20Meeting%20Invitation'><font color='blue'><u>My Church Meeting's</u></a></td></tr>\
+          <td colspan='2'><a href='desk#List/Attendance%20Record'><font color='blue'><u>My Cell Meeting's</u></a></td></tr>\
+        	<tr width='100%'><td colspan='2'><a href='desk#List/Attendance%20Record'><font color='blue'><u>My Church Meeting's</u></a></td></tr>\
         	</table>").appendTo($(me.wrapper).find('.c1'));
         $(me.wrapper).find('.c1').animate({  width: "100%", opacity: 1.5, fontSize: "1em",  borderWidth: "10px"  }, 1000 );
         $(me.wrapper).find('.c2').animate({  width: "100%", opacity: 1.5, fontSize: "1em",  borderWidth: "10px"  }, 1000 );
@@ -190,10 +190,4 @@ frappe.assign = Class.extend({
       }
       });
    }
-
 });
-  
-
-
-
-

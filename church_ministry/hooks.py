@@ -93,7 +93,7 @@ doc_events = {
 		"validate": "church_ministry.church_ministry.doctype.foundation_school_exam_master.foundation_school_exam_master.validate_duplicate"		
 	},
 	"FS Grade Master": {
-		"validate": "church_ministry.church_ministry.doctype.grade_master.grade_master.validate_duplicate"		
+		"validate": "church_ministry.church_ministry.doctype.fs_grade_master.fs_grade_master.validate_duplicate"		
 	},
 	"Member": {
 		"validate": "church_ministry.church_ministry.doctype.member.member.validate_birth"		
@@ -105,9 +105,9 @@ doc_events = {
 		"validate": "church_ministry.church_ministry.doctype.foundation_school_exam.foundation_school_exam.validate_duplicate",
 		"on_submit": "church_ministry.church_ministry.doctype.foundation_school_exam.foundation_school_exam.update_attendance",		
 	},
-	"Cell Meeting Invitation": {
-		"validate": "church_ministry.church_ministry.doctype.cell_meeting_invitation.cell_meeting_invitation.validate_duplicate"		
-	},
+	# "Cell Meeting Invitation": {
+	# 	"validate": "church_ministry.church_ministry.doctype.cell_meeting_invitation.cell_meeting_invitation.validate_duplicate"		
+	# },
 	"Foundation School Attendance": {
 		"validate": "church_ministry.church_ministry.doctype.foundation_school_attendance.foundation_school_attendance.validate_duplicate",
 		"on_submit": "church_ministry.church_ministry.doctype.foundation_school_attendance.foundation_school_attendance.update_attendance",		

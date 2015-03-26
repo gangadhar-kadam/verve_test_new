@@ -18,7 +18,7 @@ frappe.ui.form.on("Foundation School Attendance", "church", function(frm,cdt,cdn
 	    //console.log("in church trigger");
 		var d = locals[cdt][cdn];
 		frappe.call({
-				method:"church_ministry.church_ministry.doctype.foundation_school_class_attendance.foundation_school_class_attendance.loadftv",
+				method:"church_ministry.church_ministry.doctype.foundation_school_attendance.foundation_school_attendance.loadftv",
 				args:{
 	        	"church":frm.doc.church,
 	        	"visitor_type":frm.doc.visitor_type,
@@ -35,6 +35,7 @@ frappe.ui.form.on("Foundation School Attendance", "church", function(frm,cdt,cdn
 			           	    	child.member_id=r.message.ftv[0][i][0];
 			           	    }
 			           	    child.ftv_name=r.message.ftv[0][i][1];
+			           	    child.cell=r.message.ftv[0][i][2];
 			           }
 			           cur_frm.refresh_fields();
 			        }

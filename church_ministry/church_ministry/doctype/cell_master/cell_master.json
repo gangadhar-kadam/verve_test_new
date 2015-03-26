@@ -55,6 +55,7 @@
   {
    "fieldname": "lat", 
    "fieldtype": "Data", 
+   "hidden": 1, 
    "label": "Latitude", 
    "permlevel": 0, 
    "precision": "", 
@@ -63,6 +64,7 @@
   {
    "fieldname": "lon", 
    "fieldtype": "Data", 
+   "hidden": 1, 
    "label": "Longitude", 
    "permlevel": 0, 
    "precision": "", 
@@ -166,7 +168,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-24 11:42:23.558600", 
+ "modified": "2015-03-26 17:20:20.153354", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Cell Master", 

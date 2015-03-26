@@ -33,7 +33,6 @@ frappe.ui.form.on("Partnership Record", "validate", function(frm,doc) {
 	}
 });
 
-
 frappe.ui.form.on("Partnership Record", "onload", function(frm,doc) {
 		frm.doc.ministry_year=frappe.defaults.get_user_default("fiscal_year");
 		refresh_field('ministry_year');	
