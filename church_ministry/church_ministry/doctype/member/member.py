@@ -57,7 +57,6 @@ class Member(Document):
 		# 	frappe.db.commit()
 
 def get_list(doctype, txt, searchfield, start, page_len, filters):
-	frappe.errprint([filters])
 	conditions=get_conditions(filters)
 	if conditions:
 		value=frappe.db.sql("select name from `tab%s` where %s"%(filters.get('doctype'),conditions))

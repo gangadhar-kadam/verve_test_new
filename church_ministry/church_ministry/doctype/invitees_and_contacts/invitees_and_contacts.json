@@ -76,9 +76,9 @@
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
    "in_list_view": 0, 
-   "label": "Sex", 
+   "label": "Gender", 
    "no_copy": 0, 
-   "options": "\nMale\nFemale\nOther", 
+   "options": "\nMale\nFemale", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -181,9 +181,17 @@
    "print_hide": 0, 
    "read_only": 0, 
    "report_hide": 0, 
-   "reqd": 1, 
+   "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "age_group", 
+   "fieldtype": "Select", 
+   "label": "Age Group", 
+   "options": "\nChild (0 to 12)\nTeen (13 to 19)\nYoungster (20 to 25)\nYoung Adult (26 to 35)\nMid Age (35 to 45)\nArrived ( 45 to 55)\nSeniors (56 to 65)\nAdvanced (65 and Above)", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -400,7 +408,7 @@
    "print_hide": 0, 
    "read_only": 0, 
    "report_hide": 0, 
-   "reqd": 1, 
+   "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
   }, 
@@ -420,7 +428,7 @@
    "print_hide": 0, 
    "read_only": 0, 
    "report_hide": 0, 
-   "reqd": 1, 
+   "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
   }, 
@@ -557,7 +565,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-19 18:40:23.685167", 
+ "modified": "2015-03-27 12:57:49.211064", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Invitees and Contacts", 

@@ -13,10 +13,10 @@ class AttendanceRecord(Document):
 	def autoname(self):
 		from frappe.model.naming import make_autoname
 		if self.meeting_category=='Cell Meeting':
-			self.name = make_autoname(self.cell + '/' + 'ATT' + '/' + '.#####')
+			self.name = make_autoname(self.cell + '/' + 'CELL' + 'ATT' + '.####')
 		else:
 			sub=self.meeting_sub[:3].upper()
-			self.name = make_autoname(self.cell + '/' + sub + '/' + 'ATT' + '/' + '.#####')
+			self.name = make_autoname(self.cell + '/' + sub + 'ATT' + '.####')
 	
 	def load_participents(self):
 		self.set('invitation_member_details', [])

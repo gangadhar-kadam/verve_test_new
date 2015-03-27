@@ -127,6 +127,17 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "user_id", 
+   "fieldtype": "Link", 
+   "hidden": 1, 
+   "ignore_user_permissions": 1, 
+   "label": "User ID", 
+   "options": "User", 
+   "permlevel": 0, 
+   "precision": "", 
+   "reqd": 0
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "sex", 
    "fieldtype": "Select", 
@@ -168,8 +179,9 @@
   }, 
   {
    "fieldname": "age_group", 
-   "fieldtype": "Data", 
+   "fieldtype": "Select", 
    "label": "Age Group", 
+   "options": "\nChild (0 to 12)\nTeen (13 to 19)\nYoungster (20 to 25)\nYoung Adult (26 to 35)\nMid Age (35 to 45)\nArrived ( 45 to 55)\nSeniors (56 to 65)\nAdvanced (65 and Above)", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -286,7 +298,7 @@
    "print_hide": 0, 
    "read_only": 0, 
    "report_hide": 0, 
-   "reqd": 0, 
+   "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
   }, 
@@ -1085,6 +1097,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "first_contact_by", 
+   "fieldtype": "Link", 
+   "label": "First Contact By", 
+   "options": "Member", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "ft_inclination", 
    "fieldtype": "Select", 
@@ -1309,7 +1329,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-26 18:18:17.170301", 
+ "modified": "2015-03-27 19:00:35.656638", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Timer", 

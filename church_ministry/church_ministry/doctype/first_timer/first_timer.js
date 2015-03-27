@@ -1,6 +1,10 @@
 // Copyright (c) 2013, Web Notes Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
+// cur_frm.fields_dict['user_id'].get_query = function(doc) {
+//   return "select name from `tabUser` where name not in (select distinct parent from `tabDefaultValue` where parenttype not in ('__default','null'))"
+// }
+
 cur_frm.fields_dict['cell'].get_query = function(doc) {
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
@@ -179,18 +183,19 @@ frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
     set_field_permlevel('region',1);
   }
  
-  // home address map
+   //  home address map div
   $( "#map-canvas" ).remove();
   $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 225px;"></div>');
-  
-/*  // office address map
+
+  if(!frm.doc.__islocal && (frm.doc.address)){
+      cur_frm.cscript.address(frm.doc,frm.dt,frm.dn);
+    }
+   //  office address map div
   $( "#map-canvas1" ).remove();
   $(cur_frm.get_field("office_address").wrapper).append('<div id="map-canvas1" style="width: 425px; height: 225px;"></div>');
- */  
-  // display map if form is saved and have lat and lon
-    if(!frm.doc.__islocal && (frm.doc.lat &&  frm.doc.lon)){
-      cur_frm.cscript.create_pin_on_map(frm.doc,frm.doc.lat,frm.doc.lon);
-    }  
+  if(!frm.doc.__islocal && (frm.doc.office_address)){
+      cur_frm.cscript.office_address(frm.doc,frm.dt,frm.dn);
+    }
 });
 
 frappe.ui.form.on("First Timer", "refresh", function(frm,doc,dt,dn) {
@@ -361,7 +366,14 @@ cur_frm.cscript.address = function(doc, dt, dn){
           var map = new google.maps.Map(document.getElementById('map-canvas'), {
               zoom: 10,
               center: latLng,
-              mapTypeId: google.maps.MapTypeId.ROADMAP
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+                scrollwheel             :   true,
+                mapTypeControl          :   true,
+                panControl              :   true,
+                mapTypeControlOptions   :   { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
+                streetViewControl       :   true,
+                zoomControl             :   true,
+                zoomControlOptions      :   { style: google.maps.ZoomControlStyle.SMALL }
             });
 
           var marker = new google.maps.Marker({
@@ -375,6 +387,127 @@ cur_frm.cscript.address = function(doc, dt, dn){
 
           google.maps.event.addListener(marker, 'dragend', function() {
               geocodePosition(marker.getPosition());
+          });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+}
+
+
+
+
+
+//  office address maps code
+
+
+cur_frm.cscript.create_pin_on_map1=function(doc,lat1,lon1){
+        var latLng1 = new google.maps.LatLng(lat1, lon1);
+        var map1 = new google.maps.Map(document.getElementById('map-canvas1'), {
+            zoom: 10,
+            center: latLng1,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+        var marker1 = new google.maps.Marker({
+            position: latLng1,
+            title: 'Point',
+            map: map1,
+            draggable: true
+          });
+
+        updateMarkerPosition1(latLng1);
+        geocodePosition1(latLng1);
+
+        google.maps.event.addListener(marker1, 'dragstart', function() {
+            updateMarkerAddress1('Dragging...');
+        });
+
+        google.maps.event.addListener(marker1, 'drag', function() {
+            updateMarkerStatus1('Dragging...');
+            updateMarkerPosition1(marker1.getPosition());
+        });
+
+        google.maps.event.addListener(marker1, 'dragend', function() {
+            updateMarkerStatus1('Drag ended');
+            geocodePosition1(marker1.getPosition());
+          });
+}
+
+
+var geocoder1 = new google.maps.Geocoder();
+function geocodePosition1(pos1) {
+      geocoder1.geocode({
+        latLng: pos1
+      }, function(responses) {
+        if (responses && responses.length > 0) {
+          updateMarkerAddress1(responses[0].formatted_address);
+        } else {
+          if(doc.__islocal) {
+            alert('Cannot determine address at this location.');
+          }
+        }
+      });
+      geocoder1.geocode( { 'address': doc.office_address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        doc.lat1=results[0].geometry.location.lat();
+        doc.lon1=results[0].geometry.location.lng();
+        refresh_field('lat1')
+        refresh_field('lon1')
+      } 
+    });
+}
+
+function updateMarkerAddress1(str1) {
+  doc=cur_frm.doc
+  doc.office_address= str1;
+  refresh_field('office_address');
+}
+
+function updateMarkerStatus1(str1) {
+var s=1;
+}
+
+function updateMarkerPosition1(latLng1) {
+  doc=cur_frm.doc
+  doc.lat1=latLng1.lat()
+  doc.lon1=latLng1.lng()
+  refresh_field('lat1')
+  refresh_field('lon1')
+}
+
+
+var getMarkerUniqueId1= function(lat1, lng1) { 
+    return lat1 + '_' + lng1;
+}
+
+var getLatLng1 = function(lat1, lng1) {
+    return new google.maps.LatLng(lat1, lng1);
+};
+
+cur_frm.cscript.office_address = function(doc, dt, dn){
+      geocoder.geocode( { 'address': doc.office_address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+          doc.office_address=results[0].formatted_address;
+          refresh_field('office_address');
+          var latLng1 = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+
+          var map1 = new google.maps.Map(document.getElementById('map-canvas1'), {
+              zoom: 10,
+              center: latLng1,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+          var marker1 = new google.maps.Marker({
+              position: latLng1,
+              title: 'Point',
+              map: map1,
+              draggable: true
+            });
+          updateMarkerPosition1(latLng1);
+          geocodePosition1(latLng1);
+
+          google.maps.event.addListener(marker1, 'dragend', function() {
+              geocodePosition1(marker1.getPosition());
           });
       } else {
         alert("Geocode was not successful for the following reason: " + status);

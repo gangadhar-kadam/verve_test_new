@@ -57,6 +57,16 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "user_id", 
+   "fieldtype": "Link", 
+   "ignore_user_permissions": 1, 
+   "label": "User ID", 
+   "options": "User", 
+   "permlevel": 0, 
+   "precision": "", 
+   "reqd": 1
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "ftv_id_no", 
    "fieldtype": "Data", 
@@ -134,14 +144,6 @@
    "set_only_once": 0
   }, 
   {
-   "fieldname": "user_id", 
-   "fieldtype": "Link", 
-   "label": "User ID", 
-   "options": "User", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
    "allow_on_submit": 0, 
    "default": "Corporate", 
    "fieldname": "member_type", 
@@ -198,6 +200,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "age_group", 
+   "fieldtype": "Select", 
+   "label": "Age Group", 
+   "options": "\nChild (0 to 12)\nTeen (13 to 19)\nYoungster (20 to 25)\nYoung Adult (26 to 35)\nMid Age (35 to 45)\nArrived ( 45 to 55)\nSeniors (56 to 65)\nAdvanced (65 and Above)", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "cell", 
    "fieldtype": "Link", 
@@ -219,15 +229,15 @@
   }, 
   {
    "allow_on_submit": 0, 
-   "fieldname": "zone", 
+   "fieldname": "senior_cell", 
    "fieldtype": "Link", 
    "hidden": 0, 
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
    "in_list_view": 0, 
-   "label": "Zone", 
+   "label": "Senior Cell", 
    "no_copy": 0, 
-   "options": "Zone Master", 
+   "options": "Senior Cell Master", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -278,16 +288,25 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "church_group", 
+   "fieldtype": "Link", 
+   "label": "Group Church", 
+   "options": "Group Church Master", 
+   "permlevel": 0, 
+   "precision": "", 
+   "reqd": 1
+  }, 
+  {
    "allow_on_submit": 0, 
-   "fieldname": "senior_cell", 
+   "fieldname": "zone", 
    "fieldtype": "Link", 
    "hidden": 0, 
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
    "in_list_view": 0, 
-   "label": "Senior Cell", 
+   "label": "Zone", 
    "no_copy": 0, 
-   "options": "Senior Cell Master", 
+   "options": "Zone Master", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -296,15 +315,6 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
-  }, 
-  {
-   "fieldname": "church_group", 
-   "fieldtype": "Link", 
-   "label": "Group Church", 
-   "options": "Group Church Master", 
-   "permlevel": 0, 
-   "precision": "", 
-   "reqd": 1
   }, 
   {
    "fieldname": "region", 
@@ -335,13 +345,6 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
-  }, 
-  {
-   "fieldname": "age_group", 
-   "fieldtype": "Data", 
-   "label": "Age Group", 
-   "permlevel": 0, 
-   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -650,7 +653,8 @@
    "hidden": 1, 
    "label": "Lat", 
    "permlevel": 0, 
-   "precision": ""
+   "precision": "", 
+   "read_only": 1
   }, 
   {
    "fieldname": "lon1", 
@@ -658,7 +662,8 @@
    "hidden": 1, 
    "label": "Lon", 
    "permlevel": 0, 
-   "precision": ""
+   "precision": "", 
+   "read_only": 1
   }, 
   {
    "allow_on_submit": 0, 
@@ -991,7 +996,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-26 18:16:36.294205", 
+ "modified": "2015-03-27 17:10:35.995539", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
@@ -1160,6 +1165,12 @@
    "read": 1, 
    "report": 1, 
    "role": "Member"
+  }, 
+  {
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Partnership Rep"
   }
  ], 
  "read_only": 0, 
