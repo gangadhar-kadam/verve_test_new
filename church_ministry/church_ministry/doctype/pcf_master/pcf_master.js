@@ -17,6 +17,12 @@ frappe.ui.form.on("PCF Master", "refresh", function(frm,dt,dn) {
       refresh_field('church_group');
       refresh_field('church');
     });
+    if(in_list(user_roles, "PCF Leader")){
+      set_field_permlevel('contact_phone_no',0);
+      set_field_permlevel('contact_email_id',0);
+      set_field_permlevel('pcf_code',1);
+      set_field_permlevel('pcf_name',1);
+    }
 });
 
 frappe.ui.form.on("PCF Master", "onload", function(frm) {

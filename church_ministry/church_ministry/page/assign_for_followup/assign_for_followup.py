@@ -84,12 +84,12 @@ def loadftv(doctype, txt, searchfield, start, page_len, filters):
 def ftvdetails(ftv):
 	ftv_member = get_ftv_member()
 	if ftv_member:
-		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Timer` where name='"+ftv+"' and %s='%s'"%(ftv_member['key'],ftv_member['value'])
+		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address,age_group from `tabFirst Timer` where name='"+ftv+"' and %s='%s'"%(ftv_member['key'],ftv_member['value'])
 		return {
 			"ftv": [frappe.db.sql(query)]
 		}
 	else:
-		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address from `tabFirst Timer` where name='"+ftv+"'"
+		query="select ftv_name,sex,YEAR(CURDATE()) - YEAR(date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(date_of_birth, '%m%d')) as age,address,age_group from `tabFirst Timer` where name='"+ftv+"'"
 		return {
 			"ftv": [frappe.db.sql(query)]
 		}
@@ -97,15 +97,21 @@ def ftvdetails(ftv):
 @frappe.whitelist()
 def loadmembers(ftv):
 	ftv_member = get_ftv_member()
+	ft_dtl=frappe.db.sql("select sex,age_group,lat,lon from `tabFirst Timer` where name='%s'"%ftv)
+	frappe.errprint(ft_dtl)
 	if ftv_member:
 		a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Timer` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' and %s='%s' order by distance asc ,age desc "%(ftv_member['key'],ftv_member['value'])
+		b="""select name,member_name,sex,age_group,distance from ( SELECT b.name,b.member_name,b.sex,ROUND(6371 * 2 * ASIN(SQRT(POWER(SIN((coalesce(nullif('%s','lat'),0) - ABS(b.lat)) * pi()/180 / 2),2) + COS(coalesce(nullif('%s','lat'),0) * pi()/180 ) * COS(ABS(b.lat) * pi()/180) * POWER(SIN((coalesce(nullif('%s','lon'),0) - coalesce(nullif('%s','lon'),0)) * pi()/180 / 2), 2) )),6) as distance,case when '%s'=b.sex then 1 else 0 end as gender_rank,b.age_group FROM `tabMember` b WHERE b.is_eligibale_for_follow_up=1 and b.age_group='%s' )foo order by distance asc,gender_rank asc """  %(ft_dtl[0][2],ft_dtl[0][2],ft_dtl[0][3],ft_dtl[0][3],ft_dtl[0][0],ft_dtl[0][1])
+		frappe.errprint(b)
 		return {
-			"members": [frappe.db.sql(a)]
+			"members": [frappe.db.sql(b)]
 		}
 	else:
 		a="select b.name,b.member_name,b.sex,YEAR(CURDATE()) - YEAR(b.date_of_birth)- (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(b.date_of_birth, '%m%d')) as age,round(6371 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(b.lat)) * pi()/180 / 2),2) + COS(a.lat * pi()/180 ) * COS(abs(b.lat) * pi()/180) * POWER(SIN((a.lon - a.lon) * pi()/180 / 2), 2) )),6) as distance from  `tabFirst Timer` a,`tabMember` b where b.is_eligibale_for_follow_up=1 and a.name='"+ftv+"' order by distance asc ,age desc "
+		b="""select name,member_name,sex,age_group,distance from ( SELECT b.name,b.member_name,b.sex,ROUND(6371 * 2 * ASIN(SQRT(POWER(SIN((coalesce(nullif('%s','lat'),0) - ABS(b.lat)) * pi()/180 / 2),2) + COS(coalesce(nullif('%s','lat'),0) * pi()/180 ) * COS(ABS(b.lat) * pi()/180) * POWER(SIN((coalesce(nullif('%s','lon'),0) - coalesce(nullif('%s','lon'),0)) * pi()/180 / 2), 2) )),6) as distance,case when '%s'=b.sex then 1 else 0 end as gender_rank,b.age_group FROM `tabMember` b WHERE b.is_eligibale_for_follow_up=1 and b.age_group='%s' )foo order by distance asc,gender_rank asc """   %(ft_dtl[0][2],ft_dtl[0][2],ft_dtl[0][3],ft_dtl[0][3],ft_dtl[0][0],ft_dtl[0][1])
+		frappe.errprint(b)
 		return {
-			"members": [frappe.db.sql(a)]
+			"members": [frappe.db.sql(b)]
 		}
 
 @frappe.whitelist()

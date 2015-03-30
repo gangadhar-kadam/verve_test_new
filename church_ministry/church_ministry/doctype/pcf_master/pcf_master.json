@@ -158,7 +158,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-23 18:42:18.584577", 
+ "modified": "2015-03-30 19:14:12.980374", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "PCF Master", 
@@ -291,12 +291,12 @@
    "permlevel": 0, 
    "print": 1, 
    "read": 1, 
-   "report": 0, 
+   "report": 1, 
    "role": "PCF Leader", 
    "set_user_permissions": 0, 
    "submit": 0, 
    "user_permission_doctypes": "[\"PCF Master\"]", 
-   "write": 0
+   "write": 1
   }, 
   {
    "apply_user_permissions": 1, 
@@ -321,6 +321,12 @@
    "permlevel": 1, 
    "read": 1, 
    "role": "Church Pastor"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "role": "PCF Leader"
   }
  ], 
  "read_only": 0, 

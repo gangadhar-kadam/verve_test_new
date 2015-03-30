@@ -66,7 +66,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-23 18:29:56.271829", 
+ "modified": "2015-03-30 19:31:00.544734", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Region Master", 
@@ -112,7 +112,14 @@
    "read": 1, 
    "report": 1, 
    "role": "Regional Pastor", 
-   "write": 0
+   "write": 1
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Regional Pastor"
   }
  ], 
  "read_only": 0, 

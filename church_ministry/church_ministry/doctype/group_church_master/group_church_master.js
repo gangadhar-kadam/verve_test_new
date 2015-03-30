@@ -19,6 +19,14 @@ frappe.ui.form.on("Group Church Master", "refresh", function(frm,dt,dn) {
     get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1);
       refresh_field('region');
       refresh_field('zone');
+
+    if(in_list(user_roles, "Group Church Pastor")){
+      set_field_permlevel('contact_phone_no',0);
+      set_field_permlevel('contact_email_id',0);
+      set_field_permlevel('church_group_code',1);
+      set_field_permlevel('church_group',1);
+      set_field_permlevel('group_church_hq',0);
+    }
 });
 
 cur_frm.fields_dict['group_church_hq'].get_query = function(doc) {

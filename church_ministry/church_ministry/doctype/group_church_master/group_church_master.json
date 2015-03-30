@@ -171,7 +171,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-23 18:30:45.534403", 
+ "modified": "2015-03-30 19:26:13.557075", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Group Church Master", 
@@ -255,24 +255,12 @@
    "write": 1
   }, 
   {
-   "amend": 0, 
    "apply_user_permissions": 1, 
-   "cancel": 0, 
-   "create": 0, 
-   "delete": 0, 
-   "email": 1, 
-   "export": 0, 
-   "import": 0, 
    "permlevel": 0, 
-   "print": 1, 
    "read": 1, 
    "report": 1, 
    "role": "Group Church Pastor", 
-   "set_user_permissions": 0, 
-   "share": 0, 
-   "submit": 0, 
-   "user_permission_doctypes": "[\"Church Group Master\"]", 
-   "write": 0
+   "write": 1
   }, 
   {
    "amend": 0, 
@@ -311,6 +299,13 @@
    "share": 0, 
    "submit": 0, 
    "write": 0
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "permlevel": 1, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Group Church Pastor"
   }
  ], 
  "read_only": 0, 

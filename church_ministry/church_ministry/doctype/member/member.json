@@ -64,7 +64,7 @@
    "options": "User", 
    "permlevel": 0, 
    "precision": "", 
-   "reqd": 1
+   "reqd": 0
   }, 
   {
    "allow_on_submit": 0, 
@@ -458,7 +458,7 @@
    "print_hide": 0, 
    "read_only": 0, 
    "report_hide": 0, 
-   "reqd": 0, 
+   "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
   }, 
@@ -996,7 +996,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-27 17:10:35.995539", 
+ "modified": "2015-03-30 18:54:01.204764", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
@@ -1115,49 +1115,56 @@
    "permlevel": 1, 
    "read": 1, 
    "report": 1, 
-   "role": "Regional Pastor"
+   "role": "Regional Pastor", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
    "permlevel": 1, 
    "read": 1, 
    "report": 1, 
-   "role": "Zonal Pastor"
+   "role": "Zonal Pastor", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
    "permlevel": 1, 
    "read": 1, 
    "report": 1, 
-   "role": "Group Church Pastor"
+   "role": "Group Church Pastor", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
    "permlevel": 1, 
    "read": 1, 
    "report": 1, 
-   "role": "Church Pastor"
+   "role": "Church Pastor", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
    "permlevel": 1, 
    "read": 1, 
    "report": 1, 
-   "role": "PCF Leader"
+   "role": "PCF Leader", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
    "permlevel": 1, 
    "read": 1, 
    "report": 1, 
-   "role": "Senior Cell Leader"
+   "role": "Senior Cell Leader", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
    "permlevel": 1, 
    "read": 1, 
    "report": 1, 
-   "role": "Cell Leader"
+   "role": "Cell Leader", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 

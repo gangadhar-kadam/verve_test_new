@@ -10,51 +10,53 @@ from frappe.utils import getdate, validate_email_add, cint
 class Member(Document):
 	
 	def on_update(self):
-		pass
-		# usr_id=frappe.db.sql("select name from `tabUser` where name='%s'"%(self.email_id),as_list=1)
-		# if self.flag=='not':
-		# 	if  self.member_designation=='PCF Leader':
-		# 		c_user = self.pcf
-		# 		r_user = 'PCF Leader'
-		# 		perm = 'PCF Master'
-		# 	elif self.member_designation=='Sr.Cell Leader':
-		# 		c_user = self.senior_cell
-		# 		r_user = 'Senior Cell Leader'
-		# 		perm = 'Senior Cell Master'
-		# 	elif self.member_designation=='Cell Leader':
-		# 		c_user = self.cell
-		# 		r_user = 'Cell Leader'
-		# 		perm = 'Cell Master'
-		# 	elif self.member_designation=='Member':
-		# 		c_user = self.name
-		# 		r_user = 'Member'
-		# 		perm = 'Member'
-		# 	elif self.member_designation=='Bible Study Class Teacher':
-		# 		c_user = self.church
-		# 		r_user = 'Bible Study Class Teacher'
-		# 		perm = 'Church Master'
+		# pass
+		usr_id=frappe.db.sql("select name from `tabUser` where name='%s'"%(self.email_id),as_list=1)
+		if self.flag=='not' and self.email_id:
+			frappe.errprint("user creation")
+			# if  self.member_designation=='PCF Leader':
+			# 	c_user = self.pcf
+			# 	r_user = 'PCF Leader'
+			# 	perm = 'PCF Master'
+			# elif self.member_designation=='Sr.Cell Leader':
+			# 	c_user = self.senior_cell
+			# 	r_user = 'Senior Cell Leader'
+			# 	perm = 'Senior Cell Master'
+			# elif self.member_designation=='Cell Leader':
+			# 	c_user = self.cell
+			# 	r_user = 'Cell Leader'
+			# 	perm = 'Cell Master'
+			# elif self.member_designation=='Member':
+			# 	c_user = self.name
+			# 	r_user = 'Member'
+			# 	perm = 'Member'
+			# elif self.member_designation=='Bible Study Class Teacher':
+			# 	c_user = self.church
+			# 	r_user = 'Bible Study Class Teacher'
+			# 	perm = 'Church Master'
 
-		# 	if not usr_id:
-		# 		u = frappe.new_doc("User")
-		# 		u.email=self.email_id
-		# 		u.first_name = self.member_name
-		# 		u.new_password = 'password'
-		# 		u.insert()
-		# 	r=frappe.new_doc("UserRole")
-		# 	r.parent=self.email_id
-		# 	r.parentfield='user_roles'
-		# 	r.parenttype='User'
-		# 	r.role=r_user
-		# 	r.insert()
-		# 	v = frappe.new_doc("DefaultValue")
-		# 	v.parentfield = 'system_defaults'
-		# 	v.parenttype = 'User Permission'
-		# 	v.parent = self.email_id
-		# 	v.defkey = perm
-		# 	v.defvalue = c_user 
-		# 	v.insert()
-		# 	frappe.db.sql("update `tabMember` set flag='SetPerm' where name='%s'"%(self.name))
-		# 	frappe.db.commit()
+			if not usr_id:
+				u = frappe.new_doc("User")
+				u.email=self.email_id
+				u.first_name = self.member_name
+				u.new_password = 'password'
+				u.insert()
+			r=frappe.new_doc("UserRole")
+			r.parent=self.email_id
+			r.parentfield='user_roles'
+			r.parenttype='User'
+			r.role='Member'
+			r.insert()
+			v = frappe.new_doc("DefaultValue")
+			v.parentfield = 'system_defaults'
+			v.parenttype = 'User Permission'
+			v.parent = self.email_id
+			v.defkey = 'Member'
+			v.defvalue = self.name 
+			v.insert()
+			frappe.db.sql("update `tabMember` set flag='SetPerm' where name='%s'"%(self.name))
+			frappe.db.commit()
+			self.user_id = self.email_id
 
 def get_list(doctype, txt, searchfield, start, page_len, filters):
 	conditions=get_conditions(filters)

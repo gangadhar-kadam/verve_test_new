@@ -1,6 +1,12 @@
 
 
 frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
+  if (frm.doc.email_id){
+    frm.doc.user_id=frm.doc.email_id
+  }
+});
+
+frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
   }
@@ -41,14 +47,14 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
 
   //  home address map div
   $( "#map-canvas" ).remove();
-  $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 225px;"></div>');
+  $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 425px;"></div>');
 
   if(!frm.doc.__islocal && (frm.doc.address)){
       cur_frm.cscript.address(frm.doc,frm.dt,frm.dn);
     }
    //  office address map div
   $( "#map-canvas1" ).remove();
-  $(cur_frm.get_field("office_address").wrapper).append('<div id="map-canvas1" style="width: 425px; height: 225px;"></div>');
+  $(cur_frm.get_field("office_address").wrapper).append('<div id="map-canvas1" style="width: 425px; height: 425px;"></div>');
   if(!frm.doc.__islocal && (frm.doc.office_address)){
       cur_frm.cscript.office_address(frm.doc,frm.dt,frm.dn);
     }
@@ -61,6 +67,7 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
     set_field_permlevel('pcf',2);
     set_field_permlevel('zone',2);
     set_field_permlevel('region',2);
+    set_field_permlevel('user_id',1);
   }
   else if(in_list(user_roles, "Senior Cell Leader")){
     set_field_permlevel('cell',0);
@@ -227,7 +234,7 @@ cur_frm.fields_dict['zone'].get_query = function(doc) {
 cur_frm.cscript.create_pin_on_map=function(doc,lat,lon){
         var latLng = new google.maps.LatLng(lat, lon);
         var map = new google.maps.Map(document.getElementById('map-canvas'), {
-            zoom: 10,
+            zoom: 16,
             center: latLng,
             mapTypeId: google.maps.MapTypeId.ROADMAP
           });
@@ -315,7 +322,7 @@ cur_frm.cscript.address = function(doc, dt, dn){
           var latLng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
 
           var map = new google.maps.Map(document.getElementById('map-canvas'), {
-              zoom: 10,
+              zoom: 16,
               center: latLng,
               mapTypeId: google.maps.MapTypeId.ROADMAP
             });
@@ -344,7 +351,7 @@ cur_frm.cscript.address = function(doc, dt, dn){
 cur_frm.cscript.create_pin_on_map1=function(doc,lat1,lon1){
         var latLng1 = new google.maps.LatLng(lat1, lon1);
         var map1 = new google.maps.Map(document.getElementById('map-canvas1'), {
-            zoom: 10,
+            zoom: 14,
             center: latLng1,
             mapTypeId: google.maps.MapTypeId.ROADMAP
           });
@@ -432,7 +439,7 @@ cur_frm.cscript.office_address = function(doc, dt, dn){
           var latLng1 = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
 
           var map1 = new google.maps.Map(document.getElementById('map-canvas1'), {
-              zoom: 10,
+              zoom: 14,
               center: latLng1,
               mapTypeId: google.maps.MapTypeId.ROADMAP
             });

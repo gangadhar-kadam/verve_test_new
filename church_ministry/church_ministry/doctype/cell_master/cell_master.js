@@ -39,7 +39,7 @@ frappe.ui.form.on("Cell Master", "onload", function(frm) {
     set_field_permlevel('region',2);
   }
   $( "#map-canvas" ).remove();
-  $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 225px;"></div>');
+  $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 425px;"></div>');
     if(!frm.doc.__islocal && (frm.doc.lat &&  frm.doc.lon)){
       cur_frm.cscript.create_pin_on_map(frm.doc,frm.doc.lat,frm.doc.lon);
     }  
@@ -54,6 +54,13 @@ frappe.ui.form.on("Cell Master", "refresh", function(frm,dt,dn) {
       refresh_field('pcf');
       refresh_field('senior_cell');
     });
+    if(in_list(user_roles, "Cell Leader")){
+      set_field_permlevel('contact_phone_no',0);
+      set_field_permlevel('contact_email_id',0);
+      set_field_permlevel('cell_code',1);
+      set_field_permlevel('cell_name',1);
+      set_field_permlevel('address',0);
+    }
 });
 
 cur_frm.add_fetch("senior_cell", "pcf", "pcf");
@@ -81,7 +88,7 @@ cur_frm.add_fetch("zone", "region", "region");
 cur_frm.cscript.create_pin_on_map=function(doc,lat,lon){
         var latLng = new google.maps.LatLng(lat, lon);
         var map = new google.maps.Map(document.getElementById('map-canvas'), {
-            zoom: 10,
+            zoom: 16,
             center: latLng,
             mapTypeId: google.maps.MapTypeId.ROADMAP
           });
@@ -167,7 +174,7 @@ cur_frm.cscript.address = function(doc, dt, dn){
           var latLng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
 
           var map = new google.maps.Map(document.getElementById('map-canvas'), {
-              zoom: 10,
+              zoom: 16,
               center: latLng,
               mapTypeId: google.maps.MapTypeId.ROADMAP
             });

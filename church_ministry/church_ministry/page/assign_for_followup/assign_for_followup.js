@@ -67,7 +67,7 @@ frappe.assign = Class.extend({
 	        	},
 				callback: function(r) {
 					if (r.message.members){
-			            h1="<table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'> <b>Member Details</b><tr><td><b>Sr No.</b></td><td><b>Member ID</b></td><td><b>Member Name</b></td><td><b>Gender</b></td><td><b>Age</b></td><td><b>Distance</b></td><td><b>Assign Member</b></td></tr>"
+			            h1="<table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'> <b>Member Details</b><tr><td><b>Sr No.</b></td><td><b>Member ID</b></td><td><b>Member Name</b></td><td><b>Gender</b></td><td><b>Age Group</b></td><td><b>Distance</b></td><td><b>Assign Member</b></td></tr>"
 			            for (i=0;i<r.message.members[0].length;i++){
 			                    	//console.log(r.message.members[0][i][0]);
 			                        var j=i+1
@@ -92,7 +92,7 @@ frappe.assign = Class.extend({
 	        	},
 				callback: function(r) {
 					if (r.message.ftv){
-						dtl="<b>Name:</b>&nbsp;"+r.message.ftv[0][0][0]+" &nbsp; &nbsp;<b> Gender:</b>&nbsp;"+r.message.ftv[0][0][1]+" &nbsp; &nbsp;<b>Age:</b>&nbsp;"+r.message.ftv[0][0][2]+"&nbsp; &nbsp; <b>Address:</b>&nbsp;"+r.message.ftv[0][0][3]
+						dtl="<b>Name:</b>&nbsp;"+r.message.ftv[0][0][0]+" &nbsp; &nbsp;<b> Gender:</b>&nbsp;"+r.message.ftv[0][0][1]+" &nbsp; &nbsp;<b>Age Group:</b>&nbsp;"+r.message.ftv[0][0][4]+"&nbsp; &nbsp; <b>Address:</b>&nbsp;"+r.message.ftv[0][0][3]
 			             $( "#dtl" ).append(dtl);      
 					}
 			 	}
@@ -133,7 +133,7 @@ var assign = function(memberid,ftv){
 	        },        
 	        callback: function(r) {
 	            if (r.message=='Done'){
-	                alert("The Member '"+memberid+"' is successfully assigned to First Time Vistor '"+ftv+"'");
+	                alert("The Member '"+memberid+"' is successfully assigned to First Timer '"+ftv+"'");
 	                location.reload();
 	            }
 	            else{

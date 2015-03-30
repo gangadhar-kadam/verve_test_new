@@ -15,3 +15,13 @@ cur_frm.fields_dict['zonal_hq'].get_query = function(doc) {
   		return "select name,church_code,church_name from `tabChurch Master`"
   	}
 }
+
+frappe.ui.form.on("Zone Master", "refresh", function(frm,dt,dn) {
+    if(in_list(user_roles, "Zonal Pastor")){
+      set_field_permlevel('contact_phone_no',0);
+      set_field_permlevel('contact_email_id',0);
+      set_field_permlevel('zone_code',1);
+      set_field_permlevel('zone_name',1);
+      set_field_permlevel('zonal_hq',0);
+    }
+});

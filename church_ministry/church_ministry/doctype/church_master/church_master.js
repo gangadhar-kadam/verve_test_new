@@ -39,6 +39,13 @@ frappe.ui.form.on("Church Master", "refresh", function(frm,dt,dn) {
       refresh_field('zone');
       refresh_field('church_group');
     });
+     if(in_list(user_roles, "Church Pastor")){
+      set_field_permlevel('phone_no',0);
+      set_field_permlevel('email_id',0);
+      set_field_permlevel('church_code',1);
+      set_field_permlevel('church_name',1);
+      set_field_permlevel('address',0);
+    }
 });
 
 frappe.ui.form.on("Church Master", "onload", function(frm) {
@@ -61,7 +68,7 @@ frappe.ui.form.on("Church Master", "onload", function(frm) {
     }
 
     $( "#map-canvas" ).remove();
-    $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 225px;"></div>');
+    $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 425px;"></div>');
     if(!frm.doc.__islocal && (frm.doc.lat &&  frm.doc.lon)){
       cur_frm.cscript.create_pin_on_map(frm.doc,frm.doc.lat,frm.doc.lon);
     }
@@ -71,7 +78,7 @@ frappe.ui.form.on("Church Master", "onload", function(frm) {
 cur_frm.cscript.create_pin_on_map=function(doc,lat,lon){
         var latLng = new google.maps.LatLng(lat, lon);
         var map = new google.maps.Map(document.getElementById('map-canvas'), {
-            zoom: 10,
+            zoom: 16,
             center: latLng,
             mapTypeId: google.maps.MapTypeId.ROADMAP
           });
@@ -157,7 +164,7 @@ cur_frm.cscript.address = function(doc, dt, dn){
           var latLng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
 
           var map = new google.maps.Map(document.getElementById('map-canvas'), {
-              zoom: 10,
+              zoom: 16,
               center: latLng,
               mapTypeId: google.maps.MapTypeId.ROADMAP
             });

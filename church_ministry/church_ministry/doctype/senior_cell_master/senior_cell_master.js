@@ -8,6 +8,12 @@ frappe.ui.form.on("Senior Cell Master", "refresh", function(frm,dt,dn) {
       refresh_field('church');
       refresh_field('pcf');
     });
+    if(in_list(user_roles, "Senior Cell Leader")){
+      set_field_permlevel('contact_phone_no',0);
+      set_field_permlevel('contact_email_id',0);
+      set_field_permlevel('senior_cell_code',1);
+      set_field_permlevel('senior_cell_name',1);
+    }
 });
 
 frappe.ui.form.on("Senior Cell Master", "onload", function(frm) {
