@@ -14,7 +14,6 @@ cur_frm.add_fetch("senior_cell", "church_group", "church_group");
 cur_frm.add_fetch("senior_cell", "region", "region");
 cur_frm.add_fetch("senior_cell", "zone", "zone");
 
-
 cur_frm.add_fetch("pcf", "church", "church");
 cur_frm.add_fetch("pcf", "church_group", "church_group");
 cur_frm.add_fetch("pcf", "region", "region");
@@ -31,16 +30,6 @@ cur_frm.add_fetch("church_group", "zone", "zone");
 cur_frm.add_fetch("zone", "region", "region");
 
 frappe.ui.form.on("Attendance Record", "refresh", function(frm,dt,dn) {
-    // get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
-    //   refresh_field('region');
-    //   refresh_field('zone');
-    //   refresh_field('church_group');
-    //   refresh_field('church');
-    //   refresh_field('pcf');
-    //   refresh_field('senior_cell');
-    //   refresh_field('cell');
-    //  });
-
     if (frm.doc.meeting_category=="Cell Meeting"){
       unhide_field('meeting_subject')
       hide_field('meeting_sub')
@@ -79,13 +68,26 @@ frappe.ui.form.on("Attendance Record", "meeting_category", function(frm,doc) {
   if (frm.doc.meeting_category=="Cell Meeting"){
     unhide_field('meeting_subject')
     hide_field('meeting_sub')
-    unhide_field('cell')
-    hide_field('church')
   }
   else if(frm.doc.meeting_category=="Church Meeting"){
     hide_field('meeting_subject')
     unhide_field('meeting_sub')
-    unhide_field('church')
+  }
+});
+
+frappe.ui.form.on("Attendance Record", "from_date", function(frm,doc) {
+  if(frm.doc.from_date) {
+    var date= frappe.datetime.now_datetime()
+    if(frm.doc.from_date < date){
+      msgprint("From Date should be todays or greater than todays date.");
+    }
+  }
+});
+frappe.ui.form.on("Attendance Record", "to_date", function(frm,doc) {
+  if(frm.doc.from_date) {
+    if(frm.doc.from_date > frm.doc.to_date){
+      msgprint("To Date should be greater than start date.");
+    }
   }
 });
 
@@ -93,8 +95,6 @@ frappe.ui.form.on("Attendance Record", "onload", function(frm) {
   if (frm.doc.__islocal){
     unhide_field('meeting_subject')
     hide_field('meeting_sub')
-    unhide_field('cell')
-    // hide_field('church')
   }
 
   if(frm.doc.__islocal && frm.doc.cell ){   

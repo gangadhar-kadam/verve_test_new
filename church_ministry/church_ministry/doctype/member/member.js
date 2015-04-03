@@ -1,12 +1,7 @@
-
-
 frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
   if (frm.doc.email_id){
     frm.doc.user_id=frm.doc.email_id
   }
-});
-
-frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
   }

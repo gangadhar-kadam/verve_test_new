@@ -1,6 +1,6 @@
 {
  "allow_copy": 0, 
- "allow_import": 0, 
+ "allow_import": 1, 
  "allow_rename": 0, 
  "autoname": "FT.########", 
  "creation": "2015-03-16 18:39:35.695257", 
@@ -183,7 +183,8 @@
    "label": "Age Group", 
    "options": "\nChild (0 to 12)\nTeen (13 to 19)\nYoungster (20 to 25)\nYoung Adult (26 to 35)\nMid Age (35 to 45)\nArrived ( 45 to 55)\nSeniors (56 to 65)\nAdvanced (65 and Above)", 
    "permlevel": 0, 
-   "precision": ""
+   "precision": "", 
+   "reqd": 1
   }, 
   {
    "allow_on_submit": 0, 
@@ -495,7 +496,7 @@
    "print_hide": 0, 
    "read_only": 0, 
    "report_hide": 0, 
-   "reqd": 0, 
+   "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
   }, 
@@ -1099,6 +1100,7 @@
   {
    "fieldname": "first_contact_by", 
    "fieldtype": "Link", 
+   "ignore_user_permissions": 1, 
    "label": "First Contact By", 
    "options": "Member", 
    "permlevel": 0, 
@@ -1329,7 +1331,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-27 19:00:35.656638", 
+ "modified": "2015-04-02 17:07:22.726609", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Timer", 
@@ -1348,7 +1350,7 @@
    "permlevel": 0, 
    "print": 0, 
    "read": 1, 
-   "report": 0, 
+   "report": 1, 
    "role": "System Manager", 
    "set_user_permissions": 0, 
    "submit": 0, 
@@ -1374,22 +1376,16 @@
    "write": 0
   }, 
   {
-   "amend": 0, 
    "apply_user_permissions": 1, 
-   "cancel": 0, 
    "create": 1, 
-   "delete": 0, 
    "email": 1, 
-   "export": 1, 
-   "import": 0, 
    "permlevel": 0, 
    "print": 1, 
    "read": 1, 
    "report": 1, 
    "role": "Cell Leader", 
-   "set_user_permissions": 0, 
-   "submit": 0, 
-   "user_permission_doctypes": "[\"Cell Master\",\"First Time Visitor\"]", 
+   "set_user_permissions": 1, 
+   "share": 1, 
    "write": 1
   }, 
   {
@@ -1508,7 +1504,7 @@
   }, 
   {
    "amend": 0, 
-   "apply_user_permissions": 0, 
+   "apply_user_permissions": 1, 
    "cancel": 0, 
    "create": 0, 
    "delete": 0, 

@@ -131,6 +131,7 @@ def validate_duplicate(doc,method):
 		tdate=doc.to_date.split(" ")
 		t_date=tdate[0]
 		res=frappe.db.sql("select name from `tabAttendance Record` where (cell='%s' or church='%s') and from_date like '%s%%' and to_date like '%s%%'"%(doc.cell,doc.church,f_date,t_date))
+		frappe.errprint(res)
 		if res:
 			frappe.throw(_("Attendance Record '{0}' is already created for same details on same date '{1}'").format(res[0][0],f_date))
 

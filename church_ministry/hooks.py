@@ -105,9 +105,9 @@ doc_events = {
 		"validate": "church_ministry.church_ministry.doctype.foundation_school_exam.foundation_school_exam.validate_duplicate",
 		"on_submit": "church_ministry.church_ministry.doctype.foundation_school_exam.foundation_school_exam.update_attendance",		
 	},
-	# "Cell Meeting Invitation": {
-	# 	"validate": "church_ministry.church_ministry.doctype.cell_meeting_invitation.cell_meeting_invitation.validate_duplicate"		
-	# },
+	"Attendance Record": {
+		"validate": "church_ministry.church_ministry.doctype.attendance_record.attendance_record.validate_duplicate"		
+	},
 	"Foundation School Attendance": {
 		"validate": "church_ministry.church_ministry.doctype.foundation_school_attendance.foundation_school_attendance.validate_duplicate",
 		"on_submit": "church_ministry.church_ministry.doctype.foundation_school_attendance.foundation_school_attendance.update_attendance",		

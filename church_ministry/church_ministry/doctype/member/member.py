@@ -13,7 +13,7 @@ class Member(Document):
 		# pass
 		usr_id=frappe.db.sql("select name from `tabUser` where name='%s'"%(self.email_id),as_list=1)
 		if self.flag=='not' and self.email_id:
-			frappe.errprint("user creation")
+			# frappe.errprint("user creation")
 			# if  self.member_designation=='PCF Leader':
 			# 	c_user = self.pcf
 			# 	r_user = 'PCF Leader'
@@ -40,7 +40,9 @@ class Member(Document):
 				u.email=self.email_id
 				u.first_name = self.member_name
 				u.new_password = 'password'
+				frappe.flags.mute_emails = False
 				u.insert()
+				frappe.flags.mute_emails = True
 			r=frappe.new_doc("UserRole")
 			r.parent=self.email_id
 			r.parentfield='user_roles'

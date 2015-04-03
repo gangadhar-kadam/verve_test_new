@@ -1,6 +1,6 @@
 {
  "allow_copy": 0, 
- "allow_import": 0, 
+ "allow_import": 1, 
  "allow_rename": 0, 
  "autoname": "IC.########", 
  "creation": "2015-03-11 14:26:09.650568", 
@@ -191,7 +191,8 @@
    "label": "Age Group", 
    "options": "\nChild (0 to 12)\nTeen (13 to 19)\nYoungster (20 to 25)\nYoung Adult (26 to 35)\nMid Age (35 to 45)\nArrived ( 45 to 55)\nSeniors (56 to 65)\nAdvanced (65 and Above)", 
    "permlevel": 0, 
-   "precision": ""
+   "precision": "", 
+   "reqd": 1
   }, 
   {
    "allow_on_submit": 0, 
@@ -408,7 +409,7 @@
    "print_hide": 0, 
    "read_only": 0, 
    "report_hide": 0, 
-   "reqd": 0, 
+   "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
   }, 
@@ -565,7 +566,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-27 12:57:49.211064", 
+ "modified": "2015-04-02 16:21:16.353037", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Invitees and Contacts", 
@@ -765,7 +766,7 @@
   }, 
   {
    "amend": 0, 
-   "apply_user_permissions": 0, 
+   "apply_user_permissions": 1, 
    "cancel": 0, 
    "create": 0, 
    "delete": 0, 
