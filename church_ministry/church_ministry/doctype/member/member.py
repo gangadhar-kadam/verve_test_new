@@ -8,6 +8,7 @@ from frappe import throw, _, msgprint
 from frappe.utils import getdate, validate_email_add, cint
 
 class Member(Document):
+
 	
 	def on_update(self):
 		# pass
@@ -17,15 +18,15 @@ class Member(Document):
 			# if  self.member_designation=='PCF Leader':
 			# 	c_user = self.pcf
 			# 	r_user = 'PCF Leader'
-			# 	perm = 'PCF Master'
+			# 	perm = 'PCFs'
 			# elif self.member_designation=='Sr.Cell Leader':
 			# 	c_user = self.senior_cell
 			# 	r_user = 'Senior Cell Leader'
-			# 	perm = 'Senior Cell Master'
+			# 	perm = 'Senior Cells'
 			# elif self.member_designation=='Cell Leader':
 			# 	c_user = self.cell
 			# 	r_user = 'Cell Leader'
-			# 	perm = 'Cell Master'
+			# 	perm = 'Cells'
 			# elif self.member_designation=='Member':
 			# 	c_user = self.name
 			# 	r_user = 'Member'
@@ -33,7 +34,7 @@ class Member(Document):
 			# elif self.member_designation=='Bible Study Class Teacher':
 			# 	c_user = self.church
 			# 	r_user = 'Bible Study Class Teacher'
-			# 	perm = 'Church Master'
+			# 	perm = 'Churches'
 
 			if not usr_id:
 				u = frappe.new_doc("User")

@@ -12,28 +12,28 @@ from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
 @frappe.whitelist()
 def get_ftv_member():
 	roles=frappe.get_roles(frappe.user.name)
-	val=frappe.db.sql("select defkey,defvalue from `tabDefaultValue` where defkey in ('Cell Master','Senior Cell Master','PCF Master','Church Master','Group Church Master','Zone Master','Region Master') and parent='%s' limit 1"%(frappe.user.name),as_list=1)
+	val=frappe.db.sql("select defkey,defvalue from `tabDefaultValue` where defkey in ('Cells','Senior Cells','PCFs','Churches','Group Churches','Zones','Regions') and parent='%s' limit 1"%(frappe.user.name),as_list=1)
 	# frappe.errprint(val)
 	if val:
-		if val[0][0]=='Cell Master':
+		if val[0][0]=='Cells':
 			key='cell'
 			value=val[0][1]
-		elif val[0][0]=='Senior Cell Master':
+		elif val[0][0]=='Senior Cells':
 			key='senior_cell'
 			value=val[0][1]
-		elif val[0][0]=='PCF Master':
+		elif val[0][0]=='PCFs':
 			key='pcf'
 			value=val[0][1]
-		elif val[0][0]=='Church Master':
+		elif val[0][0]=='Churches':
 			key='Church'
 			value=val[0][1]
-		elif val[0][0]=='Group Church Master':
+		elif val[0][0]=='Group Churches':
 			key='church_group'
 			value=val[0][1]
-		elif val[0][0]=='Zone Master':
+		elif val[0][0]=='Zones':
 			key='zone'
 			value=val[0][1]
-		elif val[0][0]=='Region Master':
+		elif val[0][0]=='Regions':
 			key='region'
 			value=val[0][1]
 		return{

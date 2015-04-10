@@ -5,7 +5,7 @@ cur_frm.fields_dict['cell'].get_query = function(doc) {
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
     filters :{
-      'doctype':'Cell Master',
+      'doctype':'Cells',
       'senior_cell' : doc.senior_cell,
       'pcf' : doc.pcf,
       'church' : doc.church,
@@ -20,7 +20,7 @@ cur_frm.fields_dict['senior_cell'].get_query = function(doc) {
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
     filters :{
-      'doctype':'Senior Cell Master',
+      'doctype':'Senior Cells',
       'pcf' : doc.pcf,
       'church' : doc.church,
       'church_group' : doc.church_group,
@@ -34,7 +34,7 @@ cur_frm.fields_dict['pcf'].get_query = function(doc) {
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
     filters :{
-      'doctype':'PCF Master',
+      'doctype':'PCFs',
       'church' : doc.church,
       'church_group' : doc.church_group,
       'zone' : doc.zone,
@@ -47,7 +47,7 @@ cur_frm.fields_dict['church'].get_query = function(doc) {
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
     filters :{
-      'doctype':'Church Master',
+      'doctype':'Churches',
       'church_group' : doc.church_group,
       'zone' : doc.zone,
       'region' : doc.region
@@ -58,7 +58,7 @@ cur_frm.fields_dict['church_group'].get_query = function(doc) {
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
     filters :{
-      'doctype':'Group Church Master',
+      'doctype':'Group Churches',
       'zone' : doc.zone,
       'region' : doc.region
     }
@@ -69,7 +69,7 @@ cur_frm.fields_dict['zone'].get_query = function(doc) {
   return {
     query:'church_ministry.church_ministry.doctype.member.member.get_list',
     filters :{
-      'doctype':'Zone Master',
+      'doctype':'Zones',
       'region' : doc.region
     }
   }

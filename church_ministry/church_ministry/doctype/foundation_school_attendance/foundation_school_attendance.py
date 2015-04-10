@@ -41,7 +41,7 @@ def validate_duplicate(doc,method):
 			frappe.throw(_("Another Foundation School Attendance '{0}' Church Code '{1}' and date '{2}' exist..!").format(res[0][0],doc.church,doc.date))
 	today=nowdate()
 	if getdate(doc.date) >= getdate(today):		
-		frappe.throw(_("Calss Date Should not be Future date"))
+		frappe.throw(_("Class Date Should not be Future date"))
 
 def update_attendance(doc,method):
 	for d in doc.get('attendance'):	
@@ -77,6 +77,7 @@ def update_attendance(doc,method):
 			else:
 				frappe.db.sql("""update `tabMember` set school_status='%s' %s where name='%s' """ % (exm, baptism, d.member_id))
 		if ftvdetails and ftvdetails[0][2]:
-			receiver_list.append(ftvdetails[0][2])			
+			receiver_list.append(ftvdetails[0][2])
+			frappe.errprint(['sssss',receiver_list[0][2]])		
 			send_sms(receiver_list, cstr(msg_member))
 	return "Done"

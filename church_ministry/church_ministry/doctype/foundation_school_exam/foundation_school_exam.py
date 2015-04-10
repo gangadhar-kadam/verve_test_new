@@ -10,7 +10,7 @@ from frappe import throw, _, msgprint
 class FoundationSchoolExam(Document):
 	
 	def get_grade(self,score):
-			query="select name from `tabFS Grade Master` where to_score>='"+cstr(score)+"' and from_score<='"+cstr(score)+"'"
+			query="select name from `tabFoundation School Grades` where to_score>='"+cstr(score)+"' and from_score<='"+cstr(score)+"'"
 			grade = frappe.db.sql(query)
 			if not grade:
 				frappe.msgprint(_("Grade not found for the score {0}").format(score))
@@ -20,7 +20,7 @@ class FoundationSchoolExam(Document):
 	
 @frappe.whitelist()
 def get_grade(score):
-			query="select name from `tabFS Grade Master` where to_score>='"+cstr(score)+"' and from_score<='"+cstr(score)+"'"
+			query="select name from `tabFoundation School Grades` where to_score>='"+cstr(score)+"' and from_score<='"+cstr(score)+"'"
 			grade = frappe.db.sql(query)
 			if not grade:
 				frappe.msgprint(_("Grade not found for the score {0}").format(score))
@@ -32,11 +32,11 @@ def get_grade(score):
 def loadftv(church,visitor_type):
  	if visitor_type=='FTV':
 		return {
-		"ftv": [frappe.db.sql("select name,ftv_name,cell from `tabFirst Timer` where church='%s' and school_status='Completed Class 1, 2 , 3 , 4 , 5 & 6' and approved=0"%(church),debug=1)]
+		"ftv": [frappe.db.sql("select name,ftv_name,cell from `tabFirst Timer` where church='%s' and school_status='Completed Class 1, 2 , 3 , 4 , 5 & 6' and approved=0"%(church))]
 		}
 	else:
 		return {
-		"ftv": [frappe.db.sql("select name,member_name,cell from `tabMember` where church='%s' and school_status='Completed Class 1, 2 , 3 , 4 , 5 & 6'"%(church),debug=1)]
+		"ftv": [frappe.db.sql("select name,member_name,cell from `tabMember` where church='%s' and school_status='Completed Class 1, 2 , 3 , 4 , 5 & 6'"%(church))]
 		}
 
 def validate_duplicate(doc,method):
@@ -84,9 +84,9 @@ def update_attendance(doc,method):
 			elif doc.foundation__exam=='Class 6':
 				exm='Completed All Classes and Passed Exam'
 			if doc.visitor_type=='FTV':
-				frappe.db.sql("""update `tabFirst Timer` set school_status='%s' %s where name='%s' """ % (exm,baptism,d.ftv_id),debug=1)
+				frappe.db.sql("""update `tabFirst Timer` set school_status='%s' %s where name='%s' """ % (exm,baptism,d.ftv_id))
 			else:
-				frappe.db.sql("""update `tabMember` set school_status='%s' %s where name='%s' """ % (exm, baptism, d.member_id),debug=1)
+				frappe.db.sql("""update `tabMember` set school_status='%s' %s where name='%s' """ % (exm, baptism, d.member_id))
 		
 		if ftvdetails[0][2]:
 			receiver_list.append(ftvdetails[0][2])			

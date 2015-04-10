@@ -21,8 +21,8 @@
 "","""Event-address""","Event","Data","Address","all_day","","","","address",0,0,0,0,0,"","",0,"",0,0,0,0,0,0
 "","""Event-lat""","Event","Attach","Latitude","address","","","","lat",0,0,0,1,0,"","",0,"",0,0,0,0,0,0
 "","""Event-lon""","Event","Attach","Longitude","lat","","","","lon",0,0,0,1,0,"","",0,"",0,0,0,0,0,0
-"","""Event-cell""","Event","Link","Cell","senior_cell","","Cell Master","","cell",0,0,0,0,0,"","",0,"eval:doc.event_group==""Cell""",0,0,0,0,0,0
-"","""Event-zone""","Event","Link","Zone","region","","Zone Master","","zone",0,0,0,0,0,"","",0,"eval:doc.event_group=='Zonall'",0,0,0,0,0,0
+"","""Event-cell""","Event","Link","Cell","senior_cell","","Cells","","cell",0,0,0,0,0,"","",0,"eval:doc.event_group==""Cell""",0,0,0,0,0,0
+"","""Event-zone""","Event","Link","Zone","region","","Zones","","zone",0,0,0,0,0,"","",0,"eval:doc.event_group=='Zonall'",0,0,0,0,0,0
 "","""Event-event_group""","Event","Select","Event Group","event_type","","Only Leaders
 Regional
 Zonal
@@ -31,10 +31,10 @@ Church
 PCF
 Sr Cell
 Cell","","event_group",0,0,0,0,0,"","Only Leaders",0,"",0,0,0,0,0,0
-"","""Event-senior_cell""","Event","Link","Senior Cell","pcf","","Senior Cell Master","","senior_cell",0,0,0,0,0,"","",0,"eval:doc.event_group== 'Sr Cell' ",0,0,0,0,0,0
-"","""Event-pcf""","Event","Link","PCF","church","","PCF Master","","pcf",0,0,0,0,0,"","",0,"eval:doc.event_group== 'PCF ",0,0,0,0,0,0
-"","""Event-church""","Event","Link","Church","zone","","Church Master","","church",0,0,0,0,0,"","",0,"eval:doc.event_group== 'Church' ",0,0,0,0,0,0
+"","""Event-senior_cell""","Event","Link","Senior Cell","pcf","","Senior Cells","","senior_cell",0,0,0,0,0,"","",0,"eval:doc.event_group== 'Sr Cell' ",0,0,0,0,0,0
+"","""Event-pcf""","Event","Link","PCF","church","","PCFs","","pcf",0,0,0,0,0,"","",0,"eval:doc.event_group== 'PCF ",0,0,0,0,0,0
+"","""Event-church""","Event","Link","Church","zone","","Churches","","church",0,0,0,0,0,"","",0,"eval:doc.event_group== 'Church' ",0,0,0,0,0,0
 "","""Event-church_group""","Event","Link","Church Group","zone","","Church Group Master","","church_group",0,0,0,0,0,"","",0,"eval:doc.event_group== 'Church Group' ",0,0,0,0,0,0
-"","""Event-region""","Event","Link","Region","groups","","Region Master","","region",0,0,0,0,0,"","",0,"eval:doc.event_group== 'Regional'",0,0,0,0,0,0
+"","""Event-region""","Event","Link","Region","groups","","Regions","","region",0,0,0,0,0,"","",0,"eval:doc.event_group== 'Regional'",0,0,0,0,0,0
 "","""Event-sb""","Event","Section Break","sb","cell","","","","sb",0,0,0,0,0,"","",0,"",0,0,0,0,0,0
 "","""Event-cb""","Event","Column Break","cb","church","","","","cb",0,0,0,0,0,"","",0,"",0,0,0,0,0,0

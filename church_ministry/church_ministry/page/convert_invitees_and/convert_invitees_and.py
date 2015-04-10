@@ -9,7 +9,7 @@ from frappe.model.mapper import get_mapped_doc
 
 @frappe.whitelist()
 def loadftv():
-	query="select name,invitee_contact_name,sex,date_of_birth from `tabInvitees and Contacts` where date_of_convert is null"
+	query="select name,invitee_contact_name,sex,date_of_birth,age_group from `tabInvitees and Contacts` where date_of_convert is null"
 	return {
 		"ftv": [frappe.db.sql(query)]
 	}
@@ -43,3 +43,13 @@ def convert_ftv(source_name, target_doc=None):
 def loadmemberdetails(invited_by):
 	res=frappe.db.sql("select cell,senior_cell,pcf,church,church_group,zone,region from tabMember where name='%s'"%(invited_by))
 	return res
+
+
+@frappe.whitelist()
+def loadrec():
+	ftv1=[]
+	import os
+	for file in os.listdir("/home/gangadhar/Desktop/red5/webapps/openmeetings/streams/1"):
+		if file.endswith(".wav"):
+			ftv1.append(file)
+	return ftv1

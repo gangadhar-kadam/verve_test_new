@@ -113,53 +113,53 @@ def get_data():
 			"items": [
 				{
 					"type":"doctype",
-					"name": "Region Master",
-					"description": _("Region Master")
+					"name": "Regions",
+					"description": _("Regions")
 				},
 				{
 					"type":"doctype",
-					"name": "Zone Master",
-					"description": _("Zone Master")
+					"name": "Zones",
+					"description": _("Zones")
 				},
 				{
 					"type":"doctype",
-					"name": "Group Church Master",
-					"description": _("Group Church Master")
+					"name": "Group Churches",
+					"description": _("Group Churches")
 				},
 				{
 					"type":"doctype",
-					"name": "Church Master",
-					"description": _("Church Master")
+					"name": "Churches",
+					"description": _("Churches")
 				},				
 				{
 					"type":"doctype",
-					"name": "PCF Master",
-					"description": _("PCF Master")
+					"name": "PCFs",
+					"description": _("PCFs")
 				},
 				{
 					"type":"doctype",
-					"name": "Senior Cell Master",
-					"description": _("Senior Cell Master")
+					"name": "Senior Cells",
+					"description": _("Senior Cells")
 				},
 				{
 					"type":"doctype",
-					"name": "Cell Master",
-					"description": _("Cell Master")
+					"name": "Cells",
+					"description": _("Cells")
 				},				
 				{
 					"type":"doctype",
-					"name": "Foundation School Exam Master",
-					"description": _("Foundation School Exam Master")
+					"name": "Foundation School Exams",
+					"description": _("Foundation School Exams")
 				},							
 				{
 					"type":"doctype",
-					"name": "FS Grade Master",
-					"description": _("FS Grade Master")
+					"name": "Foundation School Grades",
+					"description": _("Foundation School Grades")
 				},				
 				{
 					"type":"doctype",
-					"name": "Partnership Arm",
-					"description": _("Partnership Arm Master")
+					"name": "Partnership Arms",
+					"description": _("Partnership Arms Master")
 				},
 			]
 		},

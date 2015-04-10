@@ -68,32 +68,32 @@ app_version = "0.0.1"
 fixtures = ["Custom Field"]
 
 doc_events = {
-	"Region Master": {
-		"validate": "church_ministry.church_ministry.doctype.region_master.region_master.validate_duplicate"		
+	"Regions": {
+		"validate": "church_ministry.church_ministry.doctype.regions.regions.validate_duplicate"		
 	},
-	"Zone Master": {
-		"validate": "church_ministry.church_ministry.doctype.zone_master.zone_master.validate_duplicate"		
+	"Zones": {
+		"validate": "church_ministry.church_ministry.doctype.zones.zones.validate_duplicate"		
 	},
-	"Group Church Master": {
-		"validate": "church_ministry.church_ministry.doctype.group_church_master.group_church_master.validate_duplicate"		
+	"Group Churches": {
+		"validate": "church_ministry.church_ministry.doctype.group_churches.group_churches.validate_duplicate"		
 	},
-	"Church Master": {
-		"validate": "church_ministry.church_ministry.doctype.church_master.church_master.validate_duplicate"		
+	"Churches": {
+		"validate": "church_ministry.church_ministry.doctype.churches.churches.validate_duplicate"		
 	},
-	"PCF Master": {
-		"validate": "church_ministry.church_ministry.doctype.pcf_master.pcf_master.validate_duplicate"		
+	"PCFs": {
+		"validate": "church_ministry.church_ministry.doctype.pcfs.pcfs.validate_duplicate"		
 	},
-	"Senior Cell Master": {
-		"validate": "church_ministry.church_ministry.doctype.senior_cell_master.senior_cell_master.validate_duplicate"		
+	"Senior Cells": {
+		"validate": "church_ministry.church_ministry.doctype.senior_cells.senior_cells.validate_duplicate"		
 	},
-	"Cell Master": {
-		"validate": "church_ministry.church_ministry.doctype.cell_master.cell_master.validate_duplicate"		
+	"Cells": {
+		"validate": "church_ministry.church_ministry.doctype.cells.cells.validate_duplicate"		
 	},
-	"Foundation School Exam Master": {
-		"validate": "church_ministry.church_ministry.doctype.foundation_school_exam_master.foundation_school_exam_master.validate_duplicate"		
+	"Foundation School Exams": {
+		"validate": "church_ministry.church_ministry.doctype.foundation_school_exams.foundation_school_exams.validate_duplicate"		
 	},
-	"FS Grade Master": {
-		"validate": "church_ministry.church_ministry.doctype.fs_grade_master.fs_grade_master.validate_duplicate"		
+	"Foundation School Grades": {
+		"validate": "church_ministry.church_ministry.doctype.foundation_school_grades.foundation_school_grades.validate_duplicate"		
 	},
 	"Member": {
 		"validate": "church_ministry.church_ministry.doctype.member.member.validate_birth"		

@@ -61,7 +61,7 @@
    "fieldtype": "Link", 
    "in_list_view": 1, 
    "label": "Cell", 
-   "options": "Cell Master", 
+   "options": "Cells", 
    "permlevel": 0, 
    "precision": "", 
    "read_only": 1
@@ -123,7 +123,7 @@
    "in_list_view": 0, 
    "label": "Grade", 
    "no_copy": 0, 
-   "options": "FS Grade Master", 
+   "options": "Foundation School Grades", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 

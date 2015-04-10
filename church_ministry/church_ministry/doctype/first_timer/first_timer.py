@@ -27,7 +27,7 @@ class FirstTimer(Document):
 
 	# def set_higher_values(self):
 	# 	if self.region:
-	# 		value = frappe.db.sql("select zone,church_group,church,pcf,senior_cell,name from `tabCell Master` where region='%s'"%(self.region),as_list=1)
+	# 		value = frappe.db.sql("select zone,church_group,church,pcf,senior_cell,name from `tabCells` where region='%s'"%(self.region),as_list=1)
 	# 		ret={}
 	# 		if value:
 	# 			ret={
@@ -40,7 +40,7 @@ class FirstTimer(Document):
 	# 			}
 	# 		return ret
 	# 	elif self.zone:
-	# 		value = frappe.db.sql("select region,church_group,church,pcf,senior_cell,name from `tabCell Master` where zone='%s'"%(self.zone),as_list=1)
+	# 		value = frappe.db.sql("select region,church_group,church,pcf,senior_cell,name from `tabCells` where zone='%s'"%(self.zone),as_list=1)
 	# 		ret={}
 	# 		if value:
 	# 			ret={
@@ -53,7 +53,7 @@ class FirstTimer(Document):
 	# 			}
 	# 		return ret
 	# 	elif self.church_group:
-	# 		value = frappe.db.sql("select region,zone,church,pcf,senior_cell,name from `tabCell Master` where church_group='%s'"%(self.church_group),as_list=1)
+	# 		value = frappe.db.sql("select region,zone,church,pcf,senior_cell,name from `tabCells` where church_group='%s'"%(self.church_group),as_list=1)
 	# 		ret={}
 	# 		if value:
 	# 			ret={
@@ -66,7 +66,7 @@ class FirstTimer(Document):
 	# 			}
 	# 		return ret
 	# 	elif self.church:
-	# 		value = frappe.db.sql("select region,zone,church_group,pcf,senior_cell,name from `tabCell Master` where church='%s'"%(self.church),as_list=1)
+	# 		value = frappe.db.sql("select region,zone,church_group,pcf,senior_cell,name from `tabCells` where church='%s'"%(self.church),as_list=1)
 	# 		ret={}
 	# 		if value:
 	# 			ret={
@@ -79,7 +79,7 @@ class FirstTimer(Document):
 	# 			}
 	# 		return ret
 	# 	elif self.pcf:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,senior_cell,name from `tabCell Master` where pcf='%s'"%(self.pcf),as_list=1)
+	# 		value = frappe.db.sql("select region,zone,church_group,church,senior_cell,name from `tabCells` where pcf='%s'"%(self.pcf),as_list=1)
 	# 		ret={}
 	# 		if value:
 	# 			ret={
@@ -92,7 +92,7 @@ class FirstTimer(Document):
 	# 			}
 	# 		return ret
 	# 	elif self.senior_cell:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,pcf,name from `tabCell Master` where senior_cell='%s'"%(self.senior_cell),as_list=1)
+	# 		value = frappe.db.sql("select region,zone,church_group,church,pcf,name from `tabCells` where senior_cell='%s'"%(self.senior_cell),as_list=1)
 	# 		ret={}
 	# 		if value:
 	# 			ret={
@@ -105,7 +105,7 @@ class FirstTimer(Document):
 	# 			}
 	# 		return ret
 	# 	elif self.cell:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,pcf,senior_cell from `tabCell Master` where name='%s'"%(self.cell),as_list=1)
+	# 		value = frappe.db.sql("select region,zone,church_group,church,pcf,senior_cell from `tabCells` where name='%s'"%(self.cell),as_list=1)
 	# 		ret={}
 	# 		if value:
 	# 			ret={
@@ -157,6 +157,6 @@ def ismember(name):
 def set_higher_values(args):
     args = json.loads(args)
     keys = ["region", "zone", "church_group", "church", "pcf", "senior_cell", "name"]
-    out = frappe.db.get_all("Cell Master", fields=keys, filters={'name':args['name']})
+    out = frappe.db.get_all("Cells", fields=keys, filters={'name':args['name']})
     if out:
           return out[0]

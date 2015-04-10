@@ -34,7 +34,7 @@
    "fieldtype": "Link", 
    "in_list_view": 1, 
    "label": "Cell", 
-   "options": "Cell Master", 
+   "options": "Cells", 
    "permlevel": 0, 
    "precision": "", 
    "reqd": 0
@@ -43,7 +43,7 @@
    "fieldname": "senior_cell", 
    "fieldtype": "Link", 
    "label": "Senior Cell", 
-   "options": "Senior Cell Master", 
+   "options": "Senior Cells", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -51,7 +51,7 @@
    "fieldname": "pcf", 
    "fieldtype": "Link", 
    "label": "PCF", 
-   "options": "PCF Master", 
+   "options": "PCFs", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -59,7 +59,7 @@
    "fieldname": "church", 
    "fieldtype": "Link", 
    "label": "Church", 
-   "options": "Church Master", 
+   "options": "Churches", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -92,7 +92,7 @@
    "fieldname": "church_group", 
    "fieldtype": "Link", 
    "label": "Group Church", 
-   "options": "Group Church Master", 
+   "options": "Group Churches", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -100,7 +100,7 @@
    "fieldname": "zone", 
    "fieldtype": "Link", 
    "label": "Zone", 
-   "options": "Zone Master", 
+   "options": "Zones", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -108,7 +108,7 @@
    "fieldname": "region", 
    "fieldtype": "Link", 
    "label": "Region", 
-   "options": "Region Master", 
+   "options": "Regions", 
    "permlevel": 0, 
    "precision": "", 
    "reqd": 0

@@ -13,41 +13,43 @@ def loadftv():
 	roles=frappe.get_roles(frappe.user.name)
 	# frappe.errprint(frappe.get_roles(frappe.user.name))
 	# frappe.errprint('Cell Leader' in roles)
-	val=frappe.db.sql("select defkey,defvalue from `tabDefaultValue` where defkey in ('Cell Master','Senior Cell Master','PCF Master','Church Master','Group Church Master','Zone Master','Region Master') and parent='%s' limit 1"%(frappe.user.name))
-	frappe.errprint(val)
+	val=frappe.db.sql("select defkey,defvalue from `tabDefaultValue` where defkey in ('Cells','Senior Cells','PCFs','Churches','Group Churches','Zones','Regions') and parent='%s' limit 1"%(frappe.user.name))
+	#frappe.errprint(val)
 	if val:
-		if val[0][0]=='Cell Master':
+		if val[0][0]=='Cells':
 			key='cell'
 			value=val[0][1]
-		elif val[0][0]=='Senior Cell Master':
+		elif val[0][0]=='Senior Cells':
 			key='senior_cell'
 			value=val[0][1]
-		elif val[0][0]=='PCF Master':
+		elif val[0][0]=='PCFs':
 			key='pcf'
 			value=val[0][1]
-		elif val[0][0]=='Church Master':
+		elif val[0][0]=='Churches':
 			key='Church'
 			value=val[0][1]
-		elif val[0][0]=='Group Church Master':
+		elif val[0][0]=='Group Churches':
 			key='church_group'
 			value=val[0][1]
-		elif val[0][0]=='Zone Master':
+		elif val[0][0]=='Zones':
 			key='zone'
 			value=val[0][1]
-		elif val[0][0]=='Region Master':
+		elif val[0][0]=='Regions':
 			key='region'
 			value=val[0][1]
 		return {
-		"ftv": [frappe.db.sql("select name,ftv_name,sex,date_of_birth from `tabFirst Timer` where (approved=0 or  approved is null) and name in (select member from (select count(member) as count,member from `tabInvitation Member Details` where  docstatus=1 and member like 'FT%' and present=1 group by member) a where a.count>=3) and "+key+"='"+value+"'",debug=1)]
+		"ftv": [frappe.db.sql("select name,ftv_name,sex,date_of_birth,age_group from `tabFirst Timer` where (approved=0 or  approved is null) and name in (select member from (select count(member) as count,member from `tabInvitation Member Details` where  docstatus=1 and member like 'FT%' and present=1 group by member) a where a.count>=3) and "+key+"='"+value+"'")]
 		}
 	else:
 		return {
-			"ftv": [frappe.db.sql("select name,ftv_name,sex,date_of_birth from `tabFirst Timer` where (approved=0 or  approved is null) and name in (select member from (select count(member) as count,member from `tabInvitation Member Details` where  docstatus=1 and member like 'FT%' and present=1 group by member) a where a.count>=3)",debug=1)]
+			"ftv": [frappe.db.sql("select name,ftv_name,sex,date_of_birth,age_group from `tabFirst Timer` where (approved=0 or  approved is null) and name in (select member from (select count(member) as count,member from `tabInvitation Member Details` where  docstatus=1 and member like 'FT%' and present=1 group by member) a where a.count>=3)")]
 		}
 
 @frappe.whitelist()
 def approveftv(ftv):
 	ftvs=eval(ftv)
+	frappe.errprint(ftv)
+	frappe.errprint(ftvs)
 	for i in range(len(ftvs)):    
 		frappe.db.sql("""update `tabFirst Timer` set approved=1,date_of_approval=CURDATE() where name='%s' """ % (ftvs[i]))
 		ftvc=convert_ftv(ftvs[i])

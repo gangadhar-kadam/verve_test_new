@@ -41,15 +41,15 @@ frappe.assign = Class.extend({
 			            for (i=0;i<r.message.ftv[0].length;i++){
 			                        var j=i+1
 			                        h1 += '<tr >'
-			                        h1 += '<td style="padding=0px;width=100%">'+j+'</td>'
-			                        h1 += '<td style="padding=0px;width=100%"><a href="desk#Form/Invitees and Contacts/'+r.message.ftv[0][i][0]+'">'+r.message.ftv[0][i][0]+'</a></td>'
-			                        h1 += '<td style="padding=0px;width=100%">'+r.message.ftv[0][i][1]+'</td>'
-			                        h1 += '<td style="padding=0px;width=100%">'+r.message.ftv[0][i][2]+'</td>'
-			                        h1 += '<td style="padding=0px;width=100%">'+r.message.ftv[0][i][3]+'</td>'                      
-			                        h1 += "<td style='padding=0px;width=100%'><input type='checkbox' data-name='"+r.message.ftv[0][i][0]+"' ></td></tr>"
+			                        h1 += '<td style="padding=0px;width=100%">&nbsp;'+j+'</td>'
+			                        h1 += '<td style="padding=0px;width=100%"><a href="desk#Form/Invitees and Contacts/'+r.message.ftv[0][i][0]+'">&nbsp;'+r.message.ftv[0][i][0]+'</a></td>'
+			                        h1 += '<td style="padding=0px;width=100%">&nbsp;'+r.message.ftv[0][i][1]+'</td>'
+			                        h1 += '<td style="padding=0px;width=100%">&nbsp;'+r.message.ftv[0][i][2]+'</td>'
+			                        h1 += '<td style="padding=0px;width=100%">&nbsp;'+r.message.ftv[0][i][4]+'</td>'                      
+			                        h1 += "<td style='padding=0px;width=100%'>&nbsp;<input type='checkbox' data-name='"+r.message.ftv[0][i][0]+"' ></td></tr>"
 			            }
 			            $('<br><button  class="btn btn-primary btn-search" id="test">Convert</button><br>').appendTo($(me.wrapper).find('.apllybtn'));    
-			            h="<br><table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'><tr><td style='padding=0px;width=100%''><b>Sr No.</b></td><td><b>Invitees and Contacts ID</b></td><td><b>Invitees and Contacts Name</b></td><td><b>Gender</b></td><td><b>DOB</b></td><td><b>Convert</b></td></tr>"+h1+"<tbody>";	               
+			            h="<br><table class='members1' border='1' style='width:100%;background-color: #f9f9f9;'><tr><td style='padding=0px;width=100%''><b>&nbsp;Sr No.</b></td><td><b>&nbsp;Invitees and Contacts ID</b></td><td><b>&nbsp;Invitees and Contacts Name</b></td><td><b>&nbsp;Gender</b></td><td><b>&nbsp;Age Group</b></td><td><b>&nbsp;Convert</b></td></tr>"+h1+"<tbody>";	               
 			            $(h).appendTo($(me.wrapper).find('.assignt'))
 					    $('.apllybtn').find('.btn-search').click(function() {
 					    	var ftv =[];

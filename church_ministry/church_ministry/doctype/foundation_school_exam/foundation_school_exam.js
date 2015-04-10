@@ -39,6 +39,7 @@ frappe.ui.form.on("Foundation School Exam", "church", function(frm,cdt,cdn,doc) 
 	        	"visitor_type":frm.doc.visitor_type
 	        	},
 				callback: function(r) {
+					console.log(['result ',r.message.ftv[0]]);
 					if (r.message.ftv[0].length>0){
 					   frappe.model.clear_table(frm.doc, "attendance");
 					   cur_frm.refresh_fields();

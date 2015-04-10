@@ -19,7 +19,7 @@
    "in_list_view": 0, 
    "label": "Exam", 
    "no_copy": 0, 
-   "options": "Foundation School Exam Master", 
+   "options": "Foundation School Exams", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -68,7 +68,7 @@
    "fieldname": "church", 
    "fieldtype": "Link", 
    "label": "Church", 
-   "options": "Church Master", 
+   "options": "Churches", 
    "permlevel": 0, 
    "precision": "", 
    "read_only": 0
@@ -116,7 +116,7 @@
    "fieldtype": "Link", 
    "hidden": 1, 
    "label": "Senior Cell", 
-   "options": "Senior Cell Master", 
+   "options": "Senior Cells", 
    "permlevel": 0, 
    "precision": "", 
    "read_only": 0
@@ -126,7 +126,7 @@
    "fieldtype": "Link", 
    "hidden": 1, 
    "label": "Region", 
-   "options": "Region Master", 
+   "options": "Regions", 
    "permlevel": 0, 
    "precision": "", 
    "read_only": 0
@@ -136,7 +136,7 @@
    "fieldtype": "Link", 
    "hidden": 1, 
    "label": "Zone", 
-   "options": "Zone Master", 
+   "options": "Zones", 
    "permlevel": 0, 
    "precision": "", 
    "read_only": 0
@@ -152,7 +152,7 @@
    "in_list_view": 0, 
    "label": "Cell", 
    "no_copy": 0, 
-   "options": "Cell Master", 
+   "options": "Cells", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -167,7 +167,7 @@
    "fieldtype": "Link", 
    "hidden": 1, 
    "label": "PCF", 
-   "options": "PCF Master", 
+   "options": "PCFs", 
    "permlevel": 0, 
    "precision": "", 
    "read_only": 0
@@ -177,7 +177,7 @@
    "fieldtype": "Link", 
    "hidden": 1, 
    "label": "Church Group", 
-   "options": "Group Church Master", 
+   "options": "Group Churches", 
    "permlevel": 0, 
    "precision": "", 
    "read_only": 0
