@@ -105,6 +105,14 @@ def get_data():
 					"icon": "icon-bar-chart",
 					"description": _("Dashboard")
 				},			
+				{
+					"type": "page",
+					"name": "data-import-tool",
+					"label": _("Import / Export Data"),
+					"icon": "icon-bar-chart",
+					"description": _("Import / Export Data from .csv files.")
+				},
+				
 			]
 		},
 		{
