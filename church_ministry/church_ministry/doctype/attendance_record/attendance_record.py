@@ -142,4 +142,5 @@ def validate_duplicate(doc,method):
 				frappe.throw(_("To Date should be greater than From Date..!"))
 
 		if len(doc.invitation_member_details)<1:
-			frappe.throw(_("Attendance Member table is empty.There should be at least 1 member in attendance list. Please load members in table."))
+			pass
+			#rappe.throw(_("Attendance Member table is empty.There should be at least 1 member in attendance list. Please load members in table."))
