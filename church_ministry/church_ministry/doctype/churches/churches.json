@@ -170,7 +170,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-07-03 12:00:21.236715", 
+ "modified": "2015-07-10 19:03:18.993972", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Churches", 
@@ -279,7 +279,6 @@
    "role": "Church Pastor", 
    "set_user_permissions": 0, 
    "submit": 0, 
-   "user_permission_doctypes": "[\"Church Master\"]", 
    "write": 1
   }, 
   {

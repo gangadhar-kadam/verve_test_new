@@ -998,7 +998,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-07-03 12:18:33.776582", 
+ "modified": "2015-07-12 11:25:48.927100", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
@@ -1088,6 +1088,7 @@
    "read": 1, 
    "report": 1, 
    "role": "Senior Cell Leader", 
+   "user_permission_doctypes": "[\"Churches\",\"Group Churches\",\"PCFs\",\"Regions\",\"Senior Cells\",\"Zones\"]", 
    "write": 1
   }, 
   {

@@ -126,7 +126,9 @@ def user_roles(data):
 		data={}
 		roles=frappe.db.sql("select role from `tabUserRole` where parent=%(user)s", {"user":dts['username']},as_dict=True)
 		data['roles']=roles
-		user_values=frappe.db.sql("select defkey,defvalue from `tabDefaultValue`  where parent=%(user)s", {"user":dts['username']},as_dict=True)
+		qry="select defkey,defvalue from `tabDefaultValue`  where defkey not like '_list_settings:%' and defkey not like '_desktop_items%' and parent='"+dts['username']+"'"
+		user_values=frappe.db.sql(qry,as_dict=True)
+		#user_values=frappe.db.sql("select defkey,defvalue from `tabDefaultValue`  where parent=%(user)s", {"user":dts['username']},as_dict=True)
 		data['user_values']=user_values
 		return data
 
@@ -182,7 +184,7 @@ def create_cells(data):
 		  "status":"401",
 		  "message":"User name or Password is incorrect"
 		}
-        if not frappe.has_permission(doctype="Senior Cells", ptype="create",user=dts['username']):
+        if not frappe.has_permission(doctype="Cells", ptype="create",user=dts['username']):
                 return {
                   "status":"403",
                   "message":"You have no permission to create Senior Cell"
@@ -207,6 +209,72 @@ def create_cells(data):
 			"message":"Successfully created Cell '"+obj.name+"'"
 		}
 		return ret
+
+
+
+@frappe.whitelist(allow_guest=True)
+def create_event(data):
+        """
+        Need to check validation/ duplication  etc
+        """
+        dts=json.loads(data)
+        qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+        valid=frappe.db.sql(qry)
+        if not valid:
+                return {
+                  "status":"401",
+                  "message":"User name or Password is incorrect"
+                }
+        if not frappe.has_permission(doctype="Event", ptype="create",user=dts['username']):
+                return {
+                  "status":"403",
+                  "message":"You have no permission to create Cell"
+                }
+        else:
+                obj=frappe.new_doc("Event")
+                obj.subject=dts['subject']
+                #obj.type=dts['type']
+                obj.starts_on=dts['starts_on']
+                obj.ends_on=dts['ends_on']
+                obj.address=dts['address']
+                obj.description=dts['description']
+                obj.insert(ignore_permissions=True)
+                ret={
+                        "message":"Successfully created Event '"+obj.name+"'"
+                }
+                return ret
+
+@frappe.whitelist(allow_guest=True)
+def update_event(data):
+        """
+        Need to check validation/ duplication  etc
+        """
+        dts=json.loads(data)
+        qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+        valid=frappe.db.sql(qry)
+        if not valid:
+                return {
+                  "status":"401",
+                  "message":"User name or Password is incorrect"
+                }
+        if not frappe.has_permission(doctype="Event", ptype="create",user=dts['username']):
+                return {
+                  "status":"403",
+                  "message":"You have no permission to create Cell"
+                }
+        else:
+                obj=frappe.get_doc("Event",dts['name'])
+                obj.subject=dts['subject']
+                obj.type=dts['type']
+                obj.starts_on=dts['starts_on']
+                obj.ends_on=dts['ends_on']
+                obj.address=dts['address']
+                obj.description=dts['description']
+                obj.save(ignore_permissions=True)
+                ret={
+                        "message":"Successfully updated Event '"+obj.name+"'"
+                }
+                return ret
 
 @frappe.whitelist(allow_guest=True)
 def create_meetings(data):
@@ -384,13 +452,26 @@ def get_masters(data):
 		}
 	meta = frappe.get_meta(dts['tbl'])
 	role_permissions = frappe.permissions.get_role_permissions(meta, dts['username'])
-	user_permissions = frappe.defaults.get_user_permissions(dts['username'])
+	#user_permissions = frappe.defaults.get_user_permissions(dts['username'])
+	#user_permissions1 =frappe.db.sql("""select defkey,defvalue from tabDefaultValue where parent=%s and parenttype='User Permission'""", (dts['username']),as_dict=True)
+	user_permissions=frappe.db.sql("select defkey,defvalue from tabDefaultValue where parent=%s " ,dts['username'],as_dict=1)  
 	match_conditions = []
-	for doctypes in user_permissions:
-		for df in meta.get_fields_to_check_permissions(doctypes):
-			match_conditions.append("""(ifnull(`tab{doctype}`.`{fieldname}`, "")=""
-					or `tab{doctype}`.`{fieldname}` in ({values}))""".format(doctype=dts['tbl'],fieldname=df.fieldname,values=", ".join([('"'+v+'"') for v in user_permissions[df.options]])
-			))
+	
+	for item in user_permissions:
+	    if item['defkey']==dts['tbl']:
+	    	match_conditions.append(""" name ='{values}'""".format(values=item['defvalue']))
+	    else:
+		qry="select fieldname from tabDocField where options='"+cstr(item['defkey'])+"' and parent='"+cstr(dts['tbl'])+"'"
+        	res=frappe.db.sql(qry)
+        	if res:	
+			match_conditions.append(""" {fieldname} is null or {fieldname} ='{values}'""".format(doctype=dts['tbl'],fieldname=res[0][0],values=item['defvalue']))
+	#for doctypes in user_permissions:
+	#	#print doctypes
+	#	for df in meta.get_fields_to_check_permissions(doctypes):
+	#		#print df.options
+	#		match_conditions.append("""(ifnull(`tab{doctype}`.`{fieldname}`, "")=""
+	#				or `tab{doctype}`.`{fieldname}` in ({values}))""".format(doctype=dts['tbl'],fieldname=df.fieldname,values=", ".join([('"'+v+'"') for v in user_permissions[df.options]])
+	#		))
 	cond = ''
 	user_roles = frappe.get_roles(dts['username'])
 	if match_conditions   :
@@ -439,7 +520,7 @@ def event_participents(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }       
-    data=frappe.db.sql("select a.name,a.person_name,ifnull(a.present,0) as present,a.comments from `tabEvent Attendace Details`  a,`tabEvent Attendance` b ,`tabEvent` c  where a.parent=b.name and b.event_name=c.name and c.name=%s",dts['event_id'],as_dict=True)
+    data=frappe.db.sql("select a.id as `name` ,a.person_name,ifnull(a.present,0) as present,a.comments from `tabEvent Attendace Details`  a,`tabEvent Attendance` b  where a.parent=b.name and b.event_name=%s",dts['event_id'],as_dict=True)
     return data
                 
 
@@ -456,11 +537,14 @@ def event_attendance(data):
         return {
                 "status":"401",
                 "message":"User name or Password is incorrect"
-        }   
-    for record in dts:
+        }
+       
+    for record in dts['record']:
+	#frappe.errprint(type(record))
+	#return record
         if not record['present'] :
             record['present']=0
-        frappe.db.sql("update `tabEvent Attendace Details` set present=%s,comments=%s where name=%s",(record['present'],record['comments'],record['name']))
+        frappe.db.sql("update `tabEvent Attendace Details` set present=%s where id=%s",(record['present'],record['name']))
     return "Updated Attendance"
 
 @frappe.whitelist(allow_guest=True)
@@ -493,7 +577,7 @@ def my_event_attendance(data):
     for record in dts['records']:
         if not record['present'] :
             record['present']=0
-        frappe.db.sql("update `tabEvent Attendace Details` set present=%s,comments=%s where name=%s",(record['present'],record['comments'],record['name']))
+        frappe.db.sql("update `tabEvent Attendace Details` set present=%s where name=%s",(record['present'],record['name']))
     return "Updated Your Event Attendance"
 
 
@@ -524,6 +608,7 @@ def get_hierarchy(data):
 @frappe.whitelist(allow_guest=True)
 def get_lists(data):
     dts=json.loads(data)
+    #print dts
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
     if not valid:
@@ -540,17 +625,24 @@ def get_lists(data):
             "Regions":"region"
     }
     tablename=dts['tbl']
+    #fields={
+    #        "Senior Cells":"name",
+    #        "PCFs":"senior_cell",
+    #        "Churches":"pcf",
+    #        "Group Churches":"church",
+    #        "Zones":"church_group",
+    #        "Regions":"zone"
+    #}
     fields={
-            "Senior Cells":"name",
-            "PCFs":"senior_cell",
-            "Churches":"pcf",
-            "Group Churches":"church",
-            "Zones":"church_group",
-            "Regions":"zone"
+            "Senior Cells":"Cells",
+            "PCFs":"Senior Cells",
+            "Churches":"PCFs",
+            "Group Churches":"Churches",
+            "Zones":"Group Churches",
+            "Regions":"Zones"
     }
     fieldname=dts['tbl']
-
-    res=frappe.db.sql("select %s from `tabCells` where %s='%s'"  %(fields[fieldname],wheres[tablename],dts['name']),as_dict=True)
+    res=frappe.db.sql("select name from `tab%s` where %s='%s'"  %(fields[fieldname],wheres[tablename],dts['name']),as_dict=True)
     return res
 
 
@@ -618,6 +710,7 @@ def create_task(data):
         }  
     dts['exp_start_date']=now()
     dts['doctype']='Task'
+    dts['owner']=dts['username']
     del dts['assignee']
     del dts['name']
     ma = frappe.get_doc(dts)
@@ -666,7 +759,8 @@ def dashboard(data):
                 data['membership_strength']=membership_strength
         else:
                 data['membership_strength']='0'
-        partnership=frappe.db.sql("select MONTHNAME(creation) as Month, count(name) as `giving`,count(name) as pledge from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
+        #partnership=frappe.db.sql("select MONTHNAME(creation) as Month, count(name) as `giving`,count(name) as pledge from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
+	partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
         if partnership:
                 data['partnership']=partnership
         else:
@@ -732,6 +826,8 @@ def search_glm(data):
 @frappe.whitelist(allow_guest=True)
 def file_upload(data):
         dts=json.loads(data)
+	#print dts
+	#frappe.errprint(dts)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
         if not valid:
@@ -744,6 +840,9 @@ def file_upload(data):
         comment = frappe.get_doc(dts['tbl'], dts['name']).add_comment("Attachment",
             _("Added {0}").format("<a href='{file_url}' target='_blank'>{file_name}</a>".format(**filedata.as_dict())))
 
+	if dts['tbl']=='Member':
+             frappe.db.sql("update tabMember set image=%s where name=%s",(filedata.file_url,dts['name']))
+	#frappe.errprint(filedata.name,filedata.file_name,filedata.file_url,comment.as_dict())
         return {
             "name": filedata.name,
             "file_name": filedata.file_name,
