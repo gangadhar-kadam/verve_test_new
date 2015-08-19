@@ -22,11 +22,11 @@ def get_data():
 					"name": "Invitees and Contacts",
 					"description": _("Invitees & Contacts")
 				},								
-				# {
-				# 	"type":"doctype",
-				# 	"name": "Cell Meeting Invitation",
-				# 	"description": _("Cell Meeting Invitation Database")
-				# },
+				{
+					"type":"doctype",
+					"name": "Call Center Daily Activities",
+					"description": _("Call Center Daily Activities Database")
+				},
 				{
 					"type":"doctype",
 					"name": "Attendance Record",
@@ -93,10 +93,17 @@ def get_data():
 				# 	"icon": "icon-bar-chart",
 				# 	"description": _("Convert FTV to Member")
 				# },
+				# {
+				# 	"type":"doctype",
+				# 	"name": "Event Attendance",
+				# 	"description": _("Event Attendance Database")
+				# },
 				{
-					"type":"doctype",
-					"name": "Event Attendance",
-					"description": _("Event Attendance Database")
+					"type": "page",
+					"name": "message-broadcast",
+					"label": _("Message Broadcast"),
+					"icon": "icon-bar-chart",
+					"description": _("Message Broadcast")
 				},
 				{
 					"type": "page",
@@ -168,6 +175,11 @@ def get_data():
 					"type":"doctype",
 					"name": "Partnership Arms",
 					"description": _("Partnership Arms Master")
+				},
+				{
+					"type":"doctype",
+					"name": "Notification Settings",
+					"description": _("Notification Settings")
 				},
 			]
 		},

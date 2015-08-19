@@ -30,13 +30,13 @@ cur_frm.add_fetch("church_group", "zone", "zone");
 cur_frm.add_fetch("zone", "region", "region");
 
 frappe.ui.form.on("Attendance Record", "refresh", function(frm,dt,dn) {
-    if (frm.doc.meeting_category=="Cell Meeting"){
-      unhide_field('meeting_subject')
-      hide_field('meeting_sub')
-    }
-    else if(frm.doc.meeting_category=="Church Meeting"){
+    if(frm.doc.meeting_category=="Church Meeting"){
       hide_field('meeting_subject')
       unhide_field('meeting_sub')
+    }
+    else{
+      unhide_field('meeting_subject')
+      hide_field('meeting_sub')
     }
 });
 
@@ -91,10 +91,17 @@ frappe.ui.form.on("Attendance Record", "to_date", function(frm,doc) {
   }
 });
 
+
+frappe.ui.form.on("Attendance Record", "event", function(frm,doc) {
+  cur_frm.add_fetch("event", "subject", "meeting_subject");
+  cur_frm.add_fetch("event", "starts_on", "from_date");
+  cur_frm.add_fetch("event", "ends_on", "to_date");
+});
+
 frappe.ui.form.on("Attendance Record", "onload", function(frm) {
   if (frm.doc.__islocal){
-    unhide_field('meeting_subject')
-    hide_field('meeting_sub')
+    hide_field('meeting_subject')
+    unhide_field('meeting_sub')
   }
 
   if(frm.doc.__islocal && frm.doc.cell ){   

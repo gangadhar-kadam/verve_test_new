@@ -1,0 +1,42 @@
+{
+ "content": null, 
+ "creation": "2015-08-18 15:06:42.796774", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "modified": "2015-08-18 15:06:42.796774", 
+ "modified_by": "Administrator", 
+ "module": "Church Ministry", 
+ "name": "message-broadcast", 
+ "owner": "Administrator", 
+ "page_name": "Message Broadcast", 
+ "roles": [
+  {
+   "role": "System Manager"
+  }, 
+  {
+   "role": "Cell Leader"
+  }, 
+  {
+   "role": "Senior Cell Leader"
+  }, 
+  {
+   "role": "PCF Leader"
+  }, 
+  {
+   "role": "Church Pastor"
+  }, 
+  {
+   "role": "Group Church Pastor"
+  }, 
+  {
+   "role": "Zonal Pastor"
+  }, 
+  {
+   "role": "Regional Pastor"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "title": "Message Broadcast"
+}

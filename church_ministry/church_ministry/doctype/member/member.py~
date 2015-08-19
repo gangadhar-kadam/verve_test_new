@@ -6,8 +6,6 @@ import frappe
 import json
 from frappe.model.document import Document
 from frappe import throw, _, msgprint
-from erpnext.accounts.utils import get_fiscal_year
-from frappe.utils import flt, cstr, nowdate
 from frappe.utils import getdate, validate_email_add, cint,cstr,now
 import base64
 
@@ -106,29 +104,6 @@ def validate_birth(doc,method):
 		if doc.email_id:
 			if not validate_email_add(doc.email_id):
 				frappe.throw(_('{0} is not a valid email id').format(doc.email_id))
-
-
-@frappe.whitelist(allow_guest=True)
-def get_attendance_points(args):
-	"""
-	Get employee id and return points according to his attendance assumed the working days are 365 and points are 100
-	"""
-	frappe.errprint("deleting documents")
-	frappe.delete_doc('DocType','Employee task Details')
-	frappe.errprint("deleted Call Center Details")
-	present,working=0,0
-	total_att=frappe.db.sql("select count(name) as attendance from `tabAttendance` where status='Present' and fiscal_year=%(fiscal_year)s and employee=%(user)s", {"user":args,"fiscal_year":get_fiscal_year(nowdate())[0]},as_list=True)
-	holidays=frappe.db.sql("select count(a.name) from tabHoliday a,`tabHoliday List` b where b.name=a.parent and fiscal_year=EXTRACT(YEAR FROM CURDATE()) and is_default=1")
-	if holidays:
-		global working
-		working=365-holidays[0][0]
-	if total_att:
-		global present
-		present =total_att[0][0]
-	points=(100.00*present)/working
-	return round(points,2)
-
-
 
 
 ### web sevices
@@ -957,60 +932,5 @@ def get_match_conditions(doctype,username):
         	if res:	
 			match_conditions.append(""" {fieldname} is null or {fieldname} ='{values}'""".format(doctype=doctype,fieldname=res[0][0],values=item['defvalue']))
 	return match_conditions
-
-
-@frappe.whitelist(allow_guest=True)
-def send_notification_member_absent():
-	senior_cell_list=frappe.db.sql("select distinct(senior_cell) from tabCells",as_list=1)
-	for sc in senior_cell_list:
-		cell_list=frappe.db.sql("select name from tabCells where senior_cell='%s'"%(sc[0]),as_list=1)
-		for cc in cell_list:
-			memeber_list={}
-			meeting_list=frappe.db.sql("select name from `tabAttendance Record` where attendance_type='Meeting attendance' and cell='%s'"%(cc[0]),as_list=1)
-			if meeting_list:
-				absent=frappe.db.sql("select a.member,a.member_name,count(a.email_id)  from `tabInvitation Member Details` a ,`tabAttendance Record` b where  \
-					b.name=a.parent and a.present=1 and a.parent in ('%s') group by a.email_id "%("','".join ([x[0] for x in meeting_list])))
-				if absent and absent[0][2] <3:
-					memeber_list[absent[0][0]]=absent[0][1]
-			cell_leader=frappe.db.sql("select a.name,a.first_name ,dv.defvalue,dv.defkey from tabUser a,tabUserRole ur,tabDefaultValue dv where a.name=ur.parent and a.name=dv.parent \
-			and (ur.role='Cell Leader' or ur.role='Senior Cell Leader') and (dv.defkey='Cells' or dv.defkey='Senior Cells') and (dv.defvalue='%s' or dv.defvalue='%s') "%(sc[0],cc[0]),as_list=1,debug=1)
-			if memeber_list and cell_leader:
-				for leaders in cell_leader :
-					msg="Hello '%s',<br><br> Following members have not attended last three meetings  <br>  %s <br><br>Regards,<br>Love world Synergy"%(leaders[1],"".join(["member id '%s'  Member Name '%s'" % (k,v) for k,v in memeber_list.iteritems()]) )
-					#frappe.sendmail(recipients="email.kadam@gmail.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Member Absent')
-					frappe.sendmail(recipients=leaders[0], sender='gangadhar.k@indictranstech.com', content=msg, subject='Member Absent')
-	return "sent emails"
-
-
-			# res=frappe.db.sql("select name,senior_cell,pcf from tabCells where name not in (select distinct(cell) from `tabAttendance Record`  \
-			# where attendance_type='Meeting attendance' and creation BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY)  AND DATE_SUB(NOW(), INTERVAL 15 DAY)) and senior_cell='%s'"%(sc[0]),as_list=1)
-			# cell_leader=frappe.db.sql("select a.name,a.first_name ,dv.defvalue,dv.defkey from tabUser a,tabUserRole ur,tabDefaultValue dv where a.name=ur.parent and a.name=dv.parent \
-			# and (ur.role='PCF Leader' or ur.role='Senior Cell Leader') and (dv.defkey='PCFs' or dv.defkey='Senior Cells') and \
-			# (dv.defvalue='%s' or dv.defvalue='%s') "%(res[0][1],res[0][2]))
-	# res=frappe.db.sql("select name,member_name,cell from tabMember where cell='Zone-0001/CHR0001/CEL0001' limit 3",as_dict=1)
-	# for r in res:
-	# 	cell_leader=frappe.db.sql("select a.name,a.first_name from tabUser a,tabUserRole ur,tabDefaultValue dv where a.name=ur.parent and a.name=dv.parent and ur.role='Cell Leader' and dv.defkey='Cells' and dv.defvalue=%s",r['cell'])
-	# 	if cell_leader:
-	# 		msg="Hello '%s',<br><br> The member id '%s'  ad name '%s' is absent in last 3 consecatve meeting. <br><br>Regards,<br>Love world Synergy"%(cell_leader[0][1],r['name'],r['member_name'])
-	# 		frappe.sendmail(recipients=cell_leader[0][0], sender='gangadhar.k@indictranstech.com', content=msg, subject='Member Absent')
-	# 		frappe.sendmail(recipients="email.kadam@gmail.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
-	# return "Sent member absent emails"
-
-
-@frappe.whitelist(allow_guest=True)
-def send_notification_cell_meeting_not_hold():
-	senior_cell_list=frappe.db.sql("select distinct(senior_cell) from tabCells",as_list=1)
-	for sc in senior_cell_list:
-		res=frappe.db.sql("select name,senior_cell,pcf from tabCells where name not in (select distinct(cell) from `tabAttendance Record`  \
-			where attendance_type='Meeting attendance' and creation BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY)  AND DATE_SUB(NOW(), INTERVAL 15 DAY)) and senior_cell='%s'"%(sc[0]),as_list=1)
-		cell_leader=frappe.db.sql("select a.name,a.first_name ,dv.defvalue,dv.defkey from tabUser a,tabUserRole ur,tabDefaultValue dv where a.name=ur.parent and a.name=dv.parent \
-			and (ur.role='PCF Leader' or ur.role='Senior Cell Leader') and (dv.defkey='PCFs' or dv.defkey='Senior Cells') and \
-			(dv.defvalue='%s' or dv.defvalue='%s') "%(res[0][1],res[0][2]))
-		for recipents in cell_leader :
-			msg="Hello '%s',<br><br> The cell meeting is not held in last week for cell '%s' <br><br>Regards,<br>Love world Synergy"%(recipents[1],' , '.join([x[0] for x in res]) )
-			frappe.sendmail(recipients=recipents[0], sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
-			frappe.sendmail(recipients="email.kadam@gmail.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
-	return "Sent cell meeting not held emails"
-
 	
 

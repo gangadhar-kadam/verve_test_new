@@ -182,6 +182,11 @@ frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
     set_field_permlevel('zone',0);
     set_field_permlevel('region',1);
   }
+  else if(in_list(user_roles, "Welfare user")){
+    set_field_permlevel('first_visitor_information',1);
+    set_field_permlevel('foundation_school__baptism_details',1);
+    set_field_permlevel('first_time_engagement_details',1);
+  }
  
    //  home address map div
   $( "#map-canvas" ).remove();
