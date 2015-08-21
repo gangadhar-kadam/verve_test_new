@@ -101,9 +101,9 @@ def get_data():
 				{
 					"type": "page",
 					"name": "message-broadcast",
-					"label": _("Message Broadcast"),
+					"label": _("Broadcast Message"),
 					"icon": "icon-bar-chart",
-					"description": _("Message Broadcast")
+					"description": _("Broadcast Message")
 				},
 				{
 					"type": "page",

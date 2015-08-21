@@ -10,6 +10,7 @@ from erpnext.accounts.utils import get_fiscal_year
 from frappe.utils import flt, cstr, nowdate
 from frappe.utils import getdate, validate_email_add, cint,cstr,now
 import base64
+from gcm import GCM
 
 class Member(Document):
 
@@ -1011,6 +1012,43 @@ def send_notification_cell_meeting_not_hold():
 			frappe.sendmail(recipients=recipents[0], sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
 			frappe.sendmail(recipients="email.kadam@gmail.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
 	return "Sent cell meeting not held emails"
+
+
+@frappe.whitelist(allow_guest=True)
+def message_braudcast_send(data):
+    """
+    this will return recipents details
+    """
+    dts=json.loads(data)
+    from frappe.model.db_query import DatabaseQuery
+    qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+    valid=frappe.db.sql(qry)
+    msg=''
+    if not valid:
+        return {
+                "status":"401",
+                "message":"User name or Password is incorrect"
+        }   
+    if dts['sms']:
+    	from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
+    	rc_list=frappe.db.sql("select phone_1 from tabMember where phone_1 is not null and email_id in ('%s') limit 3" %(dts['recipents'].replace(",","','")),as_list=1)      
+    	if rc_list:
+    		send_sms([ x[0] for x in rc_list ], cstr(dts['message']))
+    		msg+= "SMS "
+    rc_list=dts['recipents'].split(',')
+    if dts['push']:
+        data={}
+        data['Message']=dts['message']
+        gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
+        res=frappe.db.sql("select device_id from tabUser where name in ('%s')" % "','".join(map(str,rc_list)),as_list=1)
+        if res:
+                res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+                msg+= "Push notification"
+    if dts['email']:
+        frappe.sendmail(recipients=dts['recipents'], sender='verve@lws.com', content=dts['message'], subject='Broadcast Message')
+        msg+=" Email"
+    return msg +" sent Successfully"
+
 
 	
 

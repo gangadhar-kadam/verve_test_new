@@ -42,7 +42,7 @@ def condition(arg):
 		if key != 'type':
 			cond.append("%s='%s'"%(key,arg[key]))
 		if arg['type']=='All Leaders':
-			cond.append("email_id in (select distinct(a.name) from tabUser a,tabDefaultValue dv where a.name=dv.parent and a.name <> 'Administrator')")
+			cond.append(" email_id in (select distinct parent from tabUserRole where role in ('PCF Leader','Cell Leader','Senior Cell Leader','Church Pastor','Group Church Pastor','Regional Pastor','Zonal Pastor'))")
 	if cond:
 		return ' and '+ ' and '.join(cond)
 	else:

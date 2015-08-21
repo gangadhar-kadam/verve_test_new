@@ -83,14 +83,14 @@ frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
   }
-  else if(frm.doc.__islocal && frm.doc.cell ){   
+  else if(frm.doc.__islocal){   
     argmnt={
-/*              "region": frm.doc.region,
+              "region": frm.doc.region,
               "zone": frm.doc.zone,
               "church_group": frm.doc.church_group,
               "church": frm.doc.church ,
               "pcf": frm.doc.pcf,
-              "senior_cell": frm.doc.senior_cell,*/
+              "senior_cell": frm.doc.senior_cell,
               "name": frm.doc.cell  
             }
  
@@ -106,14 +106,14 @@ frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
             frm.doc.church=r.message.church
             frm.doc.pcf=r.message.pcf
             frm.doc.senior_cell=r.message.senior_cell
-            //frm.doc.cell=r.message.name
+            frm.doc.cell=r.message.name
             refresh_field('region');              
             refresh_field('zone');
             refresh_field('church_group');              
             refresh_field('church');
             refresh_field('pcf');              
             refresh_field('senior_cell');
-           // refresh_field('cell');
+           refresh_field('cell');
           }
         }
       });

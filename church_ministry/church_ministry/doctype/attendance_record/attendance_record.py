@@ -7,9 +7,12 @@ from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from frappe import throw, _, msgprint
 import frappe.share
-from frappe.utils import cstr,now,add_days,nowdate
+from frappe.utils import cstr,now,add_days,nowdate,cint
 
 class AttendanceRecord(Document):
+	def validate(self):
+		pass
+
 	def autoname(self):
 		from frappe.model.naming import make_autoname
 		if self.attendance_type=='Event Attendance':
@@ -129,6 +132,8 @@ class AttendanceRecord(Document):
 	# 		return ret
 
 def validate_duplicate(doc,method):
+	frappe.errprint("hello gangadhar")
+	frappe.errprint(doc.data_17)
 	if doc.get("__islocal"):
 		if not doc.invitation_member_details:
 			doc.load_participents()
@@ -148,3 +153,12 @@ def validate_duplicate(doc,method):
 		if len(doc.invitation_member_details)<1:
 			pass
 			#rappe.throw(_("Attendance Member table is empty.There should be at least 1 member in attendance list. Please load members in table."))
+
+		if doc.data_17 and cint(doc.data_17) <= 0 :
+				frappe.throw(_("Total Attendance cannot be negative..!"))
+		if doc.number_of_first_timers and cint(doc.number_of_first_timers) <= 0 :
+				frappe.throw(_("Number of First Timers cannot be negative..!"))
+		if doc.data_19 and cint(doc.data_19) <= 0 :
+				frappe.throw(_("Number of New Converts cannot be negative..!"))
+		if doc.data_20 and cint(doc.data_20) <= 0 :
+				frappe.throw(_("Total Cell Offering cannot be negative..!"))

@@ -52,19 +52,19 @@ class FirstTimer(Document):
 	# 				"cell" : value[0][5]
 	# 			}
 	# 		return ret
-	# 	elif self.church_group:
-	# 		value = frappe.db.sql("select region,zone,church,pcf,senior_cell,name from `tabCells` where church_group='%s'"%(self.church_group),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church" : value[0][2],
-	# 				"pcf" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
+		# elif self.church_group:
+		# 	value = frappe.db.sql("select region,zone,church,pcf,senior_cell,name from `tabCells` where church_group='%s'"%(self.church_group),as_list=1)
+		# 	ret={}
+		# 	if value:
+		# 		ret={
+		# 			"region": value[0][0],
+		# 			"zone": value[0][1],
+		# 			"church" : value[0][2],
+		# 			"pcf" : value[0][3],
+		# 			"senior_cell" : value[0][4],
+		# 			"cell" : value[0][5]
+		# 		}
+		# 	return ret
 	# 	elif self.church:
 	# 		value = frappe.db.sql("select region,zone,church_group,pcf,senior_cell,name from `tabCells` where church='%s'"%(self.church),as_list=1)
 	# 		ret={}
@@ -157,6 +157,10 @@ def ismember(name):
 def set_higher_values(args):
     args = json.loads(args)
     keys = ["region", "zone", "church_group", "church", "pcf", "senior_cell", "name"]
-    out = frappe.db.get_all("Cells", fields=keys, filters={'name':args['name']})
+    # out = frappe.db.get_all("Cells", fields=keys, filters={'name':args['name']})
+    out = []
+    for key, val in args.items():
+    	out = frappe.db.sql("""select region,zone,church_group,church,pcf,senior_cell,name from `tabCells` 
+				where %s='%s'"""%(key,val),as_dict=1)
     if out:
           return out[0]
