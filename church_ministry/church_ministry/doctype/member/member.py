@@ -1037,6 +1037,7 @@ def message_braudcast_details(data):
     this will return recipents details
     """
     dts=json.loads(data)
+    #print dts
     from frappe.model.db_query import DatabaseQuery
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
@@ -1048,10 +1049,11 @@ def message_braudcast_details(data):
     if dts['tbl']=='FT':
        qry="select name,ftv_name ,email_id,phone_1 from `tabFirst Timer` where email_id in (select u.name from tabUser u,tabUserRole ur where u.enabled=1 and ur.role='Member' )"
     elif dts['tbl']=='Member':
-       qry="select name,member_name ,email_id,phone_1 from tabMember where email_id in (select u.name from tabUser u,tabUserRole ur where u.enabled=1 and ur.role='Member') "
+       qry="select name,member_name as ftv_name,email_id,phone_1 from tabMember where email_id in (select u.name from tabUser u,tabUserRole ur where u.enabled=1 and ur.role='Member') "
     else:
-        qry="select name from tabMember"
+        qry="select name,member_name as ftv_name,email_id,phone_1 from tabMember where email_id in (select distinct parent from tabUserRole where role in ('PCF Leader','Cell Leader','Senior Cell Leader','Church Pastor','Group Church Pastor','Regional Pastor','Zonal Pastor'))"
     res=frappe.db.sql(qry,as_dict=1)
+    #print res
     return res
 
 
@@ -1061,6 +1063,7 @@ def message_braudcast_send(data):
     this will return recipents details
     """
     dts=json.loads(data)
+    #print dts
     from frappe.model.db_query import DatabaseQuery
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
@@ -1069,21 +1072,23 @@ def message_braudcast_send(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }
-    rc_list=dts['recipents'].split(',')
-    if dts['type']=='sms':
+    if dts['sms']:
         from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
-        send_sms(rc_list, cstr(dts['message']))
-	return "Successfully sms has benn sent"
-    elif dts['type']=='push':
+	rc_list=frappe.db.sql("select phone_1 from tabMember where phone_1 is not null and email_id in ('%s')" %(dts['recipents'].replace(",","','")),as_list=1)      
+    	if rc_list:
+    		send_sms([ x[0] for x in rc_list ], cstr(dts['message']))
+		print "sending sms"
+    rc_list=dts['recipents'].split(',')
+    if dts['push']:
 	data={}
 	data['Message']=dts['message']
 	gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
-	#rc_list=dts['recipents'].split(',')
 	res=frappe.db.sql("select device_id from tabUser where name in ('%s')" % "','".join(map(str,rc_list)),as_list=1)
-        res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
-        return "Successfully push notification has been sent"
-    else:
-        frappe.sendmail(recipients=dts['recipents'], sender='verve@lws.com', content=dts['message'], subject='Message braudcast')
-    	return "Successfully email has been sent"
+	if res:
+        	res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+		print "sending push notification"
+    if dts['email']:
+	print "sending email"
+        frappe.sendmail(recipients=dts['recipents'], sender='verve@lws.com', content=dts['message'], subject='Message Broadcast')
     return "Successfully message has been sent"
 
