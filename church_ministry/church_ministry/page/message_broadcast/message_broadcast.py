@@ -34,7 +34,7 @@ def get_mapper(contype):
 def query_builder(mapper,arg):
 	filters=condition(arg)
 	return frappe.db.sql("""select %s from %s 
-			where phone_1 is not null %s"""%(', '.join(mapper['columns']), mapper['table'],filters),as_list=1,debug=1)
+			where phone_1 is not null %s"""%(', '.join(mapper['columns']), mapper['table'],filters),as_list=1)
 
 def condition(arg):
 	cond = []

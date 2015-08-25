@@ -62,6 +62,20 @@ frappe.ui.form.on("Attendance Record", "validate", function(frm,doc) {
       throw "Enter Meeting Subject.!"
     }
    }
+
+   if(frm.doc.from_date) {
+    var date= frappe.datetime.now_datetime()
+    if(frm.doc.from_date < date){
+      msgprint("From Date should be todays or greater than todays date.");
+      throw "Date should be proper.!"
+    }
+  }
+  if(frm.doc.from_date) {
+    if(frm.doc.from_date > frm.doc.to_date){
+      msgprint("To Date should be greater than start date.");
+      throw "Date should be proper.!"
+    }
+  }
 });
 
 frappe.ui.form.on("Attendance Record", "meeting_category", function(frm,doc) {
@@ -75,21 +89,21 @@ frappe.ui.form.on("Attendance Record", "meeting_category", function(frm,doc) {
   }
 });
 
-frappe.ui.form.on("Attendance Record", "from_date", function(frm,doc) {
-  if(frm.doc.from_date) {
-    var date= frappe.datetime.now_datetime()
-    if(frm.doc.from_date < date){
-      msgprint("From Date should be todays or greater than todays date.");
-    }
-  }
-});
-frappe.ui.form.on("Attendance Record", "to_date", function(frm,doc) {
-  if(frm.doc.from_date) {
-    if(frm.doc.from_date > frm.doc.to_date){
-      msgprint("To Date should be greater than start date.");
-    }
-  }
-});
+// frappe.ui.form.on("Attendance Record", "from_date", function(frm,doc) {
+//   if(frm.doc.from_date) {
+//     var date= frappe.datetime.now_datetime()
+//     if(frm.doc.from_date < date){
+//       msgprint("From Date should be todays or greater than todays date.");
+//     }
+//   }
+// });
+// frappe.ui.form.on("Attendance Record", "to_date", function(frm,doc) {
+//   if(frm.doc.from_date) {
+//     if(frm.doc.from_date > frm.doc.to_date){
+//       msgprint("To Date should be greater than start date.");
+//     }
+//   }
+// });
 
 
 frappe.ui.form.on("Attendance Record", "event", function(frm,doc) {

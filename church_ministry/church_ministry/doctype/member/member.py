@@ -978,7 +978,7 @@ def send_notification_member_absent():
 			if memeber_list and cell_leader:
 				for leaders in cell_leader :
 					msg="Hello '%s',<br><br> Following members have not attended last three meetings  <br>  %s <br><br>Regards,<br>Love world Synergy"%(leaders[1],"".join(["member id '%s'  Member Name '%s'" % (k,v) for k,v in memeber_list.iteritems()]) )
-					#frappe.sendmail(recipients="email.kadam@gmail.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Member Absent')
+					frappe.sendmail(recipients="geetanjali.s@indictranstech.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Member Absent')
 					frappe.sendmail(recipients=leaders[0], sender='gangadhar.k@indictranstech.com', content=msg, subject='Member Absent')
 	return "sent emails"
 
@@ -1010,7 +1010,7 @@ def send_notification_cell_meeting_not_hold():
 		for recipents in cell_leader :
 			msg="Hello '%s',<br><br> The cell meeting is not held in last week for cell '%s' <br><br>Regards,<br>Love world Synergy"%(recipents[1],' , '.join([x[0] for x in res]) )
 			frappe.sendmail(recipients=recipents[0], sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
-			frappe.sendmail(recipients="email.kadam@gmail.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
+			frappe.sendmail(recipients="geetanjali.s@indictranstech.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
 	return "Sent cell meeting not held emails"
 
 

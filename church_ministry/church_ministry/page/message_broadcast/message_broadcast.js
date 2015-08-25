@@ -72,7 +72,7 @@ frappe.assign = Class.extend({
 	},
 	add_contact: function(){
 		var me = this;
-        $('<form>Select Contact List: <select id="type"><option value="members">Members</option><option value="ftv">First Timers</option><option value="ic">Invitees and Contacts</option><option value="l">All Leaders</option></select><br><br>Select Gender &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <select id="gender"><option value=""></option><option value="male">Male</option><option value="Female">Female</option></select><br><br>Select Age Group : <select id="age"><option value=""></option><option value="a1">Youngster (20 to 25)</option><option value="a2">Young Adult (26 to 35)</option><option value="a3">Mid Age (35 to 45)</option><option value="a4">Arrived ( 45 to 55)</option><option value="a5">Seniors (56 to 65)</option><option value="a6">Advanced (65 and Above)</option></select><form>&nbsp;&nbsp;&nbsp;<br><br><button  class="btn btn-primary btn-search" onclick="add_cnt();"  id="search">Search</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary btn-select" id="selectall">select All</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary btn-add" id="add">Add to List</button>').appendTo($(me.wrapper).find('.add_contacts'))
+        $('<form>Select Contact List: <select id="type"><option value="members">Members</option><option value="ftv">First Timers</option><option value="ic">Invitees and Contacts</option><option value="l">All Leaders</option></select><br><br>Select Gender &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <select id="gender"><option value=""></option><option value="male">Male</option><option value="Female">Female</option></select><br><br>Select Age Group : <select id="age"><option value=""></option><option value="a1">Youngster (20 to 25)</option><option value="a2">Young Adult (26 to 35)</option><option value="a3">Mid Age (35 to 45)</option><option value="a4">Arrived ( 45 to 55)</option><option value="a5">Seniors (56 to 65)</option><option value="a6">Advanced (65 and Above)</option></select><form>&nbsp;&nbsp;&nbsp;<br><br><button  class="btn btn-primary btn-search" onclick="add_cnt();"  id="search">Search</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary btn-select" id="selectall">Select All</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary btn-add" id="add">Add To List</button>').appendTo($(me.wrapper).find('.add_contacts'))
         $('.add_contacts').find('.btn-select').click(function() {         
 				$('.btn-select').prop("disabled", false);
 				$(':checkbox').each(function () {
@@ -101,6 +101,9 @@ frappe.assign = Class.extend({
 						if(!flag){
 							$(this).find('td:nth-child(1),td:nth-child(5)').remove();
 							$(this).appendTo($('.contact_details'));
+						}
+						else{
+							msgprint("User '"+$(this).find('td:nth-child(2)').text()+"' already in least..")
 						}
 					}
 				});
