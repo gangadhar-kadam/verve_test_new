@@ -8,6 +8,7 @@ from frappe.desk.reportview import get_match_cond
 import frappe.share
 from frappe.utils import cstr,now,add_days,nowdate
 from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
+import json
 
 @frappe.whitelist()
 def get_ftv_member():
@@ -115,13 +116,14 @@ def loadmembers(ftv):
 			"members": [frappe.db.sql(b)]
 		}
 
+
 @frappe.whitelist()
 def assignmember(memberid,ftv):
 	frappe.db.sql("""update `tabFirst Timer` set ftv_owner='%s' where name='%s' """ % (memberid,ftv))
-	recipients='gangadhar.k@indictranstech.com'
+	# recipients='gangadhar.k@indictranstech.com'
 	member=frappe.db.sql("select member_name,email_id,phone_1 from `tabMember` where name='%s'"%(memberid))
-	ftvdetails=frappe.db.sql("select ftv_name,email_id,task_description,due_date from `tabFirst Timer` where name='%s'"%(ftv))
-
+	ftvdetails=frappe.db.sql("select ftv_name,email_id,task_description,due_date,phone_1 from `tabFirst Timer` where name='%s'"%(ftv))
+	
 	msg_member="""Hello %s,<br>
 	The First Timer '%s' name: '%s' Email ID: '%s' is assigned to you for follow up <br>Regards,<br>Varve
 	"""%(member[0][0],ftv,ftvdetails[0][0],ftvdetails[0][1])
@@ -146,12 +148,34 @@ def assignmember(memberid,ftv):
 		frappe.share.add("Task", task.name, ftvdetails[0][1], write=0)
 	if frappe.db.exists("User", member[0][1]):	
 		frappe.share.add("Task", task.name, member[0][1], write=1)
-	receiver_list=[]
-	receiver_list.append(member[0][2])
-	frappe.errprint(['rev[0]',receiver_list[0]])
-	if receiver_list[0] :
-		frappe.errprint(receiver_list[0])
-		send_sms(receiver_list, cstr(msg_member))	
-	frappe.sendmail(recipients=member[0][1], sender='gangadhar.k@indictranstech.com', content=msg_member, subject='Assign for follow up')
-	frappe.sendmail(recipients=ftvdetails[0][1], sender='gangadhar.k@indictranstech.com', content=msg_ftv, subject='Assign for follow up')
+
+	notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='assign_for_followup'""",as_list=1)
+	frappe.errprint(notify)
+	if "Email" in notify[0][0]:
+		if member:
+			frappe.sendmail(recipients=member[0][1], content=msg_member, subject='Assign For FollowUp Notification')
+		if ftvdetails:
+			frappe.sendmail(recipients=ftvdetails[0][1], content=msg_ftv, subject='Assign For FollowUp Notification')
+	if "SMS" in notify[0][0]:
+		if member:
+			send_sms(member[0][2], msg_member)
+		if ftvdetails:
+			send_sms(ftvdetails[0][4], msg_ftv)
+	if "Push Notification" in notify[0][0]:
+		data={}
+		data['Message']=msg_member
+		gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
+		res=frappe.db.sql("select device_id from tabUser where name ='%s'" %(member[0][1]),as_list=1)
+		frappe.errprint(res)
+		if res:
+			res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+
+	# receiver_list=[]
+	# receiver_list.append(member[0][2])
+	# frappe.errprint(['rev[0]',receiver_list[0]])
+	# if receiver_list[0] :
+	# 	frappe.errprint(receiver_list[0])
+	# 	send_sms(receiver_list, cstr(msg_member))	
+	# frappe.sendmail(recipients=member[0][1], sender='gangadhar.k@indictranstech.com', content=msg_member, subject='Assign for follow up')
+	# frappe.sendmail(recipients=ftvdetails[0][1], sender='gangadhar.k@indictranstech.com', content=msg_ftv, subject='Assign for follow up')
 	return "Done"

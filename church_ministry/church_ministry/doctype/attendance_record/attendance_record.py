@@ -11,7 +11,18 @@ from frappe.utils import cstr,now,add_days,nowdate,cint
 
 class AttendanceRecord(Document):
 	def validate(self):
+		# self.validate_event_dates()
 		pass
+
+	def on_update(self):
+	# def validate_event_dates(self):
+		frappe.errprint(self.event)
+		event_data = frappe.db.sql("""select sh.date from `tabEvent` e, `tabEvent Schedule` sh where 
+				sh.parent = '%s' and sh.parent=e.name"""%(self.event),as_list=1,debug=1)
+		# frappe.errprint(event_data[0][0])
+		att_data = frappe.db.sql("""select name,from_date,to_date from `tabAttendance Record` where 
+				attendance_type = 'Event Attendance' and event = '%s' """%(self.event),as_list=1,debug=1)
+		# frappe.errprint(att_data)
 
 	def autoname(self):
 		from frappe.model.naming import make_autoname
