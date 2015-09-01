@@ -406,7 +406,8 @@ def meetings_members(data):
         else:
 		#frappe.local.session_obj = Session(user=dts['username'], resume=resume,full_name=dts['username'], user_type="System User")
 		#frappe.session.user=dts['username']
-                data=frappe.db.sql("select name,member,member_name,present from `tabInvitation Member Details` where parent=%s",dts['meeting_id'],as_dict=True)
+                #data=frappe.db.sql("select name,member,member_name,present from `tabInvitation Member Details` where parent=%s",dts['meeting_id'],as_dict=True)
+		data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,a.meeting_subject,a.from_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
                 return data
 
 
@@ -430,14 +431,14 @@ def meetings_attendance(data):
                                 frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
 				res=frappe.db.sql("select device_id from tabUser where name=(select email_id from `tabInvitation Member Details` where name=%s) ",record['name'],as_list=True,debug=1)
 				#print res
-				if res and dts['push']=='1':
-					from gcm import GCM
-					gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
-					data = {'param1': 'new attendance updated sussessfully ....'}
-					reg_ids=['APA91bGKibKhhg2RssK2eng8jXW7Gzhmq5_nDcxr8OiAxPSB62xlMdJdSPKCGO9mPF7uoLpT_8b-V0MdY33lc7fTNdh6U965YTQD3sIic_-sY3C45fF5dUEwVuVo8e2lmDduN4EUsHBH','APA91bHXuIe7c8JflytJnTdCOXlWzfJCM2yt5hGgwaqzIbNfGjANhqzLgrVCoSno70hKtygzg_W7WbE4lHeZD_LeQ6CSc_5AteGY1Gh6R7NXihVnE45K91DOPxgtnF5ncN4gSJYiX0_N']
-					#print reg_ids
-					#print res[0]
-					res = gcm.json_request(registration_ids=res[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+				#if res and dts['push']=='1':
+				#	from gcm import GCM
+				#	gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
+				#	data = {'param1': 'new attendance updated sussessfully ....'}
+				#	reg_ids=['APA91bGKibKhhg2RssK2eng8jXW7Gzhmq5_nDcxr8OiAxPSB62xlMdJdSPKCGO9mPF7uoLpT_8b-V0MdY33lc7fTNdh6U965YTQD3sIic_-sY3C45fF5dUEwVuVo8e2lmDduN4EUsHBH','APA91bHXuIe7c8JflytJnTdCOXlWzfJCM2yt5hGgwaqzIbNfGjANhqzLgrVCoSno70hKtygzg_W7WbE4lHeZD_LeQ6CSc_5AteGY1Gh6R7NXihVnE45K91DOPxgtnF5ncN4gSJYiX0_N']
+				#	print reg_ids
+				#	print res[0]
+				#	res = gcm.json_request(registration_ids=res[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
                 return "Updated Attendance"
 
 
@@ -480,6 +481,21 @@ def mark_my_attendance(data):
                         frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']),debug=1)
                 return "Updated Attendance"
 
+@frappe.whitelist(allow_guest=True)
+def get_match_conditions(doctype,username):
+	meta = frappe.get_meta(doctype)
+	role_permissions = frappe.permissions.get_role_permissions(meta, username)
+	user_permissions=frappe.db.sql("select defkey,defvalue from tabDefaultValue where parent=%s ",username,as_dict=1)  
+	match_conditions = []	
+	for item in user_permissions:
+	    if item['defkey']==doctype:
+	    	match_conditions.append(""" name ='{values}'""".format(values=item['defvalue']))
+	    else:
+		qry="select fieldname from tabDocField where options='"+cstr(item['defkey'])+"' and parent='"+cstr(doctype)+"'"
+        	res=frappe.db.sql(qry)
+        	if res:	
+			match_conditions.append(""" {fieldname} is null or {fieldname} ='{values}'""".format(doctype=doctype,fieldname=res[0][0],values=item['defvalue']))
+	return match_conditions
 
 
 @frappe.whitelist(allow_guest=True)
@@ -496,40 +512,49 @@ def get_masters(data):
 				"status":"401",
 				"message":"User name or Password is incorrect"
 		}
-	meta = frappe.get_meta(dts['tbl'])
-	role_permissions = frappe.permissions.get_role_permissions(meta, dts['username'])
-	#user_permissions = frappe.defaults.get_user_permissions(dts['username'])
-	#user_permissions1 =frappe.db.sql("""select defkey,defvalue from tabDefaultValue where parent=%s and parenttype='User Permission'""", (dts['username']),as_dict=True)
-	user_permissions=frappe.db.sql("select defkey,defvalue from tabDefaultValue where parent=%s " ,dts['username'],as_dict=1)  
-	match_conditions = []
-	
-	for item in user_permissions:
-	    if item['defkey']==dts['tbl']:
-	    	match_conditions.append(""" name ='{values}'""".format(values=item['defvalue']))
-	    else:
-		qry="select fieldname from tabDocField where options='"+cstr(item['defkey'])+"' and parent='"+cstr(dts['tbl'])+"'"
-        	res=frappe.db.sql(qry)
-        	if res:	
-			match_conditions.append(""" {fieldname} is null or {fieldname} ='{values}'""".format(doctype=dts['tbl'],fieldname=res[0][0],values=item['defvalue']))
-	#for doctypes in user_permissions:
-	#	#print doctypes
-	#	for df in meta.get_fields_to_check_permissions(doctypes):
-	#		#print df.options
-	#		match_conditions.append("""(ifnull(`tab{doctype}`.`{fieldname}`, "")=""
-	#				or `tab{doctype}`.`{fieldname}` in ({values}))""".format(doctype=dts['tbl'],fieldname=df.fieldname,values=", ".join([('"'+v+'"') for v in user_permissions[df.options]])
-	#		))
-	cond = ''
-	user_roles = frappe.get_roles(dts['username'])
-	if match_conditions   :
-		cond = 'where ' + ' or '.join(match_conditions)
-		return frappe.db.sql("""select name from `tab%s` where %s"""%(dts['tbl'], ' or '.join(match_conditions)), as_dict=1)
-	elif ("System Manager" in user_roles ):
-		return frappe.db.sql("""select name from `tab%s` """%(dts['tbl']), as_dict=1)
+	match_conditions=get_match_conditions(dts['tbl'],dts['username'])
+    	colmns=frappe.db.sql("select fieldname from tabDocField where fieldtype !='Section Break' and fieldtype !='Column Break' and parent='%s' and fieldname like '%%_name%%' order by idx limit 6 " %(dts['tbl']),as_list=1 )
+    	if match_conditions   :
+		cond =  ' or '.join(match_conditions) 
 	else:
-		return {
-				"status":"200",
-				"message":"No Records Found"
-		}
+	        cond =' 1=1'	
+	#return ','.join([x[0] for x in colmns ])
+	return frappe.db.sql("""select name ,%s as record_name  from `tab%s` where %s"""%(','.join([x[0] for x in colmns ]),dts['tbl'], ' or '.join(match_conditions)), as_dict=1)
+
+	#meta = frappe.get_meta(dts['tbl'])
+	#role_permissions = frappe.permissions.get_role_permissions(meta, dts['username'])
+	##user_permissions = frappe.defaults.get_user_permissions(dts['username'])
+	##user_permissions1 =frappe.db.sql("""select defkey,defvalue from tabDefaultValue where parent=%s and parenttype='User Permission'""", (dts['username']),as_dict=True)
+	##user_permissions=frappe.db.sql("select defkey,defvalue from tabDefaultValue where parent=%s " ,dts['username'],as_dict=1)  
+	#match_conditions = []
+	
+	#for item in user_permissions:
+	#    if item['defkey']==dts['tbl']:
+	#    	match_conditions.append(""" name ='{values}'""".format(values=item['defvalue']))
+	#    else:
+	#	qry="select fieldname from tabDocField where options='"+cstr(item['defkey'])+"' and parent='"+cstr(dts['tbl'])+"'"
+        #	res=frappe.db.sql(qry)
+        #	if res:	
+	#		match_conditions.append(""" {fieldname} is null or {fieldname} ='{values}'""".format(doctype=dts['tbl'],fieldname=res[0][0],values=item['defvalue']))
+	##for doctypes in user_permissions:
+	##	#print doctypes
+	##	for df in meta.get_fields_to_check_permissions(doctypes):
+	##		#print df.options
+	##		match_conditions.append("""(ifnull(`tab{doctype}`.`{fieldname}`, "")=""
+	##				or `tab{doctype}`.`{fieldname}` in ({values}))""".format(doctype=dts['tbl'],fieldname=df.fieldname,values=", ".join([('"'+v+'"') for v in user_permissions[df.options]])
+	##		))
+	#cond = ''
+	#user_roles = frappe.get_roles(dts['username'])
+	#if match_conditions   :
+	#	cond = 'where ' + ' or '.join(match_conditions)
+	#	return frappe.db.sql("""select name from `tab%s` where %s"""%(dts['tbl'], ' or '.join(match_conditions)), as_dict=1)
+	#elif ("System Manager" in user_roles ):
+	#	return frappe.db.sql("""select name from `tab%s` """%(dts['tbl']), as_dict=1)
+	#else:
+	#	return {
+	#			"status":"200",
+	#			"message":"No Records Found"
+	#	}
 
 
 @frappe.whitelist(allow_guest=True)
@@ -715,6 +740,7 @@ def task_list(data):
                 "message":"User name or Password is incorrect"
         }    
     data=frappe.db.sql("""select name ,owner as assignee,subject ,exp_end_date,status,priority,description,replace(replace(replace(SUBSTRING_INDEX(_assign,',',1),'"',''),'[',''),']','') as _assign,cell,senior_cell,pcf from `tabTask` where status in ('Open','Working' ) and exp_start_date is not null and owner='%s' or _assign like '%%%s%%' """ %(dts['username'],dts['username']),as_dict=True)
+    print(data)
     return data
 
 
@@ -729,6 +755,7 @@ def task_list_team(data):
                 "message":"User name or Password is incorrect"
         }    
     data=frappe.db.sql("""select name ,owner as assignee,subject ,exp_end_date,status,priority,description,replace(replace(replace(SUBSTRING_INDEX(_assign,',',1),'"',''),'[',''),']','') as _assign,cell,senior_cell,pcf from `tabTask` where status in ('Open','Working' ) and exp_start_date is not null """ ,as_dict=True)
+    print(data)
     return data
 
 @frappe.whitelist(allow_guest=True)
@@ -801,41 +828,73 @@ def dashboard(data):
                 "message":"User name or Password is incorrect"
             }  
         data={}
+        #new_visitor=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK)      and now()) a,(select count(name) as `Month` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,      (select count(name) as `Year` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Year) and now())c", as_dict=1)
+        #data['invities_contacts']=new_visitor
+
+        #new_born=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and         	is_new_born='Yes') a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes') b,(select count(name)         	as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes')c" , as_dict=1)
+        #data['new_converts']=new_born
+	
+        #first_timers=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() )         	a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,(select count(name) as `Year` from `tabFirst Timer` where        		creation between date_sub(now(),INTERVAL 1 Year) and now())c" , as_dict=1)
+        #data['first_timers']=first_timers
+	#membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation)) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation)) b where a.month=b.month",as_dict=1)
+        #if membership_strength:
+        #        data['membership_strength']=membership_strength
+        #else:
+        #        data['membership_strength']='0'
+        #partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull((select sum(amount) from `tabPartnership Record` where giving_or_pledge='Giving' and partnership_arms=p.partnership_arms and year(creation)=year(p.creation) and MONTH(creation)=MONTH(p.creation)),0) as `giving`,ifnull((select sum(amount) from `tabPartnership Record` where giving_or_pledge='Pledge' and partnership_arms=p.partnership_arms and year(creation)=year(p.creation) and MONTH(creation)=MONTH(p.creation)),0) as pledge,partnership_arms from `tabPartnership Record` p where creation between date_sub(now(),INTERVAL 120 day) and now() and  partnership_arms is not null group by year(creation), MONTH(creation),partnership_arms",as_dict=1)
+        #data['partnership']=partnership
+        #return data
+ 
+        # old code 
         new_visitor=frappe.db.sql("select count(name) from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) and now()")
         if new_visitor :
                 data['new_visitor']=new_visitor[0][0]
         else:
                 data['new_visitor']='0'
-
+	#new_visitor=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) \
+        #and now()) a,(select count(name) as `Month` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,\
+        #(select count(name) as `Year` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Year) and now())c", as_dict=1)
+        #data['invities_contacts']=new_visitor
 
         new_born=frappe.db.sql("select count(name) from `tabMember` where creation between date_sub(now(),INTERVAL 1 YEAR) and now() and is_new_born='Yes'")
         if new_born:
                 data['new_born']=new_born[0][0]
         else:
                 data['new_born']='0'   
+	#new_born=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and \
+        #	is_new_born='Yes') a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes') b,(select count(name) \
+        #	as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes')c" , as_dict=1)
+        #data['new_converts']=new_born
 	
         first_timers=frappe.db.sql("select count(name) from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 YEAR) and now()")
         if first_timers:
                 data['first_timers']=first_timers[0][0]
         else:
                 data['first_timers']='0'
+	#first_timers=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() ) \
+        #	a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,(select count(name) as `Year` from `tabFirst Timer` where \
+        #		creation between date_sub(now(),INTERVAL 1 Year) and now())c" , as_dict=1)
+        #data['first_timers']=first_timers
+
         visitor_last_months=frappe.db.sql("select count(name) from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) and now()")
         if visitor_last_months:
-                data['visitor_last_months']=visitor_last_months[0][0]
+               data['visitor_last_months']=visitor_last_months[0][0]
         else:
-                data['visitor_last_months']='0'
+               data['visitor_last_months']='0'
         #membership_strength=frappe.db.sql("select MONTHNAME(creation) as Month, count(name) as `New Users`,count(name) as Revisited from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_list=1)
 	membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 1 YEAR) AND now() GROUP BY YEAR(creation),MONTH(creation)) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation)) b where a.month=b.month",as_dict=1)
         if membership_strength:
-                data['membership_strength']=membership_strength
+               data['membership_strength']=membership_strength
         else:
-                data['membership_strength']='0'
+               data['membership_strength']='0'
         #partnership=frappe.db.sql("select MONTHNAME(creation) as Month, count(name) as `giving`,count(name) as pledge from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
 	partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
         if partnership:
-                data['partnership']=partnership
+               data['partnership']=partnership
         else:
-                data['partnership']='0'
+               data['partnership']='0'
+	#partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge,partnership_arms from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 120 day) and now() and  partnership_arms is not null group by year(creation), MONTH(creation),partnership_arm ",as_dict=1)
+        #data['partnership']=partnership
         return data
 
 @frappe.whitelist(allow_guest=True)
