@@ -1046,7 +1046,6 @@ def update_my_profile(data):
         return "Your profile updated successfully"
 
 
-<<<<<<< HEAD
 @frappe.whitelist(allow_guest=True)
 def get_match_conditions(doctype,username):
 	meta = frappe.get_meta(doctype)
