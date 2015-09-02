@@ -50,11 +50,7 @@ def validate_duplicate(doc,method):
 		if res:
 			frappe.throw(_("Another Church '{3}' With Church Name '{0}' and Church Code '{2}'' exist in Church Group '{1}'").format(doc.church_name, doc.church_group,doc.church_code,res[0][0]))
 
-		notify_msg = """Dear User,\n
-			Region is created with name '%s' for Group Church '%s' \n
-			\n
-			Regards,\n
-			Love World Synergy"""%(doc.church_name,doc.church_group)
+		notify_msg = """Dear User,\n\n \t\t	Church is created with name '%s' for Group Church '%s'. \n\n Regards,\n\n Love World Synergy"""%(doc.church_name,doc.church_group)
 		notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='on_creation_of_a_new_cell_pcf_church'""",as_list=1)
 		if "Email" in notify[0][0]:
 			if doc.email_id:

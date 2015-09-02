@@ -19,5 +19,9 @@ class PartnershipRecord(Document):
 		else:
 			email=frappe.db.sql("select email_id,ftv_name from `tabFirst Timer` where name='%s'"%(self.ftv))
 		if email:
-			msg="""Hello %s,<br> Thank you so much for your donation of amount '%s'. <br>Regards,<br>Verve"""%(email[0][1],self.amount)
+			msg="""Hello %s,\n 
+				Thank you so much for your donation of amount '%s'. \n
+				\n
+				Regards,\n
+				Verve"""%(email[0][1],self.amount)
 			frappe.sendmail(recipients=email[0][0], sender='gangadhar.k@indictranstech.com', content=msg, subject='Partnership Record')

@@ -398,62 +398,51 @@ def meetings_members(data):
                   "message":"User name or Password is incorrect"
                 }
         else:
-                data=frappe.db.sql("select name,member,member_name,present from `tabInvitation Member Details` where parent=%s",dts['meeting_id'],as_dict=True)
+                data=frappe.db.sql("select b.name,b.member,b.member_name,b.present from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
                 return data
 
 
 @frappe.whitelist(allow_guest=True)
 def meetings_attendance(data):
-	frappe.errprint("notify")
+	# frappe.errprint("notify")
 	"""
 	Need to add provision to send sms,push notification and emails on present and absent
 	"""
         dts=json.loads(data)
-        frappe.errprint(dts)
+        # frappe.errprint(dts)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
+        frappe.errprint(valid)
         if not valid:
                 return {
                   "status":"401",
                   "message":"User name or Password is incorrect"
                 }
         else:
-                for record in dts['records']:
-             		frappe.errprint(dts['username'])
-                        if record['present']=='0' or record['present']=='1' :
-                        		frappe.errprint(record)
-                        		frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
-                                	mail_notify_msg = """Dear User, \n
-									Attendance Record updated by Leader. Please Check. \n
-									\n
-									Records, \n
-									Love World Synergy"""
-					frappe.errprint(record['name'])
-					notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field = 'attendance_updated_by_leader'""",as_list=1)
-					# user = frappe.db.sql("""select parent from `tabDefaultValue` where defkey='Cells' and 
-					# 	defvalue in (select cell from `tabMember` where email_id='%s')"""%(dts['username']),as_list=1)
-					user = frappe.db.sql("""select phone_1 from `tabMember` where email_id='%s'"""%(dts['username']),as_list=1)
-					frappe.errprint(user)
-					if user:
-						member_details = frappe.db.sql("""select phone_1 from `tabMember` where email_id='%s'"""%(user[0][0]),as_list=1)
-						frappe.errprint(member_details)
-						if "Email" in notify[0][0]:
-							frappe.sendmail(recipients=user[0][0], content=mail_notify_msg, subject='Attendance Record Update Notification')
-						if "SMS" in notify[0][0]:
-							frappe.errprint("SMS")
-							if member_details:
-								send_sms(member_details[0], mail_notify_msg)
-						if "Push Notification" in notify[0][0]:
-							data={}
-							data['Message']=mail_notify_msg
-							gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
-							res=frappe.db.sql("select device_id from tabUser where name ='%s'" %(user[0][0]),as_list=1)
-							frappe.errprint(res)
-							if res:
-								res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
-	
-
-                return "Updated Attendance"
+        	for record in dts['records']:
+        		if record['present']=='0' or record['present']=='1' :
+        			frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
+				mail_notify_msg = """Dear User, \n\n \t\t Your Attendance is updated by Leader '%s'. Please Check. \n\n Records, \n\n Love World Synergy"""%(dts['username'])
+				membr = frappe.db.sql("select member,email_id from `tabInvitation Member Details` where name=%s",(record['name']),as_list=1)
+				frappe.errprint(membr)
+				notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field = 'attendance_updated_by_leader'""",as_list=1)
+				# user = frappe.db.sql("""select parent from `tabDefaultValue` where defkey='Cells' and 
+				# 	defvalue in (select cell from `tabMember` where email_id='%s')"""%(dts['username']),as_list=1)
+				user = frappe.db.sql("""select phone_1 from `tabMember` where email_id='%s'"""%(membr[0][1]),as_list=1)
+				if user:
+					if "Email" in notify[0][0]:
+						frappe.sendmail(recipients=membr[0][1], content=mail_notify_msg, subject='Attendance Record Update Notification')
+					if "SMS" in notify[0][0]:
+						send_sms(user[0], mail_notify_msg)
+					if "Push Notification" in notify[0][0]:
+						data={}
+						data['Message']=mail_notify_msg
+						gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
+						res=frappe.db.sql("select device_id from tabUser where name ='%s'" %(user[0][0]),as_list=1)
+						# frappe.errprint(res)
+						if res:
+							res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+			return "Updated Attendance"
 
 
 @frappe.whitelist(allow_guest=True)
@@ -481,6 +470,7 @@ def mark_my_attendance(data):
 	Member can mark their attandence of meeting
 	"""
         dts=json.loads(data)
+        frappe.errprint("hi")
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
         if not valid:
@@ -490,25 +480,17 @@ def mark_my_attendance(data):
                 }
         else:
 			for record in dts['records']:
-				frappe.errprint("hii")
-				if not record['present'] :
-					frappe.errprint("hello")
+				# print(record['present'])
+				if not record['present']:
 					record['present']=0
-				frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
-				frappe.errprint(dts['username'])
-				# frappe.errprint(data[0]['member'])
-				mail_notify_msg = """Dear User, \n
-				Attendance Record updated by Leader. Please Check. \n
-				\n
-				Records, \n
-				Love World Synergy"""
+					frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
+				mail_notify_msg = """Dear User, \n\n \t\tYour Attendance is updated by Member '%s'. Please Check. \n\n Records, \n\n Love World Synergy"""%(dts['username'])
 				notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='attendance_updated_by_member'""",as_list=1)
+				membr = frappe.db.sql("select member,email_id from `tabInvitation Member Details` where name=%s",(record['name']),as_list=1)
 				user = frappe.db.sql("""select parent from `tabDefaultValue` where defkey='Cells' and 
-					defvalue in (select cell from `tabMember` where email_id='%s')"""%(dts['username']),as_list=1)
-				frappe.errprint(user)
+					defvalue in (select cell from `tabMember` where email_id='%s')"""%(membr[0][1]),as_list=1)
 				if user:
 					member_details = frappe.db.sql("""select phone_1 from `tabMember` where email_id='%s'"""%(user[0][0]),as_list=1)
-					# frappe.errprint(member_details)
 					if "Email" in notify[0][0]:
 						frappe.sendmail(recipients=user[0][0], content=mail_notify_msg, subject='Attendance Record Update Notification')
 					if "SMS" in notify[0][0]:
@@ -792,40 +774,27 @@ def dashboard(data):
                 "message":"User name or Password is incorrect"
             }  
         data={}
-        new_visitor=frappe.db.sql("select count(name) from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) and now()")
-        if new_visitor :
-                data['new_visitor']=new_visitor[0][0]
-        else:
-                data['new_visitor']='0'
+        new_visitor=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) \
+        and now()) a,(select count(name) as `Month` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,\
+        (select count(name) as `Year` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Year) and now())c", as_dict=1)
+        data['invities_contacts']=new_visitor
 
-        new_born=frappe.db.sql("select count(name) from `tabMember` where creation between date_sub(now(),INTERVAL 1 YEAR) and now() and is_new_born='Yes'")
-        if new_born:
-                data['new_born']=new_born[0][0]
-        else:
-                data['new_born']='0'   
+        new_born=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and \
+        	is_new_born='Yes') a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes') b,(select count(name) \
+        	as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes')c" , as_dict=1)
+        data['new_converts']=new_born
 	
-        first_timers=frappe.db.sql("select count(name) from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 YEAR) and now()")
-        if first_timers:
-                data['first_timers']=first_timers[0][0]
-        else:
-                data['first_timers']='0'
-        visitor_last_months=frappe.db.sql("select count(name) from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) and now()")
-        if visitor_last_months:
-                data['visitor_last_months']=visitor_last_months[0][0]
-        else:
-                data['visitor_last_months']='0'
-        #membership_strength=frappe.db.sql("select MONTHNAME(creation) as Month, count(name) as `New Users`,count(name) as Revisited from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_list=1)
-	membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 1 YEAR) AND now() GROUP BY YEAR(creation),MONTH(creation)) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation)) b where a.month=b.month",as_dict=1)
+        first_timers=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() ) \
+        	a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,(select count(name) as `Year` from `tabFirst Timer` where \
+        		creation between date_sub(now(),INTERVAL 1 Year) and now())c" , as_dict=1)
+        data['first_timers']=first_timers
+	membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation)) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation)) b where a.month=b.month",as_dict=1)
         if membership_strength:
                 data['membership_strength']=membership_strength
         else:
                 data['membership_strength']='0'
-        #partnership=frappe.db.sql("select MONTHNAME(creation) as Month, count(name) as `giving`,count(name) as pledge from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
-	partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
-        if partnership:
-                data['partnership']=partnership
-        else:
-                data['partnership']='0'
+        partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull((select sum(amount) from `tabPartnership Record` where giving_or_pledge='Giving' and partnership_arms=p.partnership_arms and year(creation)=year(p.creation) and MONTH(creation)=MONTH(p.creation)),0) as `giving`,ifnull((select sum(amount) from `tabPartnership Record` where giving_or_pledge='Pledge' and partnership_arms=p.partnership_arms and year(creation)=year(p.creation) and MONTH(creation)=MONTH(p.creation)),0) as pledge,partnership_arms from `tabPartnership Record` p where creation between date_sub(now(),INTERVAL 120 day) and now() and  partnership_arms is not null group by year(creation), MONTH(creation),partnership_arms",as_dict=1)
+        data['partnership']=partnership
         return data
 
 @frappe.whitelist(allow_guest=True)
@@ -1045,12 +1014,7 @@ def send_notification_member_absent():
 				and (ur.role='Cell Leader' or ur.role='Senior Cell Leader') and (dv.defkey='Cells' or dv.defkey='Senior Cells') and (dv.defvalue='%s' or dv.defvalue='%s')"""%(sc[0],cc[0]),as_list=1)
 			if memeber_list and cell_leader:
 				for leaders in cell_leader :
-					msg="""Hello '%s',\n
-					Following members have not attended last three meetings \n
-					%s \n
-					\n
-					Regards,\n
-					Love world Synergy"""%(leaders[1]," \n".join([" \n \t\t\t\t\t\t Member Id : '%s'  Member Name : '%s'" % (k,v) for k,v in memeber_list.iteritems()]) )
+					msg="""Hello '%s',\n\n Following members have not attended last three meetings \n\n %s \n\n Regards,\n\n Love world Synergy"""%(leaders[1]," \n".join([" \n \t\t\t\t\t\t Member Id : '%s'  Member Name : '%s'" % (k,v) for k,v in memeber_list.iteritems()]) )
 					abc = [" \n Member Id : '%s'  Member Name : '%s'" % (k,v) for k,v in memeber_list.iteritems()]
 					frappe.errprint(msg)
 					phone = frappe.db.sql("select phone_1 from `tabMember` where email_id='%s'"%(leaders[0]))
@@ -1058,9 +1022,9 @@ def send_notification_member_absent():
 					# frappe.errprint(phone[0][0])
 					if "Email" in notify[0][0]:
 						frappe.sendmail(recipients=leaders[0], content=msg, subject='Absent Member Notification')
-					# if "SMS" in notify[0][0]:
-					# 	if phone:
-					# 		send_sms(phone[0], msg)
+					if "SMS" in notify[0][0]:
+						if phone:
+							send_sms(phone[0], msg)
 					if "Push Notification" in notify[0][0]:
 						data={}
 						data['Message']=msg
@@ -1104,13 +1068,9 @@ def send_notification_cell_meeting_not_hold():
 			ur.role='Senior Cell Leader') and (dv.defkey='PCFs' or dv.defkey='Senior Cells') and \
 			(dv.defvalue='%s' or dv.defvalue='%s') "%(res[0][1],res[0][2]))
 		for recipents in cell_leader :
-			msg="""Hello '%s',\n
-			The cell meeting is not held in last week for cell '%s' \n
-			\n
-			Regards,\n
-			Love world Synergy"""%(recipents[1],' , '.join([x[0] for x in res]) )
-			# frappe.sendmail(recipients=recipents[0], content=msg, subject='Cell Meeting not held in last week')
-			# frappe.sendmail(recipients="email.kadam@gmail.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
+			msg="""Hello '%s',\n\n \t\t The cell meeting is not held in last week for cell '%s'. \n\n Regards,\n\n Love world Synergy"""%(recipents[1],' , '.join([x[0] for x in res]) )
+			frappe.sendmail(recipients=recipents[0], content=msg, subject='Cell Meeting not held in last week')
+			frappe.sendmail(recipients="email.kadam@gmail.com", sender='gangadhar.k@indictranstech.com', content=msg, subject='Cell Meeting not held in last week')
 	return "Sent cell meeting not held emails"
 
 

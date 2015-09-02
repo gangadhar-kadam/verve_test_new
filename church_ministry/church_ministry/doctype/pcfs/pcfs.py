@@ -63,11 +63,7 @@ def validate_duplicate(doc,method):
 		if res:
 			frappe.throw(_("Another PCF '{0}' With PCF Name '{1}' and PCF Code '{2}' exist in Church '{3}'..!").format(res[0][0],doc.pcf_name,doc.pcf_code,doc.church))
 
-		notify_msg = """Dear User,\n
-			Region is created with name '%s' for Church '%s' \n
-			\n
-			Regards,\n
-			Love World Synergy"""%(doc.pcf_name,doc.church)
+		notify_msg = """Dear User,\n\n \t\t	PCF is created with name '%s' for Church '%s'. \n\n Regards,\n\n Love World Synergy"""%(doc.pcf_name,doc.church)
 		notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='on_creation_of_a_new_cell_pcf_church'""",as_list=1)
 		if "Email" in notify[0][0]:
 			if doc.contact_email_id:

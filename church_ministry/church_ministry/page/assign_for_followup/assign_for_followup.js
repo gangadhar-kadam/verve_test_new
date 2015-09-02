@@ -134,7 +134,7 @@ var assign = function(memberid,ftv){
 	        callback: function(r) {
 	            if (r.message=='Done'){
 	                alert("The Member '"+memberid+"' is successfully assigned to First Timer '"+ftv+"'");
-	                //location.reload();
+	                location.reload();
 	            }
 	            else{
 	                alert("Invalid Assignment ");
