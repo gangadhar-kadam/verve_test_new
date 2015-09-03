@@ -103,7 +103,7 @@ frappe.assign = Class.extend({
 							$(this).appendTo($('.contact_details'));
 						}
 						else{
-							msgprint("User '"+$(this).find('td:nth-child(2)').text()+"' already in least..")
+							msgprint("User '"+$(this).find('td:nth-child(2)').text()+"' already in list..")
 						}
 					}
 				});

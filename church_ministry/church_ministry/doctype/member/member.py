@@ -111,6 +111,10 @@ def validate_birth(doc,method):
 
 @frappe.whitelist(allow_guest=True)
 def get_attendance_points(args):
+	send_notification_cell_meeting_not_hold()
+	task_esclate()
+	send_notification_member_absent()
+
 	frappe.errprint("In get_attendance_points")
 	"""
 	Get employee id and return points according to his attendance assumed the working days are 365 and points are 100
@@ -1105,9 +1109,7 @@ def send_notification_member_absent():
 						res1=frappe.db.sql("select device_id from tabUser where name ='%s'" %(leaders[0]),as_list=1)
 						if res1:
 							res1 = gcm.json_request(registration_ids=res1, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
-	send_notification_cell_meeting_not_hold()
-	task_esclate()
-	get_attendance_points()
+	
 	return "sent emails"
 
 
