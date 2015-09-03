@@ -19,12 +19,12 @@ def validate_duplicate(doc,method):
 		if res:
 			frappe.throw(_("Zone '{0}' already created with same Zone Name '{1}' or Zone Code '{2}' for Region '{3}'..!").format(res[0][0],doc.zone_name,doc.zone_code,doc.region))
 
-		notify_msg = """Dear User,\n\n \t\t Zone is created with name '%s' for region '%s'. \n\n	Regards,\n\n Love World Synergy"""%(doc.zone_name,doc.region)
+		notify_msg = """Dear User,\n\n Zone is created with name '%s' for region '%s'.\n\nRegards,\n\n Love World Synergy"""%(doc.zone_name,doc.region)
 		notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='on_creation_of_a_new_cell_pcf_church'""",as_list=1)
 		if notify:
 			if "Email" in notify[0][0]:
 				if doc.contact_email_id:
-					frappe.sendmail(recipients=doc.contact_email_id, content=notify_msg, subject='Region Creation Notification')
+					frappe.sendmail(recipients=doc.contact_email_id, content=notify_msg, subject='Zone Creation Notification')
 			if "SMS" in notify[0][0]:
 				if doc.contact_phone_no:
 					send_sms(doc.contact_phone_no, notify_msg)

@@ -17,7 +17,7 @@ def validate_duplicate(doc,method):
 		if res:
 			frappe.throw(_("Another Region '{0}' With Region Name '{1}' and Region Code '{2}' exist ..!").format(res[0][0],doc.region_name,doc.region_code))
 
-		notify_msg = """Dear User,\n\n \t\t Region is created with name '%s' . \n\nRegards,\n\nLove World Synergy"""%(doc.region_name)
+		notify_msg = """Dear User,\n\n Region is created with name '%s' . \n\nRegards,\n\nLove World Synergy"""%(doc.region_name)
 
 		notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='on_creation_of_a_new_cell_pcf_church'""",as_list=1)
 		if notify:
