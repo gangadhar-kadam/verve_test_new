@@ -1119,7 +1119,7 @@ def send_notification_cell_meeting_not_hold():
 	for sc in senior_cell_list:
 		res=frappe.db.sql("select name,senior_cell,pcf from tabCells where name not in (select distinct(cell) \
 			from `tabAttendance Record` where attendance_type='Meeting attendance' and creation BETWEEN \
-			DATE_SUB(NOW(), INTERVAL 7 DAY)  AND DATE_SUB(NOW(), INTERVAL 15 DAY)) and senior_cell='%s'"%(sc[0]),as_list=1,debug=1)
+			DATE_SUB(NOW(), INTERVAL 7 DAY)  AND DATE_SUB(NOW(), INTERVAL 15 DAY)) and senior_cell='%s'"%(sc[0]),as_list=1)
 		frappe.errprint(res)
 		cell_leader=frappe.db.sql("select a.name,a.first_name ,dv.defvalue,dv.defkey from tabUser a,tabUserRole ur,\
 			tabDefaultValue dv where a.name=ur.parent and a.name=dv.parent and (ur.role='PCF Leader' or \
