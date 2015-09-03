@@ -20,19 +20,20 @@ def validate_duplicate(doc,method):
 		notify_msg = """Dear User,\n\n \t\t Region is created with name '%s' . \n\nRegards,\n\nLove World Synergy"""%(doc.region_name)
 
 		notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='on_creation_of_a_new_cell_pcf_church'""",as_list=1)
-		if "Email" in notify[0][0]:
-			if doc.contact_email_id:
-				frappe.sendmail(recipients=doc.contact_email_id, content=notify_msg, subject='Region Creation Notification')
-		if "SMS" in notify[0][0]:
-			if doc.contact_phone_no:
-				send_sms(doc.contact_phone_no, notify_msg)
-		if "Push Notification" in notify[0][0]:
-			data={}
-			data['Message']=notify_msg
-			gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
-			res1=frappe.db.sql("select device_id from tabUser where name ='%s'" %(doc.contact_email_id),as_list=1)
-			frappe.errprint(res1)
-			if res1:
-				res1 = gcm.json_request(registration_ids=res1, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+		if notify:
+			if "Email" in notify[0][0]:
+				if doc.contact_email_id:
+					frappe.sendmail(recipients=doc.contact_email_id, content=notify_msg, subject='Region Creation Notification')
+			if "SMS" in notify[0][0]:
+				if doc.contact_phone_no:
+					send_sms(doc.contact_phone_no, notify_msg)
+			if "Push Notification" in notify[0][0]:
+				data={}
+				data['Message']=notify_msg
+				gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
+				res1=frappe.db.sql("select device_id from tabUser where name ='%s'" %(doc.contact_email_id),as_list=1)
+				frappe.errprint(res1)
+				if res1:
+					res1 = gcm.json_request(registration_ids=res1, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
 
 
