@@ -94,12 +94,12 @@ def validate_duplicate(doc,method):
 		if res:
 			frappe.throw(_("Another Cell '{0}' With Cell Name '{1}' and Cell Code '{2}' exist in Senior Cell '{3}'..!").format(res[0][0],doc.cell_name,doc.cell_code,doc.senior_cell))
 
-		notify_msg = """Dear User,\n\n \t\t	Cell is created with name '%s' for Senior Cell '%s'. \n\n Regards,\n\n Love World Synergy"""%(doc.cell_name,doc.senior_cell)
+		notify_msg = """Dear User,\n\n Cell is created with name '%s' for Senior Cell '%s'. \n\n Regards,\n\n Love World Synergy"""%(doc.cell_name,doc.senior_cell)
 		notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='on_creation_of_a_new_cell_pcf_church'""",as_list=1)
 		if notify:
 			if "Email" in notify[0][0]:
 				if doc.contact_email_id:
-					frappe.sendmail(recipients=doc.contact_email_id, content=notify_msg, subject='Region Creation Notification')
+					frappe.sendmail(recipients=doc.contact_email_id, content=notify_msg, subject='Cell Creation Notification')
 			if "SMS" in notify[0][0]:
 				if doc.contact_phone_no:
 					send_sms(doc.contact_phone_no, notify_msg)
