@@ -119,7 +119,7 @@ def get_attendance_points(args):
 	"""
 	Get employee id and return points according to his attendance assumed the working days are 365 and points are 100
 	"""
-	frappe.errprint("deleting documents")
+	# frappe.errprint("deleting documents")
 	frappe.delete_doc('DocType','Employee task Details')
 	frappe.errprint("deleted Call Center Details")
 	present,working=0,0
@@ -128,9 +128,11 @@ def get_attendance_points(args):
 	if holidays:
 		global working
 		working=365-holidays[0][0]
+		frappe.errprint(working)
 	if total_att:
 		global present
 		present =total_att[0][0]
+		frappe.errprint(present)
 	points=(100.00*present)/working
 	return round(points,2)
 
@@ -1098,6 +1100,7 @@ def send_notification_member_absent():
 					notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='member_is_absent_in_meeting'""",as_list=1)
 					# frappe.errprint(phone[0][0])
 					if "Email" in notify[0][0]:
+						frappe.errprint("absent in 3 meetings")
 						frappe.sendmail(recipients=leaders[0], content=msg, subject='Absent Member Notification')
 					if "SMS" in notify[0][0]:
 						if phone:

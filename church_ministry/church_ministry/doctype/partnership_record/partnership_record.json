@@ -600,7 +600,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-08-31 18:18:17.912751", 
+ "modified": "2015-09-04 13:07:24.087602", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Record", 
@@ -633,6 +633,7 @@
    "read": 1, 
    "report": 1, 
    "role": "Partnership Rep", 
+   "submit": 1, 
    "write": 1
   }, 
   {
