@@ -30,7 +30,7 @@
   {
    "allow_on_submit": 0, 
    "fieldname": "date", 
-   "fieldtype": "Datetime", 
+   "fieldtype": "Date", 
    "hidden": 0, 
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
@@ -92,7 +92,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 1, 
- "modified": "2015-08-17 17:15:16.105655", 
+ "modified": "2015-09-04 11:35:31.510945", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Call Center daily act", 

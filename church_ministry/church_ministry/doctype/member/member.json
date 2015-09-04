@@ -998,7 +998,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-08-21 11:44:19.823021", 
+ "modified": "2015-09-04 12:28:57.708738", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
@@ -1130,31 +1130,12 @@
    "write": 1
   }, 
   {
-   "amend": 0, 
-   "apply_user_permissions": 1, 
-   "cancel": 0, 
-   "create": 1, 
-   "delete": 0, 
-   "email": 1, 
-   "export": 1, 
-   "import": 1, 
-   "permlevel": 0, 
-   "print": 0, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Cell Leader", 
-   "set_user_permissions": 0, 
-   "share": 1, 
-   "submit": 0, 
-   "user_permission_doctypes": "[\"Cells\"]", 
-   "write": 1
-  }, 
-  {
    "apply_user_permissions": 1, 
    "permlevel": 0, 
    "read": 1, 
    "report": 1, 
    "role": "Member", 
+   "set_user_permissions": 1, 
    "write": 1
   }, 
   {
@@ -1228,16 +1209,32 @@
    "role": "Member"
   }, 
   {
+   "apply_user_permissions": 1, 
    "permlevel": 0, 
    "read": 1, 
    "report": 1, 
    "role": "Partnership Rep"
   }, 
   {
+   "apply_user_permissions": 1, 
    "permlevel": 0, 
    "read": 1, 
    "report": 1, 
    "role": "Welfare user"
+  }, 
+  {
+   "apply_user_permissions": 1, 
+   "create": 1, 
+   "email": 1, 
+   "export": 1, 
+   "import": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "report": 1, 
+   "role": "Cell Leader", 
+   "set_user_permissions": 1, 
+   "share": 1, 
+   "write": 1
   }
  ], 
  "read_only": 0, 
