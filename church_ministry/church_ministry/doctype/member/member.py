@@ -111,14 +111,10 @@ def validate_birth(doc,method):
 
 @frappe.whitelist(allow_guest=True)
 def get_attendance_points(args):
-	send_notification_cell_meeting_not_hold()
-	task_esclate()
-	send_notification_member_absent()
-
-	frappe.errprint("In get_attendance_points")
 	"""
 	Get employee id and return points according to his attendance assumed the working days are 365 and points are 100
 	"""
+	frappe.errprint("In get_attendance_points")
 	# frappe.errprint("deleting documents")
 	frappe.delete_doc('DocType','Employee task Details')
 	frappe.errprint("deleted Call Center Details")
@@ -764,7 +760,7 @@ def task_list_team(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }    
-    data=frappe.db.sql("""select name ,owner as assignee,subject ,exp_end_date,status,priority,description,replace(replace(replace(SUBSTRING_INDEX(_assign,',',1),'"',''),'[',''),']','') as _assign,cell,senior_cell,pcf from `tabTask` where status in ('Open','Working' ) and exp_start_date is not null """ ,as_dict=True)
+    data=frappe.db.sql("""select a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.status,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b  where a.status in ('Open','Working' )  and a.name=b.reference_name and a.exp_start_date is not null """ ,as_dict=True)
     print(data)
     return data
 

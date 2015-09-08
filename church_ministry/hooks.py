@@ -115,26 +115,31 @@ doc_events = {
 }
 
 
-# Scheduled Tasks
-# ---------------
+Scheduled Tasks
+---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"church_ministry.tasks.all"
-# 	],
-# 	"daily": [
-# 		"church_ministry.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"church_ministry.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"church_ministry.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"church_ministry.tasks.monthly"
-# 	]
-# }
+scheduler_events = {
+	"all": [
+		"church_ministry.church_ministry.doctype.member.member.task_esclate",
+		"church_ministry.church_ministry.doctype.member.member.send_notification_member_absent",
+		"church_ministry.church_ministry.doctype.member.member.send_notification_cell_meeting_not_hold"
+	]
+	# "daily": [
+	# 	"church_ministry.church_ministry.doctype.member.member.task_esclate",
+	# 	"church_ministry.church_ministry.doctype.member.member.send_notification_member_absent",
+	# 	"church_ministry.church_ministry.doctype.member.member.send_notification_cell_meeting_not_hold",
+
+	#  ]#,
+	# "hourly": [
+	# 	"church_ministry.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"church_ministry.tasks.weekly"
+	# ]
+	# "monthly": [
+	# 	"church_ministry.tasks.monthly"
+	# ]
+}
 
 # Testing
 # -------
