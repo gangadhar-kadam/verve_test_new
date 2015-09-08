@@ -115,8 +115,8 @@ doc_events = {
 }
 
 
-Scheduled Tasks
----------------
+#Scheduled Tasks
+#---------------
 
 scheduler_events = {
 	"all": [
