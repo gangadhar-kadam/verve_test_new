@@ -32,8 +32,12 @@ def validate_duplicate(doc,method):
 				data['Message']=notify_msg
 				gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
 				res1=frappe.db.sql("select device_id from tabUser where name ='%s'" %(doc.contact_email_id),as_list=1)
-				frappe.errprint(res1)
+				# frappe.errprint(res1)
 				if res1:
 					res1 = gcm.json_request(registration_ids=res1, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
 
-
+		ofc = frappe.new_doc("Offices")
+		ofc.office_id = doc.name
+		ofc.office_name = doc.region_name
+		ofc.office_code = doc.region_code
+		ofc.insert()

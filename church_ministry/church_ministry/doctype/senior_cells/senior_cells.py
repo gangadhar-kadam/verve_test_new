@@ -97,4 +97,4 @@ def validate_duplicate(doc,method):
 				if res1:
 					res1 = gcm.json_request(registration_ids=res1, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
 
-
+		

@@ -69,4 +69,8 @@ def validate_duplicate(doc,method):
 				if res1:
 					res1 = gcm.json_request(registration_ids=res1, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
 
-
+		ofc = frappe.new_doc("Offices")
+		ofc.office_id = doc.name
+		ofc.office_name = doc.church_group
+		ofc.office_code = doc.church_group_code
+		ofc.insert()
