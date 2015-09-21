@@ -11,11 +11,9 @@ from gcm import GCM
 class Zones(Document):
 	pass
 
-
 def validate_duplicate(doc,method):
 	if doc.get("__islocal"):
 		res=frappe.db.sql("select name from `tabZones` where (zone_name='%s' or zone_code='%s') and region='%s'"%(doc.zone_name,doc.zone_code,doc.region))
-		frappe.errprint(res)
 		if res:
 			frappe.throw(_("Zone '{0}' already created with same Zone Name '{1}' or Zone Code '{2}' for Region '{3}'..!").format(res[0][0],doc.zone_name,doc.zone_code,doc.region))
 
@@ -33,7 +31,10 @@ def validate_duplicate(doc,method):
 				data['Message']=notify_msg
 				gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
 				res1=frappe.db.sql("select device_id from tabUser where name ='%s'" %(doc.contact_email_id),as_list=1)
-				frappe.errprint(res1)
 				if res1:
 					res1 = gcm.json_request(registration_ids=res1, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
-
+		ofc = frappe.new_doc("Offices")
+		ofc.office_id = doc.name
+		ofc.office_name = doc.zone_name
+		ofc.office_code = doc.zone_code
+		ofc.insert()

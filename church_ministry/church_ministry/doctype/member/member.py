@@ -114,21 +114,17 @@ def get_attendance_points(args):
 	"""
 	Get employee id and return points according to his attendance assumed the working days are 365 and points are 100
 	"""
-	frappe.errprint("In get_attendance_points")
 	# frappe.errprint("deleting documents")
 	frappe.delete_doc('DocType','Employee task Details')
-	frappe.errprint("deleted Call Center Details")
 	present,working=0,0
 	total_att=frappe.db.sql("select count(name) as attendance from `tabAttendance` where status='Present' and fiscal_year=%(fiscal_year)s and employee=%(user)s", {"user":args,"fiscal_year":get_fiscal_year(nowdate())[0]},as_list=True)
 	holidays=frappe.db.sql("select count(a.name) from tabHoliday a,`tabHoliday List` b where b.name=a.parent and fiscal_year=EXTRACT(YEAR FROM CURDATE()) and is_default=1")
 	if holidays:
 		global working
 		working=365-holidays[0][0]
-		frappe.errprint(working)
 	if total_att:
 		global present
 		present =total_att[0][0]
-		frappe.errprint(present)
 	points=(100.00*present)/working
 	return round(points,2)
 
@@ -590,7 +586,7 @@ def event_list(data):
     from frappe.desk.doctype.event.event import get_permission_query_conditions
     qry=" select name as event_name,address,starts_on as event_date,subject from tabEvent where "+get_permission_query_conditions(dts['username'])
     #return qry
-    data=frappe.db.sql(qry,as_dict=True)
+    data=frappe.db.sql(qry,as_dict=True,debug=1)
     return data
 
         
@@ -745,8 +741,7 @@ def task_list(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }    
-    data=frappe.db.sql("""select name ,owner as assignee,subject ,exp_end_date,status,priority,description,replace(replace(replace(SUBSTRING_INDEX(_assign,',',1),'"',''),'[',''),']','') as _assign,cell,senior_cell,pcf from `tabTask` where status in ('Open','Working' ) and exp_start_date is not null and owner='%s' or _assign like '%%%s%%' """ %(dts['username'],dts['username']),as_dict=True)
-    print(data)
+    data=frappe.db.sql("""select  a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.status,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name and a.exp_start_date is not null and a.owner='%s' or _assign='%s' """ %(dts['username'],dts['username']),as_dict=True)
     return data
 
 
@@ -760,8 +755,7 @@ def task_list_team(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }    
-    data=frappe.db.sql("""select a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.status,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b  where a.status in ('Open','Working' )  and a.name=b.reference_name and a.exp_start_date is not null """ ,as_dict=True)
-    print(data)
+    data=frappe.db.sql("""select  a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.status,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name and a.exp_start_date is not null and a.owner='%s' or b.assigned_by='%s' """ %(dts['username'],dts['username']),as_dict=True)
     return data
 
 @frappe.whitelist(allow_guest=True)
@@ -834,27 +828,29 @@ def dashboard(data):
                 "message":"User name or Password is incorrect"
             }  
         data={}
-        new_visitor=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) \
-        and now()) a,(select count(name) as `Month` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,\
-        (select count(name) as `Year` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Year) and now())c", as_dict=1)
+        dates={}
+
+        dates['Week1']='Week : 2'
+        dates['Month1']='Month : Sep'
+        dates['Year1']='Year : 2015'
+        data['dates']=dates
+
+        new_visitor=frappe.db.sql("select a.`Week` as `Week1`,b.`Month` as `Month1`,c.`Year` as `Year1` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) and now()) a,(select count(name) as `Month` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,     (select count(name) as `Year` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Year) and now())c", as_dict=1)
         data['invities_contacts']=new_visitor
 
-        new_born=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and \
-        	is_new_born='Yes') a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes') b,(select count(name) \
-        	as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes')c" , as_dict=1)
+        new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and is_new_born='Yes') a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes') b,(select count(name)       	as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes')c" , as_dict=1)
         data['new_converts']=new_born
 	
-        first_timers=frappe.db.sql("select a.`Week`,b.`Month`,c.`Year` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() ) \
-        	a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,(select count(name) as `Year` from `tabFirst Timer` where \
-        		creation between date_sub(now(),INTERVAL 1 Year) and now())c" , as_dict=1)
+        first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() ) a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,(select count(name) as `Year` from `tabFirst Timer` where         		creation between date_sub(now(),INTERVAL 1 Year) and now())c" , as_dict=1)
         data['first_timers']=first_timers
 	membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation)) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation)) b where a.month=b.month",as_dict=1)
         if membership_strength:
                data['membership_strength']=membership_strength
         else:
                 data['membership_strength']='0'
-        partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull((select sum(amount) from `tabPartnership Record` where giving_or_pledge='Giving' and partnership_arms=p.partnership_arms and year(creation)=year(p.creation) and MONTH(creation)=MONTH(p.creation)),0) as `giving`,ifnull((select sum(amount) from `tabPartnership Record` where giving_or_pledge='Pledge' and partnership_arms=p.partnership_arms and year(creation)=year(p.creation) and MONTH(creation)=MONTH(p.creation)),0) as pledge,partnership_arms from `tabPartnership Record` p where creation between date_sub(now(),INTERVAL 120 day) and now() and  partnership_arms is not null group by year(creation), MONTH(creation),partnership_arms",as_dict=1)
+        partnership=partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
         data['partnership']=partnership
+
         return data
 
 @frappe.whitelist(allow_guest=True)
@@ -882,6 +878,22 @@ def partnership_arm_details(data):
         }
     data=frappe.db.sql("select name,partnership_arms,ministry_year,is_member,member,date,church,giving_or_pledge,amount from `tabPartnership Record`  where name='%s'" %(dts['name']) ,as_dict=True)
     return data
+
+
+@frappe.whitelist(allow_guest=True)
+def update_partnership_arm(data):
+    dts=json.loads(data)
+    qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+    valid=frappe.db.sql(qry)
+    if not valid:
+        return {
+                "status":"401",
+                "message":"User name or Password is incorrect"
+        }
+    frappe.db.sql("update `tabPartnership Record` set giving_or_pledge='%s',amount='%s' where name='%s'" %(dts['giving_or_pledge'],dts['amount'],dts['name']) ,as_dict=True)
+    return "The Partnership Record '" +cstr(dts['name'])+ "' Is updated successfully."
+
+
 
 
 
