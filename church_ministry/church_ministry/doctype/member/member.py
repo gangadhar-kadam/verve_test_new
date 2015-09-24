@@ -402,7 +402,8 @@ def meetings_list(data):
                   "message":"User name or Password is incorrect"
                 }
         else:
-               qry="select name as meeting_name,meeting_subject , from_date as meeting_date ,venue from `tabAttendance Record` where attendance_type='Meeting Attendance'"
+	       match_conditions,cond=get_match_conditions('Attendance Record',dts['username'])        	
+               qry="select name as meeting_name,meeting_subject , from_date as meeting_date ,venue from `tabAttendance Record` where attendance_type='Meeting Attendance' %s "%( cond)
                data=frappe.db.sql(qry,as_dict=True)
 	       #print data
                return data
@@ -544,7 +545,11 @@ def get_match_conditions(doctype,username):
         	res=frappe.db.sql(qry)
         	if res:	
 			match_conditions.append(""" {fieldname} is null or {fieldname} ='{values}'""".format(doctype=doctype,fieldname=res[0][0],values=item['defvalue']))
-	return match_conditions
+	cond=''		
+	if match_conditions :
+		cond =  ' or '.join(match_conditions) 
+		cond=' and '+cond
+	return match_conditions,cond
 
 
 @frappe.whitelist(allow_guest=True)
@@ -829,28 +834,45 @@ def dashboard(data):
             }  
         data={}
         dates={}
+        day=6
+        year, month, day=nowdate().split('-')
+        last_week=cint(day)/7
 
-        dates['Week1']='Week : 2'
-        dates['Month1']='Month : Sep'
-        dates['Year1']='Year : 2015'
+        if cint(last_week)<= 0:
+        	last_week=4
+
+        monthDict={1:'Jan', 2:'Feb', 3:'Mar', 4:'Apr', 5:'May', 6:'Jun', 7:'Jul', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 12:'Dec'}
+        dates['Week1']='Week : '+cstr(last_week)
+        dates['Month1']='Month : '+cstr(monthDict[int(month)])
+        dates['Year1']='Year : '+cstr(year)
         data['dates']=dates
 
-        new_visitor=frappe.db.sql("select a.`Week` as `Week1`,b.`Month` as `Month1`,c.`Year` as `Year1` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) and now()) a,(select count(name) as `Month` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,     (select count(name) as `Year` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Year) and now())c", as_dict=1)
+        match_conditions,cond=get_match_conditions('Invitees and Contacts',dts['username'])
+        
+        new_visitor=frappe.db.sql("select a.`Week` as `Week1`,b.`Month` as `Month1`,c.`Year` as `Year1` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() %s ) a,(select count(name) as `Month` from `tabInvitees and Contacts` where  creation between date_sub(now(),INTERVAL 1 Month) and now() %s ) b,(select count(name) as `Year` from `tabInvitees and Contacts` where creation between date_sub(now(),INTERVAL 1 Year) and now() %s)c"%( cond,cond,cond), as_dict=1)
         data['invities_contacts']=new_visitor
-
-        new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and is_new_born='Yes') a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes') b,(select count(name)       	as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes')c" , as_dict=1)
+        
+        match_conditions,cond=get_match_conditions('First Timer',dts['username'])
+        
+        new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes' %s )c" %( cond,cond,cond), as_dict=1)
         data['new_converts']=new_born
-	
-        first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() ) a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,(select count(name) as `Year` from `tabFirst Timer` where         		creation between date_sub(now(),INTERVAL 1 Year) and now())c" , as_dict=1)
+	    
+        first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() %s ) a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() %s ) b,(select count(name) as `Year` from `tabFirst Timer` where         		creation between date_sub(now(),INTERVAL 1 Year) and now() %s )c" %( cond,cond,cond), as_dict=1)
         data['first_timers']=first_timers
-	membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation)) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation)) b where a.month=b.month",as_dict=1)
+
+        match_conditions,cond=get_match_conditions('Member',dts['username'])
+
+	membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation) %s ) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation) %s ) b where a.month=b.month"%(cond,cond) ,as_dict=1)
         if membership_strength:
                data['membership_strength']=membership_strength
         else:
                 data['membership_strength']='0'
-        partnership=partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
-        data['partnership']=partnership
 
+        match_conditions,cond=get_match_conditions('Partnership Record',dts['username'])
+
+        partnership=partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 1 Year) and now() %s group by year(creation), MONTH(creation)"%(cond),as_dict=1)
+        data['partnership']=partnership
+         
         return data
 
 @frappe.whitelist(allow_guest=True)
@@ -1060,22 +1082,6 @@ def update_my_profile(data):
         obj1.save(ignore_permissions=True)
         return "Your profile updated successfully"
 
-
-@frappe.whitelist(allow_guest=True)
-def get_match_conditions(doctype,username):
-	meta = frappe.get_meta(doctype)
-	role_permissions = frappe.permissions.get_role_permissions(meta, username)
-	user_permissions=frappe.db.sql("select defkey,defvalue from tabDefaultValue where parent=%s ",username,as_dict=1)  
-	match_conditions = []	
-	for item in user_permissions:
-	    if item['defkey']==doctype:
-	    	match_conditions.append(""" name ='{values}'""".format(values=item['defvalue']))
-	    else:
-		qry="select fieldname from tabDocField where options='"+cstr(item['defkey'])+"' and parent='"+cstr(doctype)+"'"
-        	res=frappe.db.sql(qry)
-        	if res:	
-			match_conditions.append(""" {fieldname} is null or {fieldname} ='{values}'""".format(doctype=doctype,fieldname=res[0][0],values=item['defvalue']))
-	return match_conditions
 
 
 @frappe.whitelist(allow_guest=True)
