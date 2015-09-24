@@ -104,7 +104,14 @@ def get_data():
 					"label": _("Dashboard"),
 					"icon": "icon-bar-chart",
 					"description": _("Dashboard")
-				},			
+				},
+				 {
+                                        "type": "page",
+                                        "name": "audio-meeting",
+                                        "label": _("Web audio meeting"),
+                                        "icon": "icon-bar-chart",
+                                        "description": _("Audio meeting")
+                                },			
 				{
 					"type": "page",
 					"name": "data-import-tool",
