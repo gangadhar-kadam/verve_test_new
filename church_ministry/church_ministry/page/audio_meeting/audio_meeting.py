@@ -14,13 +14,17 @@ def process(data):
 		import requests
 		import xmltodict ,json
 		req1 = requests.get('http://88.198.52.49:5080/openmeetings/services/UserService/getSession')
-		req2="http://88.198.52.49:5080/openmeetings/services/UserService/loginUser?SID="+req1.text.split('ax28:session_id>')[1][:-2]+"&username="+result[0][0].replace(' ','')+"&userpass="+result[0][0].replace(' ','')
+		#frappe.errprint(req1.text)
+		frappe.errprint(req1.text.split('ax23:session_id>')[1][:-2])
+		req2="http://88.198.52.49:5080/openmeetings/services/UserService/loginUser?SID="+req1.text.split('ax23:session_id>')[1][:-2]+"&username="+result[0][0].replace(' ','')+"&userpass="+result[0][0].replace(' ','')
+		#req2="http://88.198.52.49:5080/openmeetings/services/UserService/loginUser?SID="+req1.text.split('ax23:session_id>')[1][:-2]+"&username=pcfleader1&userpass=pcfleader1"
+		#frappe.errprint(req2)
 		res2=requests.get(req2)
-		#frappe.errprint(res2.text)
-		req3="http://88.198.52.49:5080/openmeetings/services/UserService/setUserObjectAndGenerateRoomHashByURLAndRecFlag?SID="+req1.text.split('ax28:session_id>')[1][:-2]+"&username="+result[0][0]+"&firstname="+result[0][0]+"&lastname="+result[0][1]+"&profilePictureUrl=http://www.fnordware.com/superpng/pnggrad16rgb.png&email=email.kadam@gmail.com&externalUserId=5&externalUserType=gangadhar&room_id=1&becomeModeratorAsInt=1&showAudioVideoTestAsInt=1&allowRecording=1"
-		#frappe.msgprint(req3)
+		frappe.errprint(res2.text)
+		req3="http://88.198.52.49:5080/openmeetings/services/UserService/setUserObjectAndGenerateRoomHashByURLAndRecFlag?SID="+req1.text.split('ax23:session_id>')[1][:-2]+"&username="+result[0][0]+"&firstname="+result[0][0]+"&lastname="+result[0][1]+"&profilePictureUrl=http://www.fnordware.com/superpng/pnggrad16rgb.png&email=email.kadam@gmail.com&externalUserId=1&externalUserType=kadamgn&room_id=1&becomeModeratorAsInt=1&showAudioVideoTestAsInt=1&allowRecording=1"
+		frappe.errprint(req3)
 		res3=requests.get(req3)
-		#frappe.errprint(res3.text)
+		frappe.errprint(res3.text)
 		hashid=res3.text.split('ns:return>')[1][:-2]
 		url="http://88.198.52.49:5080/openmeetings/?secureHash="+hashid
 		frappe.get_doc({
