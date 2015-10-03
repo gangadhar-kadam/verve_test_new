@@ -13,6 +13,7 @@ class Regions(Document):
 
 def validate_duplicate(doc,method):
 	if doc.get("__islocal"):
+		frappe.errprint("not save...")
 		res=frappe.db.sql("select name from `tabRegions` where region_name='%s' and region_code='%s'"%(doc.region_name,doc.region_code))
 		if res:
 			frappe.throw(_("Another Region '{0}' With Region Name '{1}' and Region Code '{2}' exist ..!").format(res[0][0],doc.region_name,doc.region_code))
