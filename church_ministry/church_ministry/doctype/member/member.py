@@ -116,7 +116,7 @@ def get_attendance_points(args):
 	"""
 	# frappe.errprint("deleting documents")
 	frappe.delete_doc('DocType','Employee task Details')
-	present,working=0,0
+	present , working =0,0
 	total_att=frappe.db.sql("select count(name) as attendance from `tabAttendance` where status='Present' and fiscal_year=%(fiscal_year)s and employee=%(user)s", {"user":args,"fiscal_year":get_fiscal_year(nowdate())[0]},as_list=True)
 	holidays=frappe.db.sql("select count(a.name) from tabHoliday a,`tabHoliday List` b where b.name=a.parent and fiscal_year=EXTRACT(YEAR FROM CURDATE()) and is_default=1")
 	if holidays:
@@ -359,7 +359,6 @@ def create_meetings(data):
         Need to check validation/ duplication  etc
 	"""
         dts=json.loads(data)
-	print dts
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
         if not valid:
@@ -409,7 +408,6 @@ def create_meetings(data):
         obj.church=dts['church']
         obj.pcf=dts['pcf']
         obj.insert(ignore_permissions=True)
-	print "Successfully created Cell '"+obj.name+"'"
         ret={
                         "message":"Successfully created Cell '"+obj.name+"'"
         }
@@ -432,7 +430,7 @@ def meetings_list(data):
                 }
         else:
 	       match_conditions,cond=get_match_conditions('Attendance Record',dts['username'])        	
-               qry="select name as meeting_name,meeting_subject , from_date as meeting_date ,venue from `tabAttendance Record` where attendance_type='Meeting Attendance' %s "%( cond)
+               qry="select name as meeting_name,CASE meeting_category  WHEN 'Cell Meeting' THEN meeting_subject ELSE meeting_sub END  as meeting_subject , from_date as meeting_date,to_date as end_date ,venue from `tabAttendance Record` where attendance_type='Meeting Attendance' %s  "%( cond)
 	       #qry="select name as meeting_name,case meeting_category when 'Cell Meeting' then meeting_subject else meeting_sub end as `meeting_subject` , from_date as meeting_date ,venue from `tabAttendance Record` where 1=1 order by creation desc"
 
                data=frappe.db.sql(qry,as_dict=True)
@@ -457,7 +455,7 @@ def meetings_members(data):
 		#frappe.session.user=dts['username']
                 #data=frappe.db.sql("select name,member,member_name,present from `tabInvitation Member Details` where parent=%s",dts['meeting_id'],as_dict=True)
 		#data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,a.meeting_subject,a.from_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
-		data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
+		data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
                 return data
 
 
@@ -516,10 +514,7 @@ def meetings_list_member(data):
                   "message":"User name or Password is incorrect"
                 }
         else:
-        	data=frappe.db.sql("select a.name as meeting_name,a.meeting_category as meeting_category, a.meeting_subject as meeting_subject,a.from_date as from_date,a.to_date as to_date,a.venue as venue,b.name as name,ifnull(b.present,0) as present, b.member from `tabAttendance Record`  a,`tabInvitation Member Details` b where a.name=b.parent and b.email_id=%s",dts['username'],as_dict=True)
-        	#gangadhar
-        	return data
-	        data=frappe.db.sql("select a.name as meeting_name,a.meeting_category as meeting_category, case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date as from_date,a.to_date as to_date,a.venue as venue,b.name as name,ifnull(b.present,0) as present from `tabAttendance Record`  a,`tabInvitation Member Details` b where a.name=b.parent and b.email_id=%s",dts['username'],as_dict=True)
+	        data=frappe.db.sql("select a.name as meeting_name,a.meeting_category as meeting_category, case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date as from_date,a.to_date as to_date,a.venue as venue,b.name as name,ifnull(b.present,0) as present from `tabAttendance Record`  a,`tabInvitation Member Details` b where a.name=b.parent and b.email_id=%s order by a.modified desc",dts['username'],as_dict=True)
                 return data
 
 
