@@ -578,7 +578,7 @@ def get_match_conditions(doctype,username):
 	cond=''		
 	if match_conditions :
 		cond =  ' or '.join(match_conditions) 
-		cond=' and '+cond
+		cond=' and  ('+ cond +' )'
 	return match_conditions,cond
 
 
