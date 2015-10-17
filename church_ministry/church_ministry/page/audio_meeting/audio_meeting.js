@@ -45,7 +45,7 @@ frappe.assign = Class.extend({
 			        	"data":name		        	
 			        	},
 			        callback: function(r) {
-			        	window.location.reload();
+			        	//window.location.reload();
 						    				    
 			        }                     
 		        })  
