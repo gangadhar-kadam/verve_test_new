@@ -219,6 +219,7 @@ def create_senior_cells(data):
 	dts=json.loads(data)
 	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
 	valid=frappe.db.sql(qry)
+	print dts
 	if not valid:
 		return {
 		  "status":"401",
@@ -296,6 +297,7 @@ def create_event(data):
         dts=json.loads(data)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
+	print dts
         if not valid:
                 return {
                   "status":"401",
@@ -420,7 +422,7 @@ def meetings_list(data):
 	Need to add filter of permitted records for user
 	"""
         dts=json.loads(data)
-	#print dts gangadhar
+	print dts 
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
         if not valid:
@@ -433,7 +435,7 @@ def meetings_list(data):
                qry="select name as meeting_name,CASE meeting_category  WHEN 'Cell Meeting' THEN meeting_subject ELSE meeting_sub END  as meeting_subject , from_date as meeting_date,to_date as end_date ,venue from `tabAttendance Record` where attendance_type='Meeting Attendance' %s  "%( cond)
 	       #qry="select name as meeting_name,case meeting_category when 'Cell Meeting' then meeting_subject else meeting_sub end as `meeting_subject` , from_date as meeting_date ,venue from `tabAttendance Record` where 1=1 order by creation desc"
 
-               data=frappe.db.sql(qry,as_dict=True)
+               data=frappe.db.sql(qry,as_dict=True,debug=1)
                return data
 
 
@@ -445,6 +447,7 @@ def meetings_members(data):
         dts=json.loads(data)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
+	print dts
         if not valid:
                 return {
                   "status":"401",
@@ -455,7 +458,7 @@ def meetings_members(data):
 		#frappe.session.user=dts['username']
                 #data=frappe.db.sql("select name,member,member_name,present from `tabInvitation Member Details` where parent=%s",dts['meeting_id'],as_dict=True)
 		#data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,a.meeting_subject,a.from_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
-		data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
+		data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True,debug=1)
                 return data
 
 
@@ -468,7 +471,8 @@ def meetings_attendance(data):
         dts=json.loads(data)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
-        frappe.errprint(valid)
+        #frappe.errprint(valid)
+	#print dts
         if not valid:
                 return {
                   "status":"401",
@@ -477,7 +481,9 @@ def meetings_attendance(data):
         else:
         	for record in dts['records']:
         		if record['present']=='0' or record['present']=='1' :
-        			frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
+				#print record['name']
+        			frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']),debug=1)
+				print "update `tabInvitation Member Details` set present="+cstr(record['present'])+" where name="+cstr(record['name'])
 				mail_notify_msg = """Dear User, \n\n \t\t Your Attendance is updated by Leader '%s'. Please Check. \n\n Records, \n\n Love World Synergy"""%(dts['username'])
 				membr = frappe.db.sql("select member,email_id from `tabInvitation Member Details` where name=%s",(record['name']),as_list=1)
 				frappe.errprint(membr)
@@ -498,7 +504,7 @@ def meetings_attendance(data):
 						# frappe.errprint(res)
 						if res:
 							res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
-			return "Updated Attendance"
+		return "Updated Attendance"
 
 @frappe.whitelist(allow_guest=True)
 def meetings_list_member(data):
@@ -533,11 +539,13 @@ def mark_my_attendance(data):
                   "message":"User name or Password is incorrect"
                 }
         else:
+			#print dts
 			for record in dts['records']:
 				# print(record['present'])
 				if not record['present']:
 					record['present']=0
-					frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
+					#print 'in not present'
+				frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
 				mail_notify_msg = """Dear User, \n\n \t\tYour Attendance is updated by Member '%s'. Please Check. \n\n Records, \n\n Love World Synergy"""%(dts['username'])
 				notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='attendance_updated_by_member'""",as_list=1)
 				membr = frappe.db.sql("select member,email_id from `tabInvitation Member Details` where name=%s",(record['name']),as_list=1)
@@ -854,6 +862,7 @@ def create_task(data):
     dts=json.loads(data)
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
+    print dts
     if not valid:
         return {
                 "status":"401",
@@ -867,6 +876,26 @@ def create_task(data):
     ma = frappe.get_doc(dts)
     ma.insert(ignore_permissions=True)
     return ma.name+" created Successfully"
+
+
+@frappe.whitelist(allow_guest=True)
+def get_team_members(data):
+	"""
+	Need to add filter of permitted records for user
+	"""
+	dts=json.loads(data)
+	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+	valid=frappe.db.sql(qry)
+	if not valid:
+		return {
+			"status":"401",
+			"message":"User name or Password is incorrect"
+		}
+	else:
+		match_conditions,cond=get_match_conditions('Member',dts['username'])
+		qry="select name as ID ,member_name,user_id from tabMember where '1'='1' "+cond
+		data=frappe.db.sql(qry,as_dict=True)
+		return data
 
 
 
@@ -981,6 +1010,7 @@ def search_glm(data):
         dts=json.loads(data)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
+	print dts
         if not valid:
             return {
                 "status":"401",
@@ -1012,7 +1042,7 @@ def search_glm(data):
                 qry="select name , member_name, church,church_group,zone,region,phone_1,email_id from tabMember where member_name like '%"+cstr(dts['member'])+"%'"
 	else:
 		 qry="select name , member_name, church,church_group,zone,region,phone_1,email_id from tabMember "
-        data=frappe.db.sql(qry,as_dict=True)
+        data=frappe.db.sql(qry,as_dict=True,debug=1)
         return data
 
 @frappe.whitelist(allow_guest=True)
@@ -1093,7 +1123,7 @@ def get_my_profile(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
             }
-        qr1="select m.name,m.member_name,m.date_of_birth,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
+        qr1="select m.name,u.first_name as member_name,u.last_name as last_name,m.date_of_birth,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.church,m.church_group,m.zone from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
         res=frappe.db.sql(qr1,as_dict=1)
         return res
 
@@ -1102,6 +1132,7 @@ def update_my_profile(data):
         dts=json.loads(data)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
+	print dts
         if not valid:
             return {
                 "status":"401",
@@ -1113,7 +1144,7 @@ def update_my_profile(data):
 	#obj.email_id=dts['email_id']
 	obj.industry_segment=dts['industry_segment']
 	obj.employment_status=dts['employment_status']
-	obj.address=dts['address']
+	obj.address=dts['home_address']
 	obj.image=dts['image']
 	obj.date_of_birth=dts['date_of_birth']
 	obj.educational_qualification=dts['educational_qualification']
@@ -1127,6 +1158,7 @@ def update_my_profile(data):
 	obj.save(ignore_permissions=True)
 	obj1=frappe.get_doc('User',dts['username'])
         obj1.new_password=dts['password']
+	#print obj1
         obj1.save(ignore_permissions=True)
         return "Your profile updated successfully"
 
@@ -1227,6 +1259,7 @@ def message_braudcast_send(data):
     this will return recipents details
     """
     dts=json.loads(data)
+    print dts
     from frappe.model.db_query import DatabaseQuery
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
