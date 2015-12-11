@@ -863,6 +863,10 @@ def get_master_details(data):
 		"Cells":"cell_code,cell_name,senior_cell,pcf,church,church_group,zone,region,contact_phone_no,contact_email_id,contact_email_id as cell_leader,meeting_location,address,lat,lon",
 		"Senior Cells":"senior_cell_code,senior_cell_name,meeting_location,pcf,church,church_group,zone,region,contact_phone_no,contact_email_id,contact_email_id as senior_cell_leader",
 		"PCFs":"pcf_code,pcf_name,church,church_group,zone,region,contact_phone_no,contact_email_id,contact_email_id as pcf_leader",
+		"Churches":"church_code,church_name,church_group,zone,region,phone_no,email_id,address",
+		"Group Churches":"church_group_code,church_group,zone,region,contact_phone_no,contact_email_id,group_church_hq",
+		"Zones":"zone_code,zone_name,region,contact_phone_no,contact_email_id,zonal_hq",
+		"Regions":"region_code,region_name,contact_phone_no,contact_email_id",
 		"Invitees and Contacts":"name,title,invitee_contact_name,sex,convert_invitee_contact_to_ft,date_of_convert,date_of_birth,age_group,invited_by,source_of_invitation,phone_1,email_id",
 		"First Timer":"name,ftv_name as`First Name`,ftv_name as`Last Name`,date_of_birth,marital_info,phone_1,email_id,address,office_address,image",
 		"Partnership Record":"name,partnership_arms,ministry_year,is_member,member,date,cell,amount,giving_or_pledge,giving_type,type_of_pledge,instrument__no,bank_name,branch"
@@ -1828,6 +1832,23 @@ def get_search_masters(data):
     	}
     	return frappe.db.sql("select %s from `tab%s` "%(fields[dts['tbl']],dts['tbl']))
 
+@frappe.whitelist(allow_guest=True)
+def get_group_details(data):
+        dts=json.loads(data)
+        qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+        valid=frappe.db.sql(qry)
+        if not valid:
+            return {
+                "status":"401",
+                "message":"User name or Password is incorrect"
+            }
+        fields={
+            "Churches":"name,church_name",
+            "Group Churches":"name,church_group",
+            "Zones":"name,zone_name",
+            "Regions":"name,region_name"
+    	}
+    	return frappe.db.sql("select %s from `tab%s` "%(fields[dts['tbl']],dts['tbl']))
 
 
 @frappe.whitelist(allow_guest=True)
