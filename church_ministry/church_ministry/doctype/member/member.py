@@ -1791,7 +1791,8 @@ def update_my_profile(data):
 	obj.industry_segment=dts['industry_segment']
 	obj.employment_status=dts['employment_status']
 	obj.address=dts['home_address']
-	obj.image=dts['image']
+	if 'image' in dts:
+		obj.image=dts['image']
 	obj.date_of_birth=dts['date_of_birth']
 	obj.educational_qualification=dts['educational_qualification']
 	obj.core_competeance=dts['core_competeance']
@@ -1801,7 +1802,8 @@ def update_my_profile(data):
 	obj.marital_info=dts['marital_info']
 	obj.experience_years=dts['experience_years']
 	obj.phone_1=dts['phone_1']
-	obj.short_bio=dts['short_bio']
+	if 'short_bio' in dts:
+		obj.short_bio=dts['short_bio']
 	obj.save(ignore_permissions=True)
 	obj1=frappe.get_doc('User',dts['username'])
         obj1.new_password=dts['password']
