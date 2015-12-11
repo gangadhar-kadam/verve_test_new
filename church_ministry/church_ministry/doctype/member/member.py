@@ -1791,8 +1791,6 @@ def update_my_profile(data):
 	obj.industry_segment=dts['industry_segment']
 	obj.employment_status=dts['employment_status']
 	obj.address=dts['home_address']
-	if 'image' in dts:
-		obj.image=dts['image']
 	obj.date_of_birth=dts['date_of_birth']
 	obj.educational_qualification=dts['educational_qualification']
 	obj.core_competeance=dts['core_competeance']
@@ -1810,6 +1808,25 @@ def update_my_profile(data):
 	#print obj1
         obj1.save(ignore_permissions=True)
         return "Your profile updated successfully"
+
+
+@frappe.whitelist(allow_guest=True)
+def get_search_masters(data):
+        dts=json.loads(data)
+        qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+        valid=frappe.db.sql(qry)
+        if not valid:
+            return {
+                "status":"401",
+                "message":"User name or Password is incorrect"
+            }
+        fields={
+            "Churches":"name,church_name",
+            "Group Churches":"name,church_group",
+            "Zones":"name,zone_name",
+            "Regions":"name,region_name"
+    	}
+    	return frappe.db.sql("select %s from `tab%s` "%(fields[dts['tbl']],dts['tbl']))
 
 
 
