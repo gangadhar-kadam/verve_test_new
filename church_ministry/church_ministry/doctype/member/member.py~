@@ -398,10 +398,10 @@ def create_meetings(data):
 	#print data
         obj=frappe.new_doc("Attendance Record")
         obj.meeting_category=dts['meeting_category']
-	if dts['meeting_category']=="Cell Meeting":
-		obj.meeting_subject=dts['meeting_sub']
-	else:
-	        obj.meeting_sub=dts['meeting_sub']
+	#if dts['meeting_category']=="Cell Meeting":
+	obj.meeting_subject=dts['meeting_sub']
+	#else:
+	#        obj.meeting_sub=dts['meeting_sub']
         obj.from_date=dts['from_date']
         obj.to_date=dts['to_date']
         obj.venue=dts['venue']
@@ -1296,7 +1296,7 @@ def task_list_new(data):
     	 		if key in ('status','priority'):
     	        		fltrs.append(" a.%s = '%s' " %(key,value))
     		fltr_cnd=" and "+' and '.join([x for x in fltrs])
-    total_count= frappe.db.sql("""select count(a.name) from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and a.exp_start_date is not null and ( a.owner='%s' or _assign='%s' ) """ %(fltr_cnd,dts['username'],dts['username']))
+    total_count= frappe.db.sql("""select count(a.name) from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and a.exp_start_date is not null and b.owner='%s' """ %(fltr_cnd,dts['username']))
     #return total_count
     if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 	dts['page_no']=1
@@ -1308,7 +1308,7 @@ def task_list_new(data):
 	end_index=total_count[0][0] 
     result['total_count']=total_count[0][0]
     result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-    result['records']=frappe.db.sql("""select a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.comment,a.status,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and a.exp_start_date is not null and (a.owner='%s' or _assign='%s') order by a.name limit %s,20""" %(fltr_cnd,dts['username'],dts['username'],cint(start_index)),as_dict=True)
+    result['records']=frappe.db.sql("""select a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.comment,a.status,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and a.exp_start_date is not null and b.owner='%s'  order by a.name limit %s,20""" %(fltr_cnd,dts['username'],cint(start_index)),as_dict=True)
     return result
 
 @frappe.whitelist(allow_guest=True)
@@ -1328,16 +1328,16 @@ def task_list_team_new(data):
     fltr_cnd=''
     if 'filters' in dts:
     	        if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
-    	        	fltrs.append(" a.exp_end_date between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
+    	        	fltrs.append(" t.exp_end_date between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	        elif 'from_date' in dts['filters'] :
-    	        	fltrs.append(" a.exp_end_date >= '%s' " %dts['filters']['from_date'])
+    	        	fltrs.append(" t.exp_end_date >= '%s' " %dts['filters']['from_date'])
     	        elif 'to_date' in dts['filters'] :
-    	        	fltrs.append(" a.exp_end_date <= '%s' " %dts['filters']['to_date']) 
+    	        	fltrs.append(" t.exp_end_date <= '%s' " %dts['filters']['to_date']) 
     	        for key,value in dts['filters'].iteritems():
     	 		if key in ('status','priority'):
-    	        		fltrs.append(" a.%s = '%s' " %(key,value))
+    	        		fltrs.append(" t.%s = '%s' " %(key,value))
     		fltr_cnd=" and "+' and '.join([x for x in fltrs])
-    total_count= frappe.db.sql("""select count(a.name) from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and  a.exp_start_date is not null and ( a.owner='%s' or b.assigned_by='%s' ) """ %(fltr_cnd,dts['username'],dts['username']))
+    total_count= frappe.db.sql("""select count(t.name) FROM tabTask t, tabToDo d WHERE t.name IN ( SELECT DISTINCT reference_name FROM tabToDo WHERE assigned_by='%s' ) AND t.name=d.reference_name %s """ %(dts['username'],fltr_cnd))
     if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 	dts['page_no']=1
 	start_index=0
@@ -1348,7 +1348,8 @@ def task_list_team_new(data):
 	end_index=total_count[0][0] 
     result['total_count']=total_count[0][0]
     result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-    result['records']=frappe.db.sql("""select a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.status,a.comment,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and a.exp_start_date is not null and (a.owner='%s' or b.assigned_by='%s') order by a.name limit %s,20""" %(fltr_cnd,dts['username'],dts['username'],cint(start_index)),as_dict=True)
+    #result['records']=frappe.db.sql("""select a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.status,a.comment,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and a.exp_start_date is not null and (a.owner='%s' or b.assigned_by='%s') order by a.name limit %s,20""" %(fltr_cnd,dts['username'],dts['username'],cint(start_index)),as_dict=True,debug=1)
+    result['records']=frappe.db.sql("SELECT DISTINCT (t.name),t.description,t.subject ,t.exp_end_date,t.status,t.priority,d.assigned_by AS asignee,t.comment,t.cell,t.senior_cell,t.pcf,d.owner AS _assign FROM tabTask t, tabToDo d WHERE t.name IN ( SELECT DISTINCT reference_name FROM tabToDo WHERE assigned_by='%s' ) AND t.name=d.reference_name %s order by t.name limit %s,20" %(dts['username'],fltr_cnd,cint(start_index)),as_dict=1)
     return result
 
 
@@ -1432,6 +1433,7 @@ def create_task(data):
     del dts['name']
     ma = frappe.get_doc(dts)
     ma.insert(ignore_permissions=True)
+    
     return ma.name+" created Successfully"
 
 
