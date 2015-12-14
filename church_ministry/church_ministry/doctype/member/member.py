@@ -788,7 +788,7 @@ def get_database_masters(data):
 	        "Invitees and Contacts":"name,invitee_contact_name,sex,email_id",
 		"First Timer":"name,ftv_name,sex,email_id",
 		"Member":"name,member_name,sex,email_id",		
-		"Partnership Record":"name,partnership_arms,amount,giving_or_pledge",
+		"Partnership Record":"name,partnership_arms,FORMAT(amount,2),giving_or_pledge",
 		"Cells":"name,cell_name,senior_cell",
 		"PCFs":"name,pcf_name,church,church_group",
 		"Senior Cells":"name,senior_cell_name,pcf,church"
@@ -869,7 +869,7 @@ def get_master_details(data):
 		"Regions":"region_code,region_name,contact_phone_no,contact_email_id",
 		"Invitees and Contacts":"name,title,invitee_contact_name,sex,convert_invitee_contact_to_ft,date_of_convert,date_of_birth,age_group,invited_by,source_of_invitation,phone_1,email_id",
 		"First Timer":"name,ftv_name as`First Name`,ftv_name as`Last Name`,date_of_birth,marital_info,phone_1,email_id,address,office_address,image",
-		"Partnership Record":"name,partnership_arms,ministry_year,is_member,member,date,cell,amount,giving_or_pledge,giving_type,type_of_pledge,instrument__no,bank_name,branch"
+		"Partnership Record":"name,partnership_arms,ministry_year,is_member,member,date,cell,FORMAT(amount,2),giving_or_pledge,giving_type,type_of_pledge,instrument__no,bank_name,branch"
 	}
 	tablename=dts['tbl']
 	res=frappe.db.sql("select %s from `tab%s` where name='%s'"  %(dictnory[tablename],dts['tbl'],dts['name']),as_dict=True)
@@ -1020,8 +1020,8 @@ def get_partnership_arms(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         } 
-    res=frappe.db.sql("select name from `tabPartnership Arms`")
-    return res
+    return frappe.db.sql("select name from `tabPartnership Arms`",as_dict=1)
+    #return res
 
 @frappe.whitelist(allow_guest=True)
 def get_db_records(data):
@@ -1040,7 +1040,7 @@ def get_db_records(data):
 	    "Invitees and Contacts":"name,invitee_contact_name,sex,email_id",
 	    "First Timer":"name,ftv_name,sex,email_id",
 		"Members":"name,member_name,sex,email_id",		
-		"Partnership Record":"name,partnership_arms,amount,giving_or_pledge,member_name"
+		"Partnership Record":"name,partnership_arms,FORMAT(amount,2),giving_or_pledge,member_name"
 	}
 	res=frappe.db.sql("select %s from `tab%s` limit 20"  %(dictnory[dts['tbl']],dts['tbl']),as_dict=True)
 	return res
@@ -1549,7 +1549,7 @@ def partnership_arm_details(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }
-    data=frappe.db.sql("select name,partnership_arms,ministry_year,is_member,member,date,church,giving_or_pledge,amount from `tabPartnership Record`  where name='%s'" %(dts['name']) ,as_dict=True)
+    data=frappe.db.sql("select name,partnership_arms,ministry_year,is_member,member,date,church,giving_or_pledge,FORMAT(amount,2) from `tabPartnership Record`  where name='%s'" %(dts['name']) ,as_dict=True)
     return data
 
 
