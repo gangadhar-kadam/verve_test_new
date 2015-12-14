@@ -1385,6 +1385,7 @@ def task_update(data):
         dts['exp_start_date']=now()
         dts['doctype']='Task'
         dts['subject']='followup task for '+dts['name']
+        del dts['cell']
         del dts['assignee']
 	del dts['_assign']
         ma = frappe.get_doc(dts)
