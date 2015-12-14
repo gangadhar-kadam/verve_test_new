@@ -994,6 +994,7 @@ def create_partnership_reocrd(data):
     pr.ministry_year=dts['ministry_year']
     pr.is_member='Member'
     pr.member=dts['member']
+    pr.member_name=dts['member_name']
     pr.giving_or_pledge=dts['giving_or_pledge']
     if dts['giving_or_pledge']=='Giving' :
     	if dts['giving_type'] =='Cheque':
@@ -1039,7 +1040,7 @@ def get_db_records(data):
 	    "Invitees and Contacts":"name,invitee_contact_name,sex,email_id",
 	    "First Timer":"name,ftv_name,sex,email_id",
 		"Members":"name,member_name,sex,email_id",		
-		"Partnership Record":"name,partnership_arms,amount,giving_or_pledge"
+		"Partnership Record":"name,partnership_arms,amount,giving_or_pledge,member_name"
 	}
 	res=frappe.db.sql("select %s from `tab%s` limit 20"  %(dictnory[dts['tbl']],dts['tbl']),as_dict=True)
 	return res
