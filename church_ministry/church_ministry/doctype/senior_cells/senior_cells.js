@@ -1,6 +1,6 @@
 // set region and zone from church group and zone trigger
 
-frappe.ui.form.on("Senior Cells", "refresh", function(frm,dt,dn) {
+/*frappe.ui.form.on("Senior Cells", "refresh", function(frm,dt,dn) {
     get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
       refresh_field('region');
       refresh_field('zone');
@@ -15,7 +15,7 @@ frappe.ui.form.on("Senior Cells", "refresh", function(frm,dt,dn) {
       set_field_permlevel('senior_cell_name',1);
     }
 });
-
+*/
 frappe.ui.form.on("Senior Cells", "onload", function(frm) {
 	if (in_list(user_roles, "Zonal Pastor")){
     set_field_permlevel('zone',1);

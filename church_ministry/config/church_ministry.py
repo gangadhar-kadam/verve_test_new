@@ -139,6 +139,13 @@ def get_data():
 					"description": _("Regions")
 				},
 				{
+					"type": "page",
+					"name": "member-tree",
+					"label": _("Member Tree"),
+					"icon": "icon-bar-chart",
+					"description": _("Dashboard")
+				},
+				{
 					"type":"doctype",
 					"name": "Zones",
 					"description": _("Zones")

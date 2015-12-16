@@ -10,7 +10,7 @@ cur_frm.add_fetch("church_group", "zone", "zone");
 
 cur_frm.add_fetch("zone", "region", "region");
 
-frappe.ui.form.on("PCFs", "refresh", function(frm,dt,dn) {
+/*frappe.ui.form.on("PCFs", "refresh", function(frm,dt,dn) {
     get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
       refresh_field('region');
       refresh_field('zone');
@@ -23,7 +23,7 @@ frappe.ui.form.on("PCFs", "refresh", function(frm,dt,dn) {
       set_field_permlevel('pcf_code',1);
       set_field_permlevel('pcf_name',1);
     }
-});
+});*/
 
 frappe.ui.form.on("PCFs", "onload", function(frm) {
 	if (in_list(user_roles, "Zonal Pastor")){

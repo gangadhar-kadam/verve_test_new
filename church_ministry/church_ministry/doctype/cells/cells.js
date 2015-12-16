@@ -46,14 +46,14 @@ frappe.ui.form.on("Cells", "onload", function(frm) {
 });
 
 frappe.ui.form.on("Cells", "refresh", function(frm,dt,dn) {
-    get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
+/*    get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
       refresh_field('region');
       refresh_field('zone');
       refresh_field('church_group');
       refresh_field('church');
       refresh_field('pcf');
       refresh_field('senior_cell');
-    });
+    });*/
     if(in_list(user_roles, "Cell Leader")){
       set_field_permlevel('contact_phone_no',0);
       set_field_permlevel('contact_email_id',0);

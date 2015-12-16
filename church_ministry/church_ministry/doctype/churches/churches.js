@@ -33,7 +33,7 @@ frappe.ui.form.on("Churches", "validate", function(frm,dt,dn) {
  }  
 });
 
-frappe.ui.form.on("Churches", "refresh", function(frm,dt,dn) {
+/*frappe.ui.form.on("Churches", "refresh", function(frm,dt,dn) {
     get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
       refresh_field('region');
       refresh_field('zone');
@@ -46,7 +46,7 @@ frappe.ui.form.on("Churches", "refresh", function(frm,dt,dn) {
       set_field_permlevel('church_name',1);
       set_field_permlevel('address',0);
     }
-});
+});*/
 
 frappe.ui.form.on("Churches", "onload", function(frm) {
 	if (in_list(user_roles, "Regional Pastor")){
