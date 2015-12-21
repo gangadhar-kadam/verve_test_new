@@ -67,13 +67,26 @@ class Member(Document):
 			self.user_id = self.email_id
 
 def get_list(doctype, txt, searchfield, start, page_len, filters):
-	conditions=get_conditions(filters)
-	if conditions:
-		value=frappe.db.sql("select name from `tab%s` where %s"%(filters.get('doctype'),conditions))
-		return value
-	else :
-		value=frappe.db.sql("select name from `tab%s`"%(filters.get('doctype')))
-		return value
+	from frappe.desk.reportview import get_match_cond
+	search_field={
+	"Cells":"cell_name",
+	"Senior Cells":"senior_cell_name",
+	"PCFs":"pcf_name",
+	"Churches":"church_name",
+	"Group Churches":"church_group",
+	"Zones":"zone_name",
+	"Regions":"region_name"
+	}
+	filters.update({
+			"txt": txt,
+			"mcond": get_match_cond(filters["doctype"]),
+			"start": start,
+			"page_len": page_len
+		})
+	search_fields=filters['doctype']
+	filters['search_field']=search_field[search_fields]
+	res=frappe.db.sql("""select name,%(search_field)s from `tab%(doctype)s` where name like '%%%(txt)s%%' or %(search_field)s like '%%%(txt)s%%'%(mcond)s order by name limit %(start)s, %(page_len)s""" %filters,debug=1)
+	return res
 
 
 def get_conditions(filters):
