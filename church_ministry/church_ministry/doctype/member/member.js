@@ -122,6 +122,15 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
     set_field_permlevel('membership_information',1);
     set_field_permlevel('foundation_school__baptism_details',1);
   }
+  else if(in_list(user_roles, "Member")){
+    set_field_permlevel('cell',1);
+    set_field_permlevel('senior_cell',1);
+    set_field_permlevel('pcf',1);
+    set_field_permlevel('church',1);
+    set_field_permlevel('church_group',1);
+    set_field_permlevel('zone',1);
+    set_field_permlevel('region',1);
+  } 
 });
 
 cur_frm.add_fetch("cell", "pcf", "pcf");

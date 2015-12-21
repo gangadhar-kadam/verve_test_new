@@ -16,9 +16,9 @@ frappe.ui.form.on("Group Churches", "onload", function(frm) {
 });
 
 frappe.ui.form.on("Group Churches", "refresh", function(frm,dt,dn) {
-    get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1);
+/*    get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1);
       refresh_field('region');
-      refresh_field('zone');
+      refresh_field('zone');*/
 
     if(in_list(user_roles, "Group Church Pastor")){
       set_field_permlevel('contact_phone_no',0);
