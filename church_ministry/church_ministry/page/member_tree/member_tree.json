@@ -3,7 +3,7 @@
  "creation": "2015-12-14 16:09:30.074525", 
  "docstatus": 0, 
  "doctype": "Page", 
- "modified": "2015-12-14 16:13:34.610466", 
+ "modified": "2015-12-22 19:09:06.122252", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "member-tree", 
@@ -11,7 +11,7 @@
  "page_name": "Member ", 
  "roles": [
   {
-   "role": "All"
+   "role": "System Manager"
   }
  ], 
  "script": null, 

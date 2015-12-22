@@ -133,17 +133,17 @@ def get_data():
 			"label": _("Setup"),
 			"icon": "icon-star",
 			"items": [
+			    {
+					"type": "page",
+					"name": "member-tree",
+					"label": _("Member Tree"),
+					"icon": "icon-sitemap",
+					"description": _("Member Tree")
+				},
 				{
 					"type":"doctype",
 					"name": "Regions",
 					"description": _("Regions")
-				},
-				{
-					"type": "page",
-					"name": "member-tree",
-					"label": _("Member Tree"),
-					"icon": "icon-bar-chart",
-					"description": _("Dashboard")
 				},
 				{
 					"type":"doctype",
