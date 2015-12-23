@@ -134,6 +134,13 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "google_api_key", 
+   "fieldtype": "Data", 
+   "label": "Google Api Key", 
+   "permlevel": 0, 
+   "precision": ""
   }
  ], 
  "hide_heading": 0, 
@@ -143,7 +150,7 @@
  "is_submittable": 0, 
  "issingle": 1, 
  "istable": 0, 
- "modified": "2015-09-03 12:45:46.993609", 
+ "modified": "2015-12-23 16:07:25.836320", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Notification Settings", 

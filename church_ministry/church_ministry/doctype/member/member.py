@@ -2017,3 +2017,29 @@ def task_esclate():
 		task_list.append(task['name'])
 	return task_list
 
+@frappe.whitelist(allow_guest=True)
+def get_gcm_key(data):
+    """
+    this will return gcm key details
+    """
+    dts=json.loads(data)
+    qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+    valid=frappe.db.sql(qry)
+    msg=''
+    if not valid:
+        return {
+                "status":"401",
+                "message":"User name or Password is incorrect"
+        }
+    res=frappe.db.sql("select value as api_key from `tabSingles` where doctype='Notification Settings' and field = 'google_api_key'", as_dict=1)
+    
+    if res:
+    	return res[0]
+    else:
+    	return {
+                "status":"401",
+                "message":"Please update gcm key in notification settings...!"
+        }
+        
+
+
