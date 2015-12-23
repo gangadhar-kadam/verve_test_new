@@ -85,7 +85,7 @@ def get_list(doctype, txt, searchfield, start, page_len, filters):
 		})
 	search_fields=filters['doctype']
 	filters['search_field']=search_field[search_fields]
-	res=frappe.db.sql("""select name,%(search_field)s from `tab%(doctype)s` where name like '%%%(txt)s%%' or %(search_field)s like '%%%(txt)s%%'%(mcond)s order by name limit %(start)s, %(page_len)s""" %filters,debug=1)
+	res=frappe.db.sql("""select name,%(search_field)s from `tab%(doctype)s` where name like '%%%(txt)s%%' or %(search_field)s like '%%%(txt)s%%'%(mcond)s order by name limit %(start)s, %(page_len)s""" %filters)
 	return res
 
 
@@ -454,7 +454,7 @@ def meetings_list(data):
                qry="select name as meeting_name,CASE meeting_category  WHEN 'Cell Meeting' THEN meeting_subject ELSE meeting_sub END  as meeting_subject , from_date as meeting_date,to_date as end_date ,venue from `tabAttendance Record` where attendance_type='Meeting Attendance' %s  "%( cond)
 	       #qry="select name as meeting_name,case meeting_category when 'Cell Meeting' then meeting_subject else meeting_sub end as `meeting_subject` , from_date as meeting_date ,venue from `tabAttendance Record` where 1=1 order by creation desc"
 
-               data=frappe.db.sql(qry,as_dict=True,debug=1)
+               data=frappe.db.sql(qry,as_dict=True)
                return data
                
 @frappe.whitelist(allow_guest=True)
@@ -521,7 +521,7 @@ def meetings_members(data):
                   "message":"User name or Password is incorrect"
                 }
         else:
-		data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True,debug=1)
+		data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
                 return data
 
 
@@ -545,11 +545,11 @@ def meetings_attendance(data):
         	for record in dts['records']:
         		if record['present']=='0' or record['present']=='1' :
 				#print record['name']
-        			frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']),debug=1)
+        			frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
 				print "update `tabInvitation Member Details` set present="+cstr(record['present'])+" where name="+cstr(record['name'])
 				mail_notify_msg = """Dear User, \n\n \t\t Your Attendance is updated by Leader '%s'. Please Check. \n\n Records, \n\n Love World Synergy"""%(dts['username'])
 				membr = frappe.db.sql("select member,email_id from `tabInvitation Member Details` where name=%s",(record['name']),as_list=1)
-				frappe.errprint(membr)
+				#frappe.errprint(membr)
 				notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field = 'attendance_updated_by_leader'""",as_list=1)
 				# user = frappe.db.sql("""select parent from `tabDefaultValue` where defkey='Cells' and 
 				# 	defvalue in (select cell from `tabMember` where email_id='%s')"""%(dts['username']),as_list=1)
@@ -1077,7 +1077,7 @@ def event_list(data):
     from frappe.desk.doctype.event.event import get_permission_query_conditions
     qry=" select name as event_name,address,starts_on as event_date,subject from tabEvent where "+get_permission_query_conditions(dts['username'])
     #return qry
-    data=frappe.db.sql(qry,as_dict=True,debug=1)
+    data=frappe.db.sql(qry,as_dict=True)
     return data
     
 @frappe.whitelist(allow_guest=True)
@@ -1366,7 +1366,7 @@ def task_list_team_new(data):
 	end_index=total_count[0][0] 
     result['total_count']=total_count[0][0]
     result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-    #result['records']=frappe.db.sql("""select a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.status,a.comment,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and a.exp_start_date is not null and (a.owner='%s' or b.assigned_by='%s') order by a.name limit %s,20""" %(fltr_cnd,dts['username'],dts['username'],cint(start_index)),as_dict=True,debug=1)
+    #result['records']=frappe.db.sql("""select a.name ,b.owner as _assign,b.assigned_by as assignee,a.subject ,a.exp_end_date,a.status,a.comment,a.priority,a.description,a.cell,a.senior_cell,a.pcf from `tabTask` a, `tabToDo` b where a.status in ('Open','Working' )  and a.name=b.reference_name %s and a.exp_start_date is not null and (a.owner='%s' or b.assigned_by='%s') order by a.name limit %s,20""" %(fltr_cnd,dts['username'],dts['username'],cint(start_index)),as_dict=True)
     result['records']=frappe.db.sql("SELECT DISTINCT (t.name),t.description,t.subject ,t.exp_end_date,t.status,t.priority,d.assigned_by AS asignee,t.comment,t.cell,t.senior_cell,t.pcf,d.owner AS _assign FROM tabTask t, tabToDo d WHERE t.name IN ( SELECT DISTINCT reference_name FROM tabToDo WHERE assigned_by='%s' ) AND t.name=d.reference_name %s order by t.name limit %s,20" %(dts['username'],fltr_cnd,cint(start_index)),as_dict=1)
     return result
 
@@ -1377,7 +1377,7 @@ def task_update(data):
     dts=json.loads(data)
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
-    print dts
+    #print dts
     if not valid:
         return {
                 "status":"401",
@@ -1439,7 +1439,7 @@ def create_task(data):
     dts=json.loads(data)
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
-    print dts
+    #print dts
     if not valid:
         return {
                 "status":"401",
@@ -1620,7 +1620,7 @@ def search_glm(data):
                 qry="select name , member_name, church,church_group,zone,region,phone_1,email_id from tabMember where member_name like '%"+cstr(dts['member'])+"%'"
 	else:
 		 qry="select name , member_name, church,church_group,zone,region,phone_1,email_id from tabMember "
-        data=frappe.db.sql(qry,as_dict=True,debug=1)
+        data=frappe.db.sql(qry,as_dict=True)
         return data
 
 @frappe.whitelist(allow_guest=True)
@@ -1797,7 +1797,7 @@ def update_my_profile(data):
         dts=json.loads(data)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
-	print dts
+	#print dts
         if not valid:
             return {
                 "status":"401",
@@ -1868,7 +1868,7 @@ def get_group_details(data):
 
 @frappe.whitelist(allow_guest=True)
 def send_notification_member_absent():
-	frappe.errprint("In send_notification_member_absent")
+	#frappe.errprint("In send_notification_member_absent")
 	senior_cell_list=frappe.db.sql("select distinct(senior_cell) from tabCells",as_list=1)
 	for sc in senior_cell_list:
 		cell_list=frappe.db.sql("select name from tabCells where senior_cell='%s'"%(sc[0]),as_list=1)
@@ -1881,7 +1881,7 @@ def send_notification_member_absent():
 					b.name=a.parent and a.present<>1 and a.parent in ('%s') group by a.email_id "%("','".join ([x[0] for x in meeting_list])))
 				# frappe.errprint(absent)
 				for abs_member in absent:
-					frappe.errprint(abs_member)
+					#frappe.errprint(abs_member)
 					if abs_member[2]>=3:
 						memeber_list[abs_member[0]]=abs_member[1]
 						# frappe.errprint(memeber_list)
@@ -1891,11 +1891,11 @@ def send_notification_member_absent():
 				for leaders in cell_leader :
 					msg="""Hello '%s',\n\n Following members have not attended last three meetings \n\n %s \n\n Regards,\n\n Love world Synergy"""%(leaders[1]," \n".join([" \n \t\t\t\t\t\t Member Id : '%s'  Member Name : '%s'" % (k,v) for k,v in memeber_list.iteritems()]) )
 					abc = [" \n Member Id : '%s'  Member Name : '%s'" % (k,v) for k,v in memeber_list.iteritems()]
-					frappe.errprint(msg)
+					#frappe.errprint(msg)
 					phone = frappe.db.sql("select phone_1 from `tabMember` where email_id='%s'"%(leaders[0]))
 					notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='member_is_absent_in_meeting'""",as_list=1)
 					if "Email" in notify[0][0]:
-						frappe.errprint("absent in 3 meetings")
+						#frappe.errprint("absent in 3 meetings")
 						frappe.sendmail(recipients=leaders[0], content=msg, subject='Absent Member Notification')
 					if "SMS" in notify[0][0]:
 						if phone:
@@ -1913,13 +1913,13 @@ def send_notification_member_absent():
 
 @frappe.whitelist(allow_guest=True)
 def send_notification_cell_meeting_not_hold():
-	frappe.errprint("In send_notification_cell_meeting_not_hold")
+	#frappe.errprint("In send_notification_cell_meeting_not_hold")
 	senior_cell_list=frappe.db.sql("select distinct(senior_cell) from tabCells",as_list=1)
 	for sc in senior_cell_list:
 		res=frappe.db.sql("select name,senior_cell,pcf from tabCells where name not in (select distinct(cell) \
 			from `tabAttendance Record` where attendance_type='Meeting attendance' and creation BETWEEN \
 			DATE_SUB(NOW(), INTERVAL 7 DAY)  AND DATE_SUB(NOW(), INTERVAL 15 DAY)) and senior_cell='%s'"%(sc[0]),as_list=1)
-		frappe.errprint(res)
+		#frappe.errprint(res)
 		cell_leader=frappe.db.sql("select a.name,a.first_name ,dv.defvalue,dv.defkey from tabUser a,tabUserRole ur,\
 			tabDefaultValue dv where a.name=ur.parent and a.name=dv.parent and (ur.role='PCF Leader' or \
 			ur.role='Senior Cell Leader') and (dv.defkey='PCFs' or dv.defkey='Senior Cells') and \
@@ -1961,7 +1961,7 @@ def message_braudcast_send(data):
     this will return recipents details
     """
     dts=json.loads(data)
-    print dts
+    #print dts
     from frappe.model.db_query import DatabaseQuery
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
@@ -1972,22 +1972,24 @@ def message_braudcast_send(data):
                 "message":"User name or Password is incorrect"
         }   
 
-    if dts['sms']:
+    if 'sms' in dts:
     	from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
     	rc_list=frappe.db.sql("select phone_1 from tabMember where phone_1 is not null and email_id in ('%s') limit 3" %(dts['recipents'].replace(",","','")),as_list=1)      
     	if rc_list:
     		send_sms([ x[0] for x in rc_list ], cstr(dts['message']))
     		msg+= "SMS "
     rc_list=dts['recipents'].split(',')
-    if dts['push']:
+    if 'push' in dts:
         data={}
         data['Message']=dts['message']
         gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
         res=frappe.db.sql("select device_id from tabUser where name in ('%s')" % "','".join(map(str,rc_list)),as_list=1)
+        #frappe.errprint(res)
         if res:
                 res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+                #frappe.errprint(res)
                 msg+= "Push notification"
-    if dts['email']:
+    if 'email' in dts:
         frappe.sendmail(recipients=dts['recipents'], sender='verve@lws.com', content=dts['message'], subject='Broadcast Message')
         msg+=" Email"
     return msg +" sent Successfully"
@@ -1995,7 +1997,7 @@ def message_braudcast_send(data):
 
 @frappe.whitelist(allow_guest=True)
 def task_esclate():
-	frappe.errprint("in task_esclate")
+	#frappe.errprint("in task_esclate")
 	"""
 	this will return recipents details
 	"""
