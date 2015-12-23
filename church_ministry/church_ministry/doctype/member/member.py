@@ -10,6 +10,7 @@ from erpnext.accounts.utils import get_fiscal_year
 from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils import getdate, validate_email_add, cint,cstr,now,flt, nowdate
 import base64
+from datetime import datetime
 from gcm import GCM
 
 class Member(Document):
@@ -809,6 +810,10 @@ def get_database_masters(data):
     	cond,match_cond,fltr_cnd='','',''
     	fltrs=[]
     	if 'filters' in dts:
+    		if 'from_date' in dts['filters']:
+    		    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  		if 'to_date' in dts['filters']:
+    		    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]
     	        if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
     	        	fltrs.append(" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	        elif 'from_date' in dts['filters'] :
