@@ -546,7 +546,7 @@ def meetings_attendance(data):
         		if record['present']=='0' or record['present']=='1' :
 				#print record['name']
         			frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
-				print "update `tabInvitation Member Details` set present="+cstr(record['present'])+" where name="+cstr(record['name'])
+				#print "update `tabInvitation Member Details` set present="+cstr(record['present'])+" where name="+cstr(record['name'])
 				mail_notify_msg = """Dear User, \n\n \t\t Your Attendance is updated by Leader '%s'. Please Check. \n\n Records, \n\n Love World Synergy"""%(dts['username'])
 				membr = frappe.db.sql("select member,email_id from `tabInvitation Member Details` where name=%s",(record['name']),as_list=1)
 				#frappe.errprint(membr)
@@ -566,7 +566,7 @@ def meetings_attendance(data):
 						res=frappe.db.sql("select device_id from tabUser where name ='%s'" %(user[0][0]),as_list=1)
 						# frappe.errprint(res)
 						if res:
-							res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+							res = gcm.json_request(registration_ids=res[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
 		return "Updated Attendance"
 
 @frappe.whitelist(allow_guest=True)
@@ -672,7 +672,7 @@ def mark_my_attendance(data):
 						gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
 						res=frappe.db.sql("select device_id from tabUser where name ='%s'" %(user[0][0]),as_list=1)
 						if res:
-							res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+							res = gcm.json_request(registration_ids=res[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
 
 				return "Updated Attendance"
 
@@ -1906,7 +1906,7 @@ def send_notification_member_absent():
 						gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
 						res1=frappe.db.sql("select device_id from tabUser where name ='%s'" %(leaders[0]),as_list=1)
 						if res1:
-							res1 = gcm.json_request(registration_ids=res1, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+							res1 = gcm.json_request(registration_ids=res1[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
 	
 	return "sent emails"
 
@@ -1984,10 +1984,8 @@ def message_braudcast_send(data):
         data['Message']=dts['message']
         gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
         res=frappe.db.sql("select device_id from tabUser where name in ('%s')" % "','".join(map(str,rc_list)),as_list=1)
-        #frappe.errprint(res)
         if res:
-                res = gcm.json_request(registration_ids=res, data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
-                #frappe.errprint(res)
+                res = gcm.json_request(registration_ids=res[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
                 msg+= "Push notification"
     if 'email' in dts:
         frappe.sendmail(recipients=dts['recipents'], sender='verve@lws.com', content=dts['message'], subject='Broadcast Message')
