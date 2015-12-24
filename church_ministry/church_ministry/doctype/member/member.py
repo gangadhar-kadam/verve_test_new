@@ -397,7 +397,7 @@ def create_meetings(data):
         f_date=fdate[0]
         tdate=dts['to_date'].split(" ")
         t_date=tdate[0]
-        res=frappe.db.sql("select name from `tabAttendance Record` where cell='%s' and from_date like '%s%%' and to_date like '%s%%'"%(dts['cell'],dts['church'],f_date,t_date))
+        res=frappe.db.sql("select name from `tabAttendance Record` where cell='%s' and from_date like '%s%%' and to_date like '%s%%'"%(dts['cell'],f_date,t_date))
         if res:
             return {
                 "status":"401",
