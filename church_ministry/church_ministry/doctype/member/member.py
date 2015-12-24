@@ -309,6 +309,7 @@ def create_event(data):
         Need to check validation/ duplication  etc
         """
         dts=json.loads(data)
+        frappe.errprint(dts)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
 	print dts
@@ -396,7 +397,7 @@ def create_meetings(data):
         f_date=fdate[0]
         tdate=dts['to_date'].split(" ")
         t_date=tdate[0]
-        res=frappe.db.sql("select name from `tabAttendance Record` where (cell='%s' or church='%s') and from_date like '%s%%' and to_date like '%s%%'"%(dts['cell'],dts['church'],f_date,t_date))
+        res=frappe.db.sql("select name from `tabAttendance Record` where cell='%s' and from_date like '%s%%' and to_date like '%s%%'"%(dts['cell'],dts['church'],f_date,t_date))
         if res:
             return {
                 "status":"401",
@@ -428,6 +429,18 @@ def create_meetings(data):
         obj.pcf=dts['pcf']
         obj.flags.ignore_validate=True
         obj.insert(ignore_permissions=True)
+        obj.set('invitation_member_details', [])
+	member_ftv=''
+	if obj.cell:
+		member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where cell='%s' and approved=0 union select name,member_name,email_id from `tabMember` where cell='%s' "%(obj.cell,obj.cell))
+	elif obj.church:
+		member_ftv = frappe.db.sql("select name,ftv_name,email_id from `tabFirst Timer` where church='%s' and approved=0 union select name,member_name,email_id from `tabMember` where church='%s'"%(obj.church,obj.church))	
+	for d in member_ftv:
+		child = obj.append('invitation_member_details', {})
+		child.member = d[0]
+		child.member_name = d[1]
+		child.email_id = d[2]
+	obj.save()
         ret={
                         "message":"Successfully created Meeting Attendance '"+obj.name+"'"
         }
@@ -475,6 +488,10 @@ def meetings_list_new(data):
 		fltr_cnd=''
     		fltrs=[]
 		if 'filters' in dts:
+   			if 'from_date' in dts['filters']:
+    		    		dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  			if 'to_date' in dts['filters']:
+    		    		dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]		      
   			if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
   	     			fltrs.append(" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     			elif 'from_date' in dts['filters'] :
@@ -605,6 +622,10 @@ def meetings_list_member_new(data):
       		fltr_cnd=''
 		fltrs=[]
 	        if 'filters' in dts:
+	           	if 'from_date' in dts['filters']:
+    		    		dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  			if 'to_date' in dts['filters']:
+    		    		dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]
 		  	if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
   	     			fltrs.append(" a.creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
 		    	elif 'from_date' in dts['filters'] :
@@ -810,6 +831,10 @@ def get_database_masters(data):
     	cond,match_cond,fltr_cnd='','',''
     	fltrs=[]
     	if 'filters' in dts:
+    	   	if 'from_date' in dts['filters']:
+    		    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  		if 'to_date' in dts['filters']:
+    		    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]
     		if 'from_date' in dts['filters']:
     		    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
   		if 'to_date' in dts['filters']:
@@ -960,6 +985,10 @@ def partnership_arms_list(data):
     fltr_cnd=''
     fltrs=[]
     if 'filters' in dts:
+   	if 'from_date' in dts['filters']:
+    	    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  	if 'to_date' in dts['filters']:
+    	    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]        
   	if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
   	     	fltrs.append(" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	elif 'from_date' in dts['filters'] :
@@ -1103,6 +1132,10 @@ def event_list_new(data):
     fltr_cnd=''
     fltrs=[]
     if 'filters' in dts:
+   	if 'from_date' in dts['filters']:
+    	    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  	if 'to_date' in dts['filters']:
+    	    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]    
   	if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
   	     	fltrs.append(" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	elif 'from_date' in dts['filters'] :
@@ -1309,6 +1342,10 @@ def task_list_new(data):
     result={}
     fltr_cnd=''
     if 'filters' in dts:
+   		if 'from_date' in dts['filters']:
+    		    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  		if 'to_date' in dts['filters']:
+    		    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]    
     	        if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
     	        	fltrs.append(" a.exp_end_date between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	        elif 'from_date' in dts['filters'] :
@@ -1336,7 +1373,7 @@ def task_list_new(data):
 
 @frappe.whitelist(allow_guest=True)
 def task_list_team_new(data):
-	#gangadhar
+    #gangadhar
     dts=json.loads(data)
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
@@ -1350,6 +1387,10 @@ def task_list_team_new(data):
     result={}
     fltr_cnd=''
     if 'filters' in dts:
+   		if 'from_date' in dts['filters']:
+    		    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  		if 'to_date' in dts['filters']:
+    		    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]    
     	        if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
     	        	fltrs.append(" t.exp_end_date between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	        elif 'from_date' in dts['filters'] :
