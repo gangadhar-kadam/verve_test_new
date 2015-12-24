@@ -18,7 +18,6 @@ cur_frm.add_fetch("pcf", "church", "church");
 cur_frm.add_fetch("pcf", "church_group", "church_group");
 cur_frm.add_fetch("pcf", "region", "region");
 cur_frm.add_fetch("pcf", "zone", "zone");
-cur_frm.add_fetch("pcf", "senior_cell", "senior_cell");
 
 cur_frm.add_fetch("church", "church_group", "church_group");
 cur_frm.add_fetch("church", "region", "region");

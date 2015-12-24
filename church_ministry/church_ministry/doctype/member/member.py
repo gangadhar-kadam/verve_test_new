@@ -309,10 +309,10 @@ def create_event(data):
         Need to check validation/ duplication  etc
         """
         dts=json.loads(data)
-        frappe.errprint(dts)
+        #frappe.errprint(dts)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
-	print dts
+	#print dts
         if not valid:
                 return {
                   "status":"401",
@@ -331,8 +331,54 @@ def create_event(data):
                 obj.ends_on=dts['ends_on']
                 obj.address=dts['address']
                 obj.description=dts['description']
+                if 'event_group' in dts:
+                        column={
+				"Regional":"region",
+				"Zonal":"zone",
+				"Church Group":"church_group",
+				"Church":"church",
+				"PCF":"pcf",
+				"Sr Cell":"senior_cell",
+				"Cell":"cell"
+			}
+                	obj.event_group=dts['event_group']
+			if dts['event_group']=='Only Leaders':
+				pass
+			else:
+				setattr(obj, column[dts['event_group']], dts['value'])
                 try:
+                	if dts['event_group']=='Only Leaders': 
+                		for d1 in dts['value'][1:-1].split(','):
+                		    	#return d1
+					child1 = obj.append('roles', {})
+					child1.role = d1
+					frappe.errprint(child1.role)
 	                obj.insert(ignore_permissions=True)
+		        obj_att=frappe.new_doc("Attendance Record")
+		        obj_att.attendance_type='Event Attendance'
+		        obj_att.event=obj.name
+			obj_att.meeting_subject=dts['subject']
+		        obj_att.from_date=dts['starts_on']
+		        obj_att.to_date=dts['ends_on']
+		        obj_att.venue=dts['address']
+		        obj_att.flags.ignore_mandatory = True
+		        obj_att.flags.ignore_validate=True
+		        obj_att.insert(ignore_permissions=True)
+		        obj_att.set('invitation_member_details', [])
+			member_ftv=''
+			if dts['event_group']=='Only Leaders':
+			        rles=",".join(["'"+x+"'" for x in dts['value'][1:-1].split(',')])
+			        qry="select name,member_name,email_id from `tabMember` where  user_id in( select distinct(parent) from tabUserRole where role in ("+rles+"))"
+				member_ftv = frappe.db.sql(qry)
+			else :  
+				member_ftv = frappe.db.sql(" select name,member_name,email_id from `tabMember` where %s='%s'"%(column[dts['event_group']],dts['value']))	
+			for d in member_ftv:
+				child = obj_att.append('invitation_member_details', {})
+				child.member = d[0]
+				child.member_name = d[1]
+				child.email_id = d[2]
+			obj_att.save()	                
+
 	                ret={
 	                        "message":"Successfully created Event '"+obj.name+"'"
 	                }
