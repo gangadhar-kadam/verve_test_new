@@ -1474,40 +1474,43 @@ def task_update(data):
         return {
                 "status":"401",
                 "message":"User name or Password is incorrect"
-        }         
-    if dts['followup_task']:
-	task_obj = frappe.new_doc("ToDo")
-	task_obj.description = dts['description']
-	task_obj.status = 'Open'
-	task_obj.priority = 'Medium'
-	task_obj.date = nowdate()
-	task_obj.owner = dts['_assign']
-	task_obj.reference_type = 'Task'
-	task_obj.reference_name = dts['name']
-	task_obj.assigned_by = dts['assignee']
-	task_obj.insert(ignore_permissions=True)
-
+        }
+    if dts['followup_task']:        
+        frappe.db.sql("update `tabToDo` set description=%s,status='Closed' where reference_name=%s",(dts['description'],dts['name']),as_dict=True) 
         dts['exp_start_date']=now()
         dts['doctype']='Task'
         dts['subject']='followup task for '+dts['name']
+        assign=dts['_assign'][2:-2]
         del dts['cell']
         del dts['assignee']
 	del dts['_assign']
         ma = frappe.get_doc(dts)
         ma.insert(ignore_permissions=True)
-        frappe.db.sql("update `tabTask` set description=%s,status='Closed',closing_date=%s where name=%s",('Closed the task and created followup task '+ma.name ,now(),dts['name']),as_dict=True)
+                
+	task_obj = frappe.new_doc("ToDo")
+	task_obj.description = dts['description']
+	task_obj.status = 'Open'
+	task_obj.priority = 'Medium'
+	task_obj.date = nowdate()
+	task_obj.owner = assign
+	task_obj.reference_type = 'Task'
+	task_obj.reference_name = dts['name']
+	task_obj.assigned_by = dts['username']
+	task_obj.insert(ignore_permissions=True)
+	frappe.db.sql("update `tabTask` set description=%s,status='Closed',closing_date=%s where name=%s",('Closed the task and created followup task '+ma.name ,now(),dts['name']),as_dict=True)
         return "Created followup taks "+ma.name+" and closed old task "+dts['name']
     else:
         frappe.db.sql("update `tabTask` set description=%s,status=%s,_assign=%s where name=%s",(dts['description'],dts['status'],dts['_assign'],dts['name']),as_dict=True)
+        frappe.db.sql("update `tabToDo` set description=%s,status='Closed' where reference_name=%s",(dts['description'],dts['name']),as_dict=True)
         task_obj = frappe.new_doc("ToDo")
         task_obj.description = dts['description']
         task_obj.status = 'Open'
         task_obj.priority = 'Medium'
         task_obj.date = nowdate()
-        task_obj.owner = dts['_assign']
+        task_obj.owner = dts['_assign'][2:-2]
         task_obj.reference_type = 'Task'
         task_obj.reference_name = dts['name']
-        task_obj.assigned_by = dts['assignee']
+        task_obj.assigned_by = dts['username']
         task_obj.insert(ignore_permissions=True)
 	
         return "Task Details updated Successfully"
@@ -1541,9 +1544,19 @@ def create_task(data):
     dts['doctype']='Task'
     dts['owner']=dts['username']
     del dts['assignee']
-    del dts['name']
+    #del dts['name']
     ma = frappe.get_doc(dts)
     ma.insert(ignore_permissions=True)
+    todo_obj = frappe.new_doc("ToDo")
+    todo_obj.description = dts['description']
+    todo_obj.status = 'Open'
+    todo_obj.priority = 'Medium'
+    todo_obj.date = nowdate()
+    todo_obj.owner = dts['_assign'][2:-2]
+    todo_obj.reference_type = 'Task'
+    todo_obj.reference_name = ma.name
+    todo_obj.assigned_by = dts['username']
+    todo_obj.insert(ignore_permissions=True)
     
     return ma.name+" created Successfully"
 
