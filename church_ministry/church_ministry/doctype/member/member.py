@@ -585,7 +585,7 @@ def meetings_members(data):
                   "message":"User name or Password is incorrect"
                 }
         else:
-		data=frappe.db.sql("select b.name,b.member,b.member_name,b.present,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
+		data=frappe.db.sql("select b.name,b.member,b.member_name,ifnull(b.present,'0'),a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
                 return data
 
 
@@ -1264,8 +1264,8 @@ def my_event_list(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }       
-    data=frappe.db.sql("select a.subject ,a.starts_on as event_date, a.address,c.name,c.person_name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c \
-                         where attendance_type='Event Attendance' and a.name=b.event_name and b.name=c.parent and c.id in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name=%s) ",dts['username'],as_dict=True)
+    data=frappe.db.sql("select a.subject ,a.starts_on as event_date, c.member_name,a.address,c.name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c \
+                         where attendance_type='Event Attendance' and a.name=b.event and b.name=c.parent and c.member in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name=%s) ",dts['username'],as_dict=True)
     return data
 
 @frappe.whitelist(allow_guest=True)
