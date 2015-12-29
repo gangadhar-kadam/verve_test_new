@@ -1265,7 +1265,7 @@ def my_event_list(data):
                 "message":"User name or Password is incorrect"
         }       
     data=frappe.db.sql("select a.subject ,a.starts_on as event_date, c.member_name,a.address,c.name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c \
-                         where attendance_type='Event Attendance' and a.name=b.event and b.name=c.parent and c.member in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name=%s) ",dts['username'],as_dict=True)
+                         where attendance_type='Event Attendance' and a.name=b.event and b.name=c.parent and c.member in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name=%s) ",dts['username'],as_dict=True,debug=1)
     return data
 
 @frappe.whitelist(allow_guest=True)
