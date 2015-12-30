@@ -1248,7 +1248,7 @@ def event_attendance(data):
     for record in dts['record']:
         if not record['present'] :
             record['present']=0
-        frappe.db.sql("update `tabInvitation Member Details` set present=%s where id=%s",(record['present'],record['name']))
+        frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
     return "Updated Attendance"
 
 @frappe.whitelist(allow_guest=True)
