@@ -928,7 +928,7 @@ def get_database_masters(data):
 		end_index=total_count[0][0] 
 	result['total_count']=total_count[0][0]
 	result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-	result['records']=frappe.db.sql("""select %s from `tab%s`  %s order by name limit %s,20"""%(colmns[dts['tbl']],dts['tbl'], cond,cint(start_index)), as_dict=1,debug=1)
+	result['records']=frappe.db.sql("""select %s from `tab%s`  %s order by name limit %s,20"""%(colmns[dts['tbl']],dts['tbl'], cond,cint(start_index)), as_dict=1)
 	return result
 
 @frappe.whitelist(allow_guest=True)
