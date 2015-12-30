@@ -1055,7 +1055,7 @@ def partnership_arms_list(data):
 	
     cond="where partnership_arms='%s' and giving_or_pledge= '%s' %s "%(dts['partnership_arms'],dts['giving_or_pledge'],fltr_cnd)
     if 'flag' in dts:       
-   		cond+= " and `tabPartnership Record`.`member`= ( SELECT defvalue FROM tabDefaultValue WHERE defvalue=`tabPartnership Record`.`member`) and tabDefaultValue.`parent`='"+cstr(dts['username'])+"')"
+   		cond+= " and `tabPartnership Record`.`member`= ( SELECT defvalue FROM tabDefaultValue WHERE defvalue=`tabPartnership Record`.`member` and tabDefaultValue.`parent`='"+cstr(dts['username'])+"')"
     else:
     	column={
 				"Regions":"region",
@@ -1066,11 +1066,12 @@ def partnership_arms_list(data):
 				"Senior Cells":"senior_cell",
 				"Cells":"cell"
 			}
-		res=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey<>'Member' and parent='%s'" %dts['username'],as_list=1)
+	res=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey<>'Member' and parent='%s'" %dts['username'],as_list=1)
     	cond_list=[]
     	for key,value in res:
     		cond_list.append(" %s = '%s' " %(column[key],value))
     	cond+="and ("+" or ".join([x for x in cond_list])+")"
+    #return cond
     total_count= frappe.db.sql("""select ifnull(count(name),0) from `tabPartnership Record`  %s """%(cond))	
     if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 	dts['page_no']=1
