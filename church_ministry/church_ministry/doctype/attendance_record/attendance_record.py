@@ -12,10 +12,8 @@ from frappe.utils import cstr,now,add_days,nowdate,cint
 class AttendanceRecord(Document):
 	def validate(self):
 		if self.attendance_type=='Meeting Attendance':
-			if (not self.cell ) or ( not self.senior_cell) \
-			or ( not self.pcf) or ( not self.church)\
-			or ( not self.group_church) or ( not self.zone) or ( not self.region):
-				frappe.throw(_("Please enter Cell,Senior Cell,PCF, Church ,Group Church, Zone and Region ..!"))
+			if (not self.cell ) :
+				frappe.throw(_("Please enter Cell "))
 
 	def on_update(self):
 	# def validate_event_dates(self):
