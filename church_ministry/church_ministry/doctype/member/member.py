@@ -349,7 +349,7 @@ def create_event(data):
 				setattr(obj, column[dts['event_group']], dts['value'])
                 try:
                 	if dts['event_group']=='Only Leaders': 
-                		for d1 in dts['value'][1:-1].split(','):
+                		for d1 in dts['value'].split(', '):
                 		    	#return d1
 					child1 = obj.append('roles', {})
 					child1.role = d1
