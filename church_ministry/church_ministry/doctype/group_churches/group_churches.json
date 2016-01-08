@@ -68,6 +68,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "zone_name", 
+   "fieldtype": "Read Only", 
+   "label": "Zone name", 
+   "options": "zone.zone_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "region", 
    "fieldtype": "Link", 
@@ -86,6 +94,14 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "region_name", 
+   "fieldtype": "Read Only", 
+   "label": "Region Name", 
+   "options": "zone.region_name", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -171,7 +187,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-04-08 17:28:20.872824", 
+ "modified": "2016-01-08 17:39:48.309936", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Group Churches", 

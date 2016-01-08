@@ -130,36 +130,58 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
     set_field_permlevel('church_group',1);
     set_field_permlevel('zone',1);
     set_field_permlevel('region',1);
+    set_field_permlevel('is_eligibale_for_follow_up',2);
   } 
 });
 
 cur_frm.add_fetch("cell", "pcf", "pcf");
+cur_frm.add_fetch("cell", "pcf_name", "pcf_name");
 cur_frm.add_fetch("cell", "church", "church");
+cur_frm.add_fetch("cell", "church_name", "church_name");
 cur_frm.add_fetch("cell", "church_group", "church_group");
+cur_frm.add_fetch("cell", "group_church_name", "group_church_name");
 cur_frm.add_fetch("cell", "region", "region");
+cur_frm.add_fetch("cell", "region_name", "region_name");
 cur_frm.add_fetch("cell", "zone", "zone");
+cur_frm.add_fetch("cell", "zone_name", "zone_name");
 cur_frm.add_fetch("cell", "senior_cell", "senior_cell");
+cur_frm.add_fetch("cell", "senior_cell_name", "senior_cell_name");
 
 cur_frm.add_fetch("senior_cell", "pcf", "pcf");
 cur_frm.add_fetch("senior_cell", "church", "church");
 cur_frm.add_fetch("senior_cell", "church_group", "church_group");
 cur_frm.add_fetch("senior_cell", "region", "region");
 cur_frm.add_fetch("senior_cell", "zone", "zone");
+cur_frm.add_fetch("senior_cell", "pcf_name", "pcf_name");
+cur_frm.add_fetch("senior_cell", "church_name", "church_name");
+cur_frm.add_fetch("senior_cell", "group_church_name", "group_church_name");
+cur_frm.add_fetch("senior_cell", "region_name", "region_name");
+cur_frm.add_fetch("senior_cell", "zone_name", "zone_name");
 
 
 cur_frm.add_fetch("pcf", "church", "church");
 cur_frm.add_fetch("pcf", "church_group", "church_group");
 cur_frm.add_fetch("pcf", "region", "region");
 cur_frm.add_fetch("pcf", "zone", "zone");
+cur_frm.add_fetch("pcf", "church_name", "church_name");
+cur_frm.add_fetch("pcf", "group_church_name", "group_church_name");
+cur_frm.add_fetch("pcf", "region_name", "region_name");
+cur_frm.add_fetch("pcf", "zone_name", "zone_name");
 
 cur_frm.add_fetch("church", "church_group", "church_group");
 cur_frm.add_fetch("church", "region", "region");
 cur_frm.add_fetch("church", "zone", "zone");
+cur_frm.add_fetch("church", "group_church_name", "group_church_name");
+cur_frm.add_fetch("church", "region_name", "region_name");
+cur_frm.add_fetch("church", "zone_name", "zone_name");
 
 cur_frm.add_fetch("church_group", "region", "region");
 cur_frm.add_fetch("church_group", "zone", "zone");
+cur_frm.add_fetch("church_group", "region_name", "region_name");
+cur_frm.add_fetch("church_group", "zone_name", "zone_name");
 
 cur_frm.add_fetch("zone", "region", "region");
+cur_frm.add_fetch("zone", "zone_name", "zone_name");
 
 cur_frm.fields_dict['user_id'].get_query = function(doc) {
   return "select name from `tabUser` where name not in (select distinct parent from `tabDefaultValue` where parenttype not in ('__default','null')) and name not in ('Guest','Administrator')"

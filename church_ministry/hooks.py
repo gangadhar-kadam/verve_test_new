@@ -65,7 +65,7 @@ app_version = "0.0.1"
 # Hook on document methods and events
 
 
-fixtures = ["Custom Field"]
+fixtures = ["Custom Field","Customize Form","Custom Script","Role"]
 
 doc_events = {
 	"Regions": {

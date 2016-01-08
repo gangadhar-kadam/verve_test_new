@@ -1,0 +1,366 @@
+[
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.718645", 
+  "name": "System Manager", 
+  "role_name": "System Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.719239", 
+  "name": "All", 
+  "role_name": "All"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.719709", 
+  "name": "Administrator", 
+  "role_name": "Administrator"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.720175", 
+  "name": "Guest", 
+  "role_name": "Guest"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.794454", 
+  "name": "Report Manager", 
+  "role_name": "Report Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.902494", 
+  "name": "Sales User", 
+  "role_name": "Sales User"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.903144", 
+  "name": "Support Manager", 
+  "role_name": "Support Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.903740", 
+  "name": "Sales Manager", 
+  "role_name": "Sales Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:56.904353", 
+  "name": "Support Team", 
+  "role_name": "Support Team"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:57.207771", 
+  "name": "Website Manager", 
+  "role_name": "Website Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:57:57.231781", 
+  "name": "Blogger", 
+  "role_name": "Blogger"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:25.377099", 
+  "name": "Accounts User", 
+  "role_name": "Accounts User"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:25.377871", 
+  "name": "Accounts Manager", 
+  "role_name": "Accounts Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:25.525181", 
+  "name": "Auditor", 
+  "role_name": "Auditor"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:25.525938", 
+  "name": "Purchase User", 
+  "role_name": "Purchase User"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:25.526575", 
+  "name": "Supplier", 
+  "role_name": "Supplier"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:25.615103", 
+  "name": "Sales Master Manager", 
+  "role_name": "Sales Master Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:25.750735", 
+  "name": "Purchase Manager", 
+  "role_name": "Purchase Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:25.793746", 
+  "name": "Purchase Master Manager", 
+  "role_name": "Purchase Master Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:26.297650", 
+  "name": "Customer", 
+  "role_name": "Customer"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:26.481392", 
+  "name": "Material User", 
+  "role_name": "Material User"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:26.942267", 
+  "name": "Manufacturing Manager", 
+  "role_name": "Manufacturing Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:27.076941", 
+  "name": "Material Manager", 
+  "role_name": "Material Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:27.144397", 
+  "name": "Quality Manager", 
+  "role_name": "Quality Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:27.167839", 
+  "name": "HR User", 
+  "role_name": "HR User"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:27.227700", 
+  "name": "Employee", 
+  "role_name": "Employee"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:27.311385", 
+  "name": "HR Manager", 
+  "role_name": "HR Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:27.313593", 
+  "name": "Expense Approver", 
+  "role_name": "Expense Approver"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:27.429895", 
+  "name": "Leave Approver", 
+  "role_name": "Leave Approver"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:28.161755", 
+  "name": "Manufacturing User", 
+  "role_name": "Manufacturing User"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:28.467620", 
+  "name": "Projects User", 
+  "role_name": "Projects User"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:28.643820", 
+  "name": "Projects Manager", 
+  "role_name": "Projects Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:29.275238", 
+  "name": "Maintenance User", 
+  "role_name": "Maintenance User"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:29.419735", 
+  "name": "Maintenance Manager", 
+  "role_name": "Maintenance Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:29.764040", 
+  "name": "Material Master Manager", 
+  "role_name": "Material Master Manager"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 17:58:32.530984", 
+  "name": "Analytics", 
+  "role_name": "Analytics"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 18:41:12.704157", 
+  "name": "Cell Leader", 
+  "role_name": "Cell Leader"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 18:41:12.760530", 
+  "name": "PCF Leader", 
+  "role_name": "PCF Leader"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 18:41:12.761220", 
+  "name": "Regional Pastor", 
+  "role_name": "Regional Pastor"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 18:41:12.762089", 
+  "name": "Senior Cell Leader", 
+  "role_name": "Senior Cell Leader"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 18:41:12.763663", 
+  "name": "Church Pastor", 
+  "role_name": "Church Pastor"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 18:41:12.764730", 
+  "name": "Group Church Pastor", 
+  "role_name": "Group Church Pastor"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-02-13 18:41:12.767008", 
+  "name": "Zonal Pastor", 
+  "role_name": "Zonal Pastor"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-03-13 19:58:25.782078", 
+  "name": "Member", 
+  "role_name": "Member"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-03-13 19:58:25.783330", 
+  "name": "First Time Visitor", 
+  "role_name": "First Time Visitor"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-03-13 19:58:26.930244", 
+  "name": "Bible Study Class Teacher", 
+  "role_name": "Bible Study Class Teacher"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-03-23 19:46:11.442314", 
+  "name": "Foundation School Teacher", 
+  "role_name": "Foundation School Teacher"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-03-25 15:10:20.501777", 
+  "name": "Partnership Rep", 
+  "role_name": "Partnership Rep"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-06-16 19:23:18.819714", 
+  "name": "Bulk Upload", 
+  "role_name": "Bulk Upload"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-09-03 12:48:33.273023", 
+  "name": "Call Center Operator", 
+  "role_name": "Call Center Operator"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-11-30 11:09:56.810915", 
+  "name": "Management", 
+  "role_name": "Management"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Role", 
+  "modified": "2015-12-21 14:31:17.026526", 
+  "name": "Welfare user", 
+  "role_name": "Welfare user"
+ }
+]

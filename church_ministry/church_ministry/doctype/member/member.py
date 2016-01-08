@@ -321,7 +321,7 @@ def create_event(data):
         if not frappe.has_permission(doctype="Event", ptype="create",user=dts['username']):
                 return {
                   "status":"403",
-                  "message":"You have no permission to create Cell"
+                  "message":"You have no permission to create Event"
                 }
         else:
                 obj=frappe.new_doc("Event")
@@ -1914,7 +1914,7 @@ def get_my_profile(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
             }
-        qr1="select m.name,u.first_name as member_name,u.last_name as last_name,m.date_of_birth,m.short_bio,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.cell,m.cell_name,m.senior_cell,m.senior_cell_name,m.pcf,m.pcf_name,m.church,m.church_name,m.church_group,m.group_church_name,m.zone,m.zone_name,m.region,m.region_name from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
+        qr1="select m.name,u.first_name as member_name,m.surname as last_name,m.date_of_birth,m.short_bio,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.cell,m.cell_name,m.senior_cell,m.senior_cell_name,m.pcf,m.pcf_name,m.church,m.church_name,m.church_group,m.group_church_name,m.zone,m.zone_name,m.region,m.region_name from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
         res=frappe.db.sql(qr1,as_dict=1)
         return res
 
@@ -1945,11 +1945,13 @@ def update_my_profile(data):
 	obj.marital_info=dts['marital_info']
 	obj.experience_years=dts['experience_years']
 	obj.phone_1=dts['phone_1']
+	obj.surname=dts['last_name']
 	if 'short_bio' in dts:
 		obj.short_bio=dts['short_bio']
 	obj.save(ignore_permissions=True)
 	obj1=frappe.get_doc('User',dts['username'])
         obj1.new_password=dts['password']
+        obj.last_name=dts['last_name']
 	#print obj1
         obj1.save(ignore_permissions=True)
         return "Your profile updated successfully"

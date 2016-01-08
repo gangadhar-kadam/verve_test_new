@@ -58,6 +58,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "region_name", 
+   "fieldtype": "Read Only", 
+   "label": "Region Name", 
+   "options": "region.region_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "fieldname": "column_break_10", 
    "fieldtype": "Column Break", 
    "permlevel": 0, 
@@ -93,7 +101,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-30 19:26:57.946575", 
+ "modified": "2016-01-08 16:50:59.236583", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Zones", 
