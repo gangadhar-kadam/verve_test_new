@@ -345,6 +345,7 @@ def create_event(data):
 			if dts['event_group']=='Only Leaders':
 				pass
 			else:
+				#frappe.errprint(column[dts['event_group']])
 				setattr(obj, column[dts['event_group']], dts['value'])
                 try:
                 	if dts['event_group']=='Only Leaders': 
@@ -352,7 +353,6 @@ def create_event(data):
                 		    	#return d1
 					child1 = obj.append('roles', {})
 					child1.role = d1
-					frappe.errprint(child1.role)
 	                obj.insert(ignore_permissions=True)
 		        obj_att=frappe.new_doc("Attendance Record")
 		        obj_att.attendance_type='Event Attendance'
@@ -383,8 +383,8 @@ def create_event(data):
 	                        "message":"Successfully created Event '"+obj.name+"'"
 	                }
 	                return ret
-	        except :
-	            	pass
+	        except Exception,e:
+    				return e
 
 @frappe.whitelist(allow_guest=True)
 def update_event(data):
@@ -1018,7 +1018,7 @@ def partnership_arms(data):
     	for key,value in res:
     		cond_list.append(" %s = '%s' " %(column[key],value))
     	cond+="and ("+" or ".join([x for x in cond_list])+")"
-    data=frappe.db.sql("select partnership_arms,ifnull(FORMAT(sum(amount),2),'0.00') as amount from `tabPartnership Record` %s group by partnership_arms" %(cond),as_dict=True)
+    data=frappe.db.sql("select partnership_arms,ifnull(FORMAT(sum(amount),2),'0.00') as amount from `tabPartnership Record` %s group by partnership_arms" %(cond),as_dict=True,debug=1)
     return data
     
     
@@ -1567,12 +1567,13 @@ def create_task(data):
     #del dts['name']
     ma = frappe.get_doc(dts)
     ma.insert(ignore_permissions=True)
+    #return ma.name
     todo_obj = frappe.new_doc("ToDo")
     todo_obj.description = dts['description']
     todo_obj.status = 'Open'
     todo_obj.priority = 'Medium'
     todo_obj.date = nowdate()
-    todo_obj.owner = dts['_assign'][2:-2]
+    todo_obj.owner = dts['_assign']
     todo_obj.reference_type = 'Task'
     todo_obj.reference_name = ma.name
     todo_obj.assigned_by = dts['username']
@@ -1899,7 +1900,7 @@ def list_members_details(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
             }
-	qr1="select name,member_name,date_of_birth,phone_1,phone_2,email_id,email_id2,address,office_address,employment_status,industry_segment,yearly_income,experience_years,core_competeance,educational_qualification,null AS `password`,image,marital_info from tabMember where name='"+dts['name']+"'"
+	qr1="select name,member_name,date_of_birth,phone_1,phone_2,email_id,email_id2,address,office_address,employment_status,industry_segment,yearly_income,experience_years,core_competeance,educational_qualification,null AS `password`,image,marital_info,cell,cell_name,senior_cell,senior_cell_name,pcf,pcf_name,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name from tabMember where name='"+dts['name']+"'"
         res=frappe.db.sql(qr1,as_dict=1)
         return res
 
@@ -1913,7 +1914,7 @@ def get_my_profile(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
             }
-        qr1="select m.name,u.first_name as member_name,u.last_name as last_name,m.date_of_birth,m.short_bio,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.church,m.church_group,m.zone from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
+        qr1="select m.name,u.first_name as member_name,u.last_name as last_name,m.date_of_birth,m.short_bio,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.cell,m.cell_name,m.senior_cell,m.senior_cell_name,m.pcf,m.pcf_name,m.church,m.church_name,m.church_group,m.group_church_name,m.zone,m.zone_name,m.region,m.region_name from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
         res=frappe.db.sql(qr1,as_dict=1)
         return res
 

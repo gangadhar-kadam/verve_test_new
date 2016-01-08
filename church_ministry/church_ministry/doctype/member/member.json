@@ -296,6 +296,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "cell_name", 
+   "fieldtype": "Read Only", 
+   "label": "Cell Name", 
+   "options": "Cells.cell_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "senior_cell", 
    "fieldtype": "Link", 
@@ -314,6 +322,14 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "senior_cell_name", 
+   "fieldtype": "Read Only", 
+   "label": "Senior Cells", 
+   "options": "Senior Cells.senior_cell_name", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -336,6 +352,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "pcf_name", 
+   "fieldtype": "Read Only", 
+   "label": "PCF Name", 
+   "options": "pcf.pcf_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "church", 
    "fieldtype": "Link", 
@@ -356,6 +380,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "church_name", 
+   "fieldtype": "Read Only", 
+   "label": "Church Name", 
+   "options": "church.church_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "fieldname": "church_group", 
    "fieldtype": "Link", 
    "label": "Group Church", 
@@ -363,6 +395,14 @@
    "permlevel": 0, 
    "precision": "", 
    "reqd": 1
+  }, 
+  {
+   "fieldname": "group_church_name", 
+   "fieldtype": "Read Only", 
+   "label": "Group Church Name", 
+   "options": "church_group.church_group_name", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -385,6 +425,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "zone_name", 
+   "fieldtype": "Read Only", 
+   "label": "Zone Name", 
+   "options": "zone.zone_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "fieldname": "region", 
    "fieldtype": "Link", 
    "label": "Region", 
@@ -392,6 +440,14 @@
    "permlevel": 0, 
    "precision": "", 
    "reqd": 1
+  }, 
+  {
+   "fieldname": "region_name", 
+   "fieldtype": "Read Only", 
+   "label": "Region", 
+   "options": "region.region_name", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -1005,7 +1061,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-12-21 14:59:02.673118", 
+ "modified": "2016-01-08 11:43:22.196369", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
