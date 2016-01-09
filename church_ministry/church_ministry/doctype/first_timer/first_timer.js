@@ -83,7 +83,7 @@ frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
   }
-  else if(frm.doc.__islocal){   
+  else if(frm.doc.__islocal){ 
     argmnt={
               "region": frm.doc.region,
               "zone": frm.doc.zone,
@@ -100,20 +100,37 @@ frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
         callback: function(r) {
           if (r.message){
             console.log(r.message);
-            frm.doc.region=r.message.region
+           /* frm.doc.region=r.message.region
             frm.doc.zone=r.message.zone
             frm.doc.church_group=r.message.church_group
             frm.doc.church=r.message.church
             frm.doc.pcf=r.message.pcf
             frm.doc.senior_cell=r.message.senior_cell
             frm.doc.cell=r.message.name
+
+            frm.doc.data_30=r.message.cell_name
+            frm.doc.senior_cell_name=r.message.senior_cell_name
+            frm.doc.pcf_name=r.message.pcf_name
+            frm.doc.church_name=r.message.church_name
+            frm.doc.group_church_name=r.message.group_church_name
+            frm.doc.zone_name=r.message.zone_name
+            frm.doc.region_name=r.message.region_name
+
             refresh_field('region');              
             refresh_field('zone');
             refresh_field('church_group');              
             refresh_field('church');
             refresh_field('pcf');              
             refresh_field('senior_cell');
-           refresh_field('cell');
+            refresh_field('cell');
+
+            refresh_field('data_30');              
+            refresh_field('senior_cell_name');
+            refresh_field('pcf_name');              
+            refresh_field('church_name');
+            refresh_field('group_church_name');              
+            refresh_field('zone_name');
+           refresh_field('region_name');*/
           }
         }
       });

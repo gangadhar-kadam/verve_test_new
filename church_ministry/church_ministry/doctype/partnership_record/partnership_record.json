@@ -600,7 +600,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-10-16 14:39:52.963512", 
+ "modified": "2016-01-09 17:44:04.561922", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Record", 
@@ -637,6 +637,7 @@
    "write": 1
   }, 
   {
+   "apply_user_permissions": 1, 
    "permlevel": 0, 
    "read": 1, 
    "role": "Church Pastor"
@@ -646,7 +647,8 @@
    "permlevel": 0, 
    "read": 1, 
    "report": 1, 
-   "role": "Group Church Pastor"
+   "role": "Group Church Pastor", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
@@ -661,26 +663,6 @@
    "read": 1, 
    "report": 1, 
    "role": "Regional Pastor"
-  }, 
-  {
-   "permlevel": 1, 
-   "read": 1, 
-   "role": "Administrator", 
-   "write": 1
-  }, 
-  {
-   "permlevel": 1, 
-   "read": 1, 
-   "role": "Partnership Rep", 
-   "write": 1
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "create": 1, 
-   "permlevel": 0, 
-   "read": 1, 
-   "role": "Member", 
-   "write": 1
   }
  ], 
  "read_only": 0, 

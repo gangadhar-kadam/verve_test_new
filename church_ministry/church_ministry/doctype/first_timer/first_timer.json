@@ -1367,7 +1367,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-08 18:15:37.181492", 
+ "modified": "2016-01-09 17:43:43.765093", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Timer", 
@@ -1506,7 +1506,7 @@
    "amend": 0, 
    "apply_user_permissions": 1, 
    "cancel": 0, 
-   "create": 0, 
+   "create": 1, 
    "delete": 0, 
    "email": 0, 
    "export": 0, 
@@ -1519,7 +1519,7 @@
    "set_user_permissions": 1, 
    "share": 0, 
    "submit": 0, 
-   "write": 0
+   "write": 1
   }, 
   {
    "amend": 0, 
@@ -1544,7 +1544,7 @@
    "amend": 0, 
    "apply_user_permissions": 1, 
    "cancel": 0, 
-   "create": 0, 
+   "create": 1, 
    "delete": 0, 
    "email": 0, 
    "export": 0, 
@@ -1557,13 +1557,13 @@
    "set_user_permissions": 1, 
    "share": 0, 
    "submit": 0, 
-   "write": 0
+   "write": 1
   }, 
   {
    "amend": 0, 
    "apply_user_permissions": 1, 
    "cancel": 0, 
-   "create": 0, 
+   "create": 1, 
    "delete": 0, 
    "email": 0, 
    "export": 0, 
@@ -1576,7 +1576,7 @@
    "set_user_permissions": 1, 
    "share": 0, 
    "submit": 0, 
-   "write": 0
+   "write": 1
   }, 
   {
    "amend": 0, 

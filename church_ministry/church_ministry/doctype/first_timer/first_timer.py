@@ -160,7 +160,6 @@ def set_higher_values(args):
     # out = frappe.db.get_all("Cells", fields=keys, filters={'name':args['name']})
     out = []
     for key, val in args.items():
-    	out = frappe.db.sql("""select region,zone,church_group,church,pcf,senior_cell,name from `tabCells` 
-				where %s='%s'"""%(key,val),as_dict=1)
+    	out = frappe.db.sql("""select region,zone,church_group,church,pcf,senior_cell,name,cell_name,    pcf_name,    church_name,    zone_name,    region_name,    senior_cell_name,    group_church_name from `tabCells` 				where %s='%s'"""%(key,val),as_dict=1)
     if out:
           return out[0]

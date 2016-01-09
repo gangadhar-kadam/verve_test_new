@@ -28,7 +28,7 @@ frappe.ui.form.on("Churches", "validate", function(frm,dt,dn) {
     if(check==false){    
       cur_frm.set_value("email_id", '')
        msgprint("Please Enter valid Email Id..!");
-       throw "Please Enter Correct Email ID.!"
+       validate = false;
    }
  }  
 });

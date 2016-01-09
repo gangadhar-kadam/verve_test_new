@@ -1061,7 +1061,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-08 11:43:22.196369", 
+ "modified": "2016-01-09 14:56:24.485451", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
@@ -1089,6 +1089,25 @@
   }, 
   {
    "amend": 0, 
+   "apply_user_permissions": 0, 
+   "cancel": 0, 
+   "create": 0, 
+   "delete": 0, 
+   "email": 0, 
+   "export": 0, 
+   "import": 0, 
+   "permlevel": 1, 
+   "print": 0, 
+   "read": 1, 
+   "report": 0, 
+   "role": "All", 
+   "set_user_permissions": 0, 
+   "share": 0, 
+   "submit": 0, 
+   "write": 0
+  }, 
+  {
+   "amend": 0, 
    "apply_user_permissions": 1, 
    "cancel": 0, 
    "create": 0, 
@@ -1105,25 +1124,6 @@
    "share": 0, 
    "submit": 0, 
    "write": 1
-  }, 
-  {
-   "amend": 0, 
-   "apply_user_permissions": 0, 
-   "cancel": 0, 
-   "create": 0, 
-   "delete": 0, 
-   "email": 0, 
-   "export": 0, 
-   "import": 0, 
-   "permlevel": 1, 
-   "print": 0, 
-   "read": 1, 
-   "report": 0, 
-   "role": "Call Center Operator", 
-   "set_user_permissions": 0, 
-   "share": 0, 
-   "submit": 0, 
-   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
@@ -1200,76 +1200,6 @@
    "role": "Member", 
    "set_user_permissions": 1, 
    "write": 1
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "System Manager"
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Regional Pastor", 
-   "write": 0
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Zonal Pastor", 
-   "write": 0
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Group Church Pastor", 
-   "write": 0
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Church Pastor", 
-   "write": 0
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "PCF Leader", 
-   "write": 0
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Senior Cell Leader", 
-   "write": 0
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Cell Leader", 
-   "write": 0
-  }, 
-  {
-   "apply_user_permissions": 1, 
-   "permlevel": 1, 
-   "read": 1, 
-   "report": 1, 
-   "role": "Member"
   }, 
   {
    "apply_user_permissions": 1, 

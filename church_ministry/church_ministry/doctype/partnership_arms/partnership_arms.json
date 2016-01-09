@@ -36,7 +36,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-25 15:59:48.725151", 
+ "modified": "2016-01-09 17:42:22.926692", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Partnership Arms", 
@@ -71,10 +71,13 @@
    "write": 1
   }, 
   {
+   "apply_user_permissions": 0, 
+   "create": 0, 
    "permlevel": 0, 
    "read": 1, 
    "report": 1, 
-   "role": "Church Pastor"
+   "role": "Church Pastor", 
+   "write": 0
   }, 
   {
    "apply_user_permissions": 1, 
