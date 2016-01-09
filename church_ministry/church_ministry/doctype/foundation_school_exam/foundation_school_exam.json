@@ -74,6 +74,14 @@
    "read_only": 0
   }, 
   {
+   "fieldname": "data_6", 
+   "fieldtype": "Read Only", 
+   "label": "Church Name", 
+   "options": "church.church_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "max_score", 
    "fieldtype": "Data", 
@@ -228,7 +236,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-03-23 13:33:54.280946", 
+ "modified": "2016-01-08 18:47:13.361232", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Foundation School Exam", 

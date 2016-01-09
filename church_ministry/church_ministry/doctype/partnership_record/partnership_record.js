@@ -18,20 +18,20 @@ cur_frm.add_fetch("ftv", "church_group", "church_group");
 cur_frm.add_fetch("ftv", "zone", "zone");
 cur_frm.add_fetch("ftv", "region", "region");
 
-frappe.ui.form.on("Partnership Record", "validate", function(frm,doc) {
-	if(frm.doc.is_member==1){
-		if(!frm.doc.member){
-			msgprint("Please select Member for Partnership Record before save..! ");
-        	throw "Please select Member!"
-		}
-	}
-	else if(frm.doc.is_member==0){
-		if(!frm.doc.ftv){
-			msgprint("Please select FTV for Partnership Record before save..! ");
-        	throw "Please select FTV!"
-		}
-	}
-});
+// frappe.ui.form.on("Partnership Record", "validate", function(frm,doc) {
+// 	// if(frm.doc.is_member==1){
+// 	// 	if(!frm.doc.member){
+// 	// 		msgprint("Please select Member for Partnership Record before save..! ");
+//  //        	throw "Please select Member!"
+// 	// 	}
+// 	// }
+// 	else if(frm.doc.is_member==0){
+// 		if(!frm.doc.ftv){
+// 			msgprint("Please select FTV for Partnership Record before save..! ");
+//         	throw "Please select FTV!"
+// 		}
+// 	}
+// });
 
 frappe.ui.form.on("Partnership Record", "onload", function(frm,doc) {
 		frm.doc.ministry_year=frappe.defaults.get_user_default("fiscal_year");

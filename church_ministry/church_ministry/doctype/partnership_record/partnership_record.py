@@ -12,6 +12,14 @@ class PartnershipRecord(Document):
 			if (not self.instrument__no  or not self.instrument_date or  not self.bank_name) :
 				frappe.throw(_(" 'Instrument No' , 'Instrument Date' and 'Bank Name' are mandatory for giving type 'Cheque' ..!"))
 
+		self.validate_member_ft()
+
+	def validate_member_ft(self):
+		if self.is_member=="Member" and not self.member:
+			frappe.throw(_("Please select Member for Partnership Record before save..!"))
+
+		if self.is_member=="FT" and not self.ftv:
+			frappe.throw(_("Please select FTV for Partnership Record before save..!"))
 
 	def on_submit(self):
 		if self.is_member==1:

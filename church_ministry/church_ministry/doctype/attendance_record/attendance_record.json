@@ -112,6 +112,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "data_15", 
+   "fieldtype": "Read Only", 
+   "label": "Cell Name", 
+   "options": "cell.cell_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "senior_cell", 
    "fieldtype": "Link", 
@@ -130,6 +138,14 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "senior_cell_name", 
+   "fieldtype": "Read Only", 
+   "label": "Senior Cell Name", 
+   "options": "senior_cell.senior_cell_name", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -152,6 +168,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "pcf_name", 
+   "fieldtype": "Read Only", 
+   "label": "PCF Name", 
+   "options": "pcf.pcf_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "depends_on": "", 
    "fieldname": "church", 
@@ -171,6 +195,14 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "church_name", 
+   "fieldtype": "Read Only", 
+   "label": "Church Name", 
+   "options": "church.church_name", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -211,6 +243,14 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "group_church_name", 
+   "fieldtype": "Read Only", 
+   "label": "Group Church Name", 
+   "options": "church_group.church_group", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "zone", 
    "fieldtype": "Link", 
@@ -224,11 +264,19 @@
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
-   "read_only": 1, 
+   "read_only": 0, 
    "report_hide": 0, 
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "zone_name", 
+   "fieldtype": "Read Only", 
+   "label": "Zone Name", 
+   "options": "zone.zone_name", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -249,6 +297,14 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "region_name", 
+   "fieldtype": "Read Only", 
+   "label": "Region Name", 
+   "options": "region.region_name", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -459,7 +515,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-12-24 15:16:38.963110", 
+ "modified": "2016-01-08 18:37:06.418401", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Attendance Record", 

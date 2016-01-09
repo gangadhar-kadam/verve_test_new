@@ -14,6 +14,25 @@ class AttendanceRecord(Document):
 		if self.attendance_type=='Meeting Attendance':
 			if (not self.cell ) :
 				frappe.throw(_("Please enter Cell "))
+		self.valedate_dates()
+		self.validate_meetings()
+
+	def valedate_dates(self):
+		if self.from_date:
+			if self.from_date < nowdate():
+				frappe.throw(_("From Date should be todays or greater than todays date."))
+				
+		if self.from_date:
+			if self.from_date > self.to_date:
+				frappe.throw(_("To Date should be greater than start date."))
+
+	def validate_meetings(self):
+		if self.meeting_category=="Cell Meeting" and not self.meeting_subject:
+			frappe.throw(_("Please Enter Meeting Subject before save document.!"))
+
+		if self.meeting_category=="Church Meeting" and not self.meeting_sub:
+			frappe.throw(_("Please Enter Meeting Subject before save document.!"))
+
 
 	def on_update(self):
 	# def validate_event_dates(self):

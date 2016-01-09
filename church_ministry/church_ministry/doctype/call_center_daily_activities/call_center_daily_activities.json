@@ -39,6 +39,14 @@
    "reqd": 1
   }, 
   {
+   "fieldname": "church_name", 
+   "fieldtype": "Read Only", 
+   "label": "Church Name", 
+   "options": "church.church_name", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "fieldname": "amended_from", 
    "fieldtype": "Link", 
    "label": "Amended From", 
@@ -56,7 +64,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2015-08-19 18:51:35.850278", 
+ "modified": "2016-01-08 18:28:33.099093", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Call Center Daily Activities", 

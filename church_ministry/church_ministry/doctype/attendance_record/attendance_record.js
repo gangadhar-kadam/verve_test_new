@@ -2,31 +2,52 @@ cur_frm.fields_dict["invitation_member_details"].grid.set_column_disp("email_id"
 cur_frm.fields_dict["invitation_member_details"].grid.set_column_disp("invitation", 0);
 
 cur_frm.add_fetch("cell", "pcf", "pcf");
+cur_frm.add_fetch("cell", "pcf_name", "pcf_name");
 cur_frm.add_fetch("cell", "church", "church");
+cur_frm.add_fetch("cell", "church_name", "church_name");
 cur_frm.add_fetch("cell", "church_group", "church_group");
+cur_frm.add_fetch("cell", "group_church_name", "group_church_name");
 cur_frm.add_fetch("cell", "region", "region");
+cur_frm.add_fetch("cell", "region_name", "region_name");
 cur_frm.add_fetch("cell", "zone", "zone");
+cur_frm.add_fetch("cell", "zone_name", "zone_name");
 cur_frm.add_fetch("cell", "senior_cell", "senior_cell");
+cur_frm.add_fetch("cell", "senior_cell_name", "senior_cell_name");
 
 cur_frm.add_fetch("senior_cell", "pcf", "pcf");
 cur_frm.add_fetch("senior_cell", "church", "church");
 cur_frm.add_fetch("senior_cell", "church_group", "church_group");
 cur_frm.add_fetch("senior_cell", "region", "region");
 cur_frm.add_fetch("senior_cell", "zone", "zone");
+cur_frm.add_fetch("senior_cell", "pcf_name", "pcf_name");
+cur_frm.add_fetch("senior_cell", "church_name", "church_name");
+cur_frm.add_fetch("senior_cell", "group_church_name", "group_church_name");
+cur_frm.add_fetch("senior_cell", "region_name", "region_name");
+cur_frm.add_fetch("senior_cell", "zone_name", "zone_name");
 
 cur_frm.add_fetch("pcf", "church", "church");
 cur_frm.add_fetch("pcf", "church_group", "church_group");
 cur_frm.add_fetch("pcf", "region", "region");
 cur_frm.add_fetch("pcf", "zone", "zone");
+cur_frm.add_fetch("pcf", "church_name", "church_name");
+cur_frm.add_fetch("pcf", "group_church_name", "group_church_name");
+cur_frm.add_fetch("pcf", "region_name", "region_name");
+cur_frm.add_fetch("pcf", "zone_name", "zone_name");
 
 cur_frm.add_fetch("church", "church_group", "church_group");
 cur_frm.add_fetch("church", "region", "region");
 cur_frm.add_fetch("church", "zone", "zone");
+cur_frm.add_fetch("church", "group_church_name", "group_church_name");
+cur_frm.add_fetch("church", "region_name", "region_name");
+cur_frm.add_fetch("church", "zone_name", "zone_name");
 
 cur_frm.add_fetch("church_group", "region", "region");
 cur_frm.add_fetch("church_group", "zone", "zone");
+cur_frm.add_fetch("church_group", "region_name", "region_name");
+cur_frm.add_fetch("church_group", "zone_name", "zone_name");
 
 cur_frm.add_fetch("zone", "region", "region");
+cur_frm.add_fetch("zone", "zone_name", "zone_name");
 
 frappe.ui.form.on("Attendance Record", "refresh", function(frm,dt,dn) {
     if(frm.doc.meeting_category=="Church Meeting"){
@@ -48,34 +69,36 @@ cur_frm.fields_dict['cell'].get_query = function(doc) {
   }
 }
 
-frappe.ui.form.on("Attendance Record", "validate", function(frm,doc) {
-   if (frm.doc.meeting_category=="Cell Meeting"){
-    if (!frm.doc.meeting_subject){
-      msgprint("Please Enter Meeting Subject before save document.! ");
-      throw "Enter Meeting Subject.!"
-    }
-   }
-   else if (frm.doc.meeting_category=="Church Meeting"){
-    if (!frm.doc.meeting_sub){
-      msgprint("Please Enter Meeting Subject before save document.! ");
-      throw "Enter Meeting Subject.!"
-    }
-   }
+// frappe.ui.form.on("Attendance Record", "validate", function(frm,doc) {
+   // if (frm.doc.meeting_category=="Cell Meeting"){
+   //  if (!frm.doc.meeting_subject){
+   //    msgprint(__("Please Enter Meeting Subject before save document.!"));
+   //    throw "Enter Meeting Subject.!"
+   //  }
+   // }
+   // if (frm.doc.meeting_category=="Church Meeting"){
+   //  if (!frm.doc.meeting_sub){
+   //    msgprint(__("Please Enter Meeting Subject before save document.!"));
+   //    throw "Enter Meeting Subject.!"
+   //  }
+   // }
 
-   if(frm.doc.from_date) {
-    var date= frappe.datetime.now_datetime()
-    if(frm.doc.from_date < date){
-      msgprint("From Date should be todays or greater than todays date.");
-      throw "Date should be proper.!"
-    }
-  }
-  if(frm.doc.from_date) {
-    if(frm.doc.from_date > frm.doc.to_date){
-      msgprint("To Date should be greater than start date.");
-      throw "Date should be proper.!"
-    }
-  }
-});
+  //  if(frm.doc.from_date) {
+  //   var date= frappe.datetime.now_datetime()
+  //   if(frm.doc.from_date < date){
+  //     msgprint(__("From Date should be todays or greater than todays date."));
+  //     throw "Date should be proper.!"
+  //   }
+  // }
+  // if(frm.doc.from_date) {
+  //   if(frm.doc.from_date > frm.doc.to_date){
+  //     frappe.msgprint(__("To Date should be greater than start date."));
+  //     return;
+  //     // msgprint(__("To Date should be greater than start date."));
+  //     // throw "Date should be proper.!"
+  //   }
+  // }
+// });
 
 frappe.ui.form.on("Attendance Record", "meeting_category", function(frm,doc) {
   if (frm.doc.meeting_category=="Cell Meeting"){

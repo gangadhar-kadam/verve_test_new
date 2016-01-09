@@ -439,7 +439,7 @@
    "fieldname": "group_church_name", 
    "fieldtype": "Read Only", 
    "label": "Group Church Name", 
-   "options": "church_group.group_church", 
+   "options": "church_group.church_group", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -1367,7 +1367,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-08 18:07:09.839258", 
+ "modified": "2016-01-08 18:15:37.181492", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Timer", 
