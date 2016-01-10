@@ -892,7 +892,7 @@ def get_database_masters(data):
     	        		fltrs.append(" %s = '%s' " %(key,value))
      
     	        if 'Week' in dts['filters'] :
-    	        	fltrs.append(" creation between DATE_ADD(now(), INTERVAL(1-DAYOFWEEK(now())) DAY) AND DATE_ADD(now(), INTERVAL(7-DAYOFWEEK(now())) DAY)")    
+    	        	fltrs.append(" creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY) ")    
     	        elif 'Month' in dts['filters'] :
     	        	if isinstance(dts['filters']['Month'], basestring):
     	        		fltrs.append(" YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) ")
@@ -1628,16 +1628,15 @@ def dashboard(data):
 
 	match_conditions,cond=get_match_conditions('Invitees and Contacts',dts['username'])
 	
-	new_visitor=frappe.db.sql("select a.`Week` as `Week1`,b.`Month` as `Month1`,c.`Year` as `Year1` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between DATE_ADD(now(), INTERVAL(1-DAYOFWEEK(now())) DAY) AND DATE_ADD(now(), INTERVAL(7-DAYOFWEEK(now())) DAY) %s ) a,(select count(name) as `Month` from `tabInvitees and Contacts` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabInvitees and Contacts` where YEAR(creation)=YEAR(now()) %s)c"%( cond,cond,cond), as_dict=1)
+	new_visitor=frappe.db.sql("select a.`Week` as `Week1`,b.`Month` as `Month1`,c.`Year` as `Year1` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  %s ) a,(select count(name) as `Month` from `tabInvitees and Contacts` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabInvitees and Contacts` where YEAR(creation)=YEAR(now()) %s)c"%( cond,cond,cond), as_dict=1)
         data['invities_contacts']=new_visitor
 
 	match_conditions,cond=get_match_conditions('First Timer',dts['username'])
-	frappe.errprint(cond)
-	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(now(), INTERVAL(1-DAYOFWEEK(now())) DAY) AND DATE_ADD(now(), INTERVAL(7-DAYOFWEEK(now())) DAY) and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( cond,cond,cond), as_dict=1)
+	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( cond,cond,cond), as_dict=1)
 	#new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and is_new_born='Yes') a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes') b,(select count(name)             as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes')c" , as_dict=1)
         data['new_converts']=new_born
 
-	first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(now(), INTERVAL(1-DAYOFWEEK(now())) DAY) AND DATE_ADD(now(), INTERVAL(7-DAYOFWEEK(now())) DAY) %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) %s )c" %( cond,cond,cond), as_dict=1)
+	first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) %s )c" %( cond,cond,cond), as_dict=1)
 	#first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() ) a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now()) b,(select count(name) as `Year` from `tabFirst Timer` where                      creation between date_sub(now(),INTERVAL 1 Year) and now())c" , as_dict=1)
         data['first_timers']=first_timers
 	
