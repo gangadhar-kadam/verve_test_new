@@ -1071,7 +1071,7 @@ def partnership_arms_list(data):
     	for key,value in res:
     		cond_list.append(" %s = '%s' " %(column[key],value))
     	cond+="and ("+" or ".join([x for x in cond_list])+")"
-    #return cond
+    frappe.errprint(cond)
     total_count= frappe.db.sql("""select ifnull(count(name),0) from `tabPartnership Record`  %s """%(cond))	
     if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 	dts['page_no']=1
@@ -1084,7 +1084,7 @@ def partnership_arms_list(data):
     result={}
     result['total_count']=total_count[0][0]
     result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-    result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1)
+    result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1,debug=1)
     return result
 
 
@@ -1641,8 +1641,8 @@ def dashboard(data):
         data['first_timers']=first_timers
 	
 	match_conditions,cond=get_match_conditions('Member',dts['username'])
-
-	membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation) %s ) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation) %s ) b where a.month=b.month"%(cond,cond) ,as_dict=1)
+	frappe.errprint(cond)
+	membership_strength=frappe.db.sql("select a.month,a.total_member_count from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation) %s ) a  "%(cond) ,as_dict=1)
         #membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation)) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation)) b where a.month=b.month",as_dict=1)
         if membership_strength:
                data['membership_strength']=membership_strength
