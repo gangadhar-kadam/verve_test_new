@@ -869,7 +869,7 @@ def get_database_masters(data):
 	        "Invitees and Contacts":"name,invitee_contact_name,sex,email_id",
 		"First Timer":"name,ftv_name,sex,email_id",
 		"Member":"name,member_name,sex,email_id",		
-		"Partnership Record":"name,partnership_arms,FORMAT(amount,2),giving_or_pledge",
+		"Partnership Record":"name,partnership_arms,FORMAT(amount,2) as amount,giving_or_pledge",
 		"Cells":"name,cell_name,senior_cell",
 		"PCFs":"name,pcf_name,church,church_group",
 		"Senior Cells":"name,senior_cell_name,pcf,church"
@@ -954,7 +954,7 @@ def get_master_details(data):
 		"Regions":"region_code,region_name,contact_phone_no,contact_email_id",
 		"Invitees and Contacts":"name,title,invitee_contact_name,sex,convert_invitee_contact_to_ft,date_of_convert,date_of_birth,age_group,invited_by,source_of_invitation,phone_1,email_id",
 		"First Timer":"name,ftv_name as`First Name`,ftv_name as`Last Name`,date_of_birth,marital_info,phone_1,email_id,address,office_address,image",
-		"Partnership Record":"name,partnership_arms,ministry_year,is_member,member,date,cell,FORMAT(amount,2),giving_or_pledge,giving_type,type_of_pledge,instrument__no,bank_name,branch"
+		"Partnership Record":"name,partnership_arms,ministry_year,is_member,member,date,cell,FORMAT(amount,2) as amount,giving_or_pledge,giving_type,type_of_pledge,instrument__no,bank_name,branch"
 	}
 	tablename=dts['tbl']
 	res=frappe.db.sql("select %s from `tab%s` where name='%s'"  %(dictnory[tablename],dts['tbl'],dts['name']),as_dict=True)
@@ -1150,7 +1150,7 @@ def get_db_records(data):
 	    "Invitees and Contacts":"name,invitee_contact_name,sex,email_id",
 	    "First Timer":"name,ftv_name,sex,email_id",
 		"Members":"name,member_name,sex,email_id",		
-		"Partnership Record":"name,partnership_arms,FORMAT(amount,2),giving_or_pledge,member_name"
+		"Partnership Record":"name,partnership_arms,FORMAT(amount,2) as amount,giving_or_pledge,member_name"
 	}
 	res=frappe.db.sql("select %s from `tab%s` limit 20"  %(dictnory[dts['tbl']],dts['tbl']),as_dict=True)
 	return res
@@ -1632,6 +1632,7 @@ def dashboard(data):
         data['invities_contacts']=new_visitor
 
 	match_conditions,cond=get_match_conditions('First Timer',dts['username'])
+	frappe.errprint(cond)
 	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(now(), INTERVAL(1-DAYOFWEEK(now())) DAY) AND DATE_ADD(now(), INTERVAL(7-DAYOFWEEK(now())) DAY) and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( cond,cond,cond), as_dict=1)
 	#new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 WEEK) and now() and is_new_born='Yes') a,(select count(name) as `Month` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Month) and now() and is_new_born='Yes') b,(select count(name)             as `Year` from `tabFirst Timer` where creation between date_sub(now(),INTERVAL 1 Year) and now() and is_new_born='Yes')c" , as_dict=1)
         data['new_converts']=new_born
@@ -1687,7 +1688,7 @@ def partnership_arm_details(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }
-    data=frappe.db.sql("select name,partnership_arms,ministry_year,is_member,member,date,church,giving_or_pledge,FORMAT(amount,2) from `tabPartnership Record`  where name='%s'" %(dts['name']) ,as_dict=True)
+    data=frappe.db.sql("select name,partnership_arms,ministry_year,is_member,member,member as partner_name,date,church,giving_or_pledge,FORMAT(amount,2) as amount from `tabPartnership Record`  where name='%s'" %(dts['name']) ,as_dict=True)
     return data
 
 
