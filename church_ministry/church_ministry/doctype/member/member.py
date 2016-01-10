@@ -892,14 +892,14 @@ def get_database_masters(data):
     	        		fltrs.append(" %s = '%s' " %(key,value))
      
     	        if 'Week' in dts['filters'] :
-    	        	fltrs.append(" creation BETWEEN date_sub( now(),INTERVAL 1 WEEK ) AND now() ")    
+    	        	fltrs.append(" creation between DATE_ADD(now(), INTERVAL(1-DAYOFWEEK(now())) DAY) AND DATE_ADD(now(), INTERVAL(7-DAYOFWEEK(now())) DAY)")    
     	        elif 'Month' in dts['filters'] :
     	        	if isinstance(dts['filters']['Month'], basestring):
-    	        		fltrs.append(" creation BETWEEN date_sub( now(),INTERVAL 1 MONTH ) AND now() ")
+    	        		fltrs.append(" YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) ")
     	        	else:	
     	        		fltrs.append(" year(creation) = year(curdate() ) and month(creation) = month(curdate())")
     	        elif 'Year' in dts['filters'] :
-    	        	fltrs.append(" creation BETWEEN date_sub( now(),INTERVAL 1 YEAR ) AND now() ")  
+    	        	fltrs.append(" YEAR(creation)=YEAR(now()) ")  
     	        if 'New Converts' in dts['filters'] :
     	        	fltrs.append(" is_new_born='Yes' ") 
        	        elif 'Giving' in dts['filters'].values() :
