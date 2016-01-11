@@ -870,9 +870,9 @@ def get_database_masters(data):
 		"First Timer":"name,ftv_name,sex,email_id",
 		"Member":"name,member_name,sex,email_id",		
 		"Partnership Record":"name,partnership_arms,FORMAT(amount,2) as amount,giving_or_pledge",
-		"Cells":"name,cell_name,senior_cell",
-		"PCFs":"name,pcf_name,church,church_group",
-		"Senior Cells":"name,senior_cell_name,pcf,church"
+		"Cells":"name,cell_name,senior_cell,senior_cell_name",
+		"PCFs":"name,pcf_name,church,church_name",
+		"Senior Cells":"name,senior_cell_name,pcf,pfc_name"
 	}
     	cond,match_cond,fltr_cnd='','',''
     	fltrs=[]
@@ -1641,7 +1641,7 @@ def dashboard(data):
         data['first_timers']=first_timers
 	
 	match_conditions,cond=get_match_conditions('Member',dts['username'])
-	frappe.errprint(cond)
+	#frappe.errprint(cond)
 	membership_strength=frappe.db.sql("select a.month,a.total_member_count from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation) %s ) a  "%(cond) ,as_dict=1)
         #membership_strength=frappe.db.sql("select a.month,a.total_member_count,b.conversion as `new_converts` from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation)) a, (select MONTHNAME(creation) as month ,count(ftv_id_no) as conversion from tabMember where ftv_id_no is not null group by YEAR(creation), MONTH(creation)) b where a.month=b.month",as_dict=1)
         if membership_strength:
