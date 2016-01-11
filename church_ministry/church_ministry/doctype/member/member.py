@@ -1346,6 +1346,14 @@ def get_lists(data):
             "Zones":"zone",
             "Regions":"region"
     }
+    columns={
+            "Senior Cells":"cell_name",
+            "PCFs":"senior_cell_name",
+            "Churches":"pcf_name",
+            "Group Churches":"church_name",
+            "Zones":"church_group",
+            "Regions":"zone_name"
+    }
     tablename=dts['tbl']
     fields={
             "Senior Cells":"Cells",
@@ -1356,7 +1364,7 @@ def get_lists(data):
             "Regions":"Zones"
     }
     fieldname=dts['tbl']
-    res=frappe.db.sql("select name from `tab%s` where %s='%s'"  %(fields[fieldname],wheres[tablename],dts['name']),as_dict=True)
+    res=frappe.db.sql("select name,%s from `tab%s` where %s='%s'"  %(columns[tablename],fields[fieldname],wheres[tablename],dts['name']),as_dict=True)
     return res
 
 
