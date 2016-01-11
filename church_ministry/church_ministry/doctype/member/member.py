@@ -1084,7 +1084,7 @@ def partnership_arms_list(data):
     result={}
     result['total_count']=total_count[0][0]
     result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-    result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1,debug=1)
+    result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name,giving_type,type_of_pledge from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1,debug=1)
     return result
 
 
