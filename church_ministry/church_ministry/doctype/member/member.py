@@ -1315,12 +1315,12 @@ def get_hierarchy(data):
                 "message":"User name or Password is incorrect"
         }
     dictnory={
-        "Cells":"senior_cell,pcf,church,church_group,zone,region",
-        "Senior Cells":"pcf,church,church_group,zone,region",
-        "PCFs":"church,church_group,zone,region",
-        "Churches":"church_group,zone,region",
-        "Group Churches":"zone,region",
-        "Zones":"region"
+        "Cells":"senior_cell,senior_cell_name,pcf,pcf_name,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name",
+        "Senior Cells":"pcf,pcf_name,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name",
+        "PCFs":"church,church_name,church_group,group_church_name,zone,zone_name,region,region_name",
+        "Churches":"church_group,church_group_name,zone,zone_name,region,region_name",
+        "Group Churches":"zone,zone_name,region,region_name",
+        "Zones":"region,region_name"
     }
     tablename=dts['tbl']
     res=frappe.db.sql("select %s from `tab%s` where name='%s'"  %(dictnory[tablename],dts['tbl'],dts['name']),as_dict=True)
