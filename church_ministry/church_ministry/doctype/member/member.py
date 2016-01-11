@@ -1695,7 +1695,7 @@ def partnership_arm_details(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }
-    data=frappe.db.sql("select name,partnership_arms,ministry_year,is_member,member,member_name as partner_name,date,church,giving_or_pledge,FORMAT(amount,2) as amount from `tabPartnership Record`  where name='%s'" %(dts['name']) ,as_dict=True)
+    data=frappe.db.sql("select name,partnership_arms,ministry_year,is_member,member,member_name as partner_name,date,church,giving_or_pledge,FORMAT(amount,2) as amount,type_of_pledge from `tabPartnership Record`  where name='%s'" %(dts['name']) ,as_dict=True)
     return data
 
 
