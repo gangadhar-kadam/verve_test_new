@@ -872,7 +872,7 @@ def get_database_masters(data):
 		"Partnership Record":"name,partnership_arms,FORMAT(amount,2) as amount,giving_or_pledge",
 		"Cells":"name,cell_name,senior_cell,senior_cell_name",
 		"PCFs":"name,pcf_name,church,church_name",
-		"Senior Cells":"name,senior_cell_name,pcf,pfc_name"
+		"Senior Cells":"name,senior_cell_name,pcf,pcf_name"
 	}
     	cond,match_cond,fltr_cnd='','',''
     	fltrs=[]
