@@ -1294,7 +1294,7 @@ def my_event_list(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }       
-    data=frappe.db.sql("select a.subject ,a.name as `event code`,a.starts_on as event_date,a.ends_on as `to_date`, c.member_name,a.address,c.name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c \
+    data=frappe.db.sql("select a.subject ,a.name as `event_code`,a.starts_on as event_date,a.ends_on as `to_date`, c.member_name,a.address,c.name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c \
                          where attendance_type='Event Attendance' and a.name=b.event and b.name=c.parent and c.member in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name=%s) ",dts['username'],as_dict=True)
     return data
 
