@@ -8,6 +8,13 @@ cur_frm.add_fetch("member", "church", "church");
 cur_frm.add_fetch("member", "church_group", "church_group");
 cur_frm.add_fetch("member", "zone", "zone");
 cur_frm.add_fetch("member", "region", "region");
+cur_frm.add_fetch("member", "cell_name", "cell_name");
+cur_frm.add_fetch("member", "senior_cell_name", "senior_cell_name");
+cur_frm.add_fetch("member", "pcf_name", "pcf_name");
+cur_frm.add_fetch("member", "church_name", "church_name");
+cur_frm.add_fetch("member", "group_church_name", "group_church_name");
+cur_frm.add_fetch("member", "zone_name", "zone_name");
+cur_frm.add_fetch("member", "region_name", "region_name");
 
 cur_frm.add_fetch("ftv", "ftv_owner", "member1");
 cur_frm.add_fetch("ftv", "cell", "cell");
@@ -17,6 +24,13 @@ cur_frm.add_fetch("ftv", "church", "church");
 cur_frm.add_fetch("ftv", "church_group", "church_group");
 cur_frm.add_fetch("ftv", "zone", "zone");
 cur_frm.add_fetch("ftv", "region", "region");
+cur_frm.add_fetch("ftv", "cell_name", "cell_name");
+cur_frm.add_fetch("ftv", "senior_cell_name", "senior_cell_name");
+cur_frm.add_fetch("ftv", "pcf_name", "pcf_name");
+cur_frm.add_fetch("ftv", "church_name", "church_name");
+cur_frm.add_fetch("ftv", "group_church_name", "group_church_name");
+cur_frm.add_fetch("ftv", "zone_name", "zone_name");
+cur_frm.add_fetch("ftv", "region_name", "region_name");
 
 // frappe.ui.form.on("Partnership Record", "validate", function(frm,doc) {
 // 	// if(frm.doc.is_member==1){

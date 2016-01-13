@@ -330,6 +330,7 @@ def create_event(data):
                 obj.starts_on=dts['starts_on']
                 obj.ends_on=dts['ends_on']
                 obj.address=dts['address']
+                obj.event_type=dts['type']
                 obj.description=dts['description']
                 if 'event_group' in dts:
                         column={
@@ -1115,8 +1116,20 @@ def create_partnership_reocrd(data):
 	    pr.branch=dts['branch']
     else:
     	pr.type_of_pledge=dts['type_of_pledge']
+    hr_details=frappe.db.sql("select cell,senior_cell,pcf,church,church_group,zone,region from tabMember where name='%s'" %(dts['member']))
+    if hr_details:
+    	pr.cell=hr_details and hr_details[0][0] or ''
+    	pr.senior_cell=hr_details and hr_details[0][1] or ''
+    	pr.pcf=hr_details and hr_details[0][2] or ''
+    	pr.church=hr_details and hr_details[0][3] or ''
+    	pr.church_group=hr_details and hr_details[0][4] or ''
+    	pr.zone=hr_details and hr_details[0][5] or ''
+    	pr.region=hr_details and hr_details[0][6] or ''
+
     pr.flags.ignore_mandatory = True
     pr.insert(ignore_permissions=True)
+    
+
     return pr.name
 
 
@@ -1281,7 +1294,7 @@ def my_event_list(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }       
-    data=frappe.db.sql("select a.subject ,a.starts_on as event_date, c.member_name,a.address,c.name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c \
+    data=frappe.db.sql("select a.subject ,a.name as `event code`,a.starts_on as event_date,a.ends_on as `to_date`, c.member_name,a.address,c.name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c \
                          where attendance_type='Event Attendance' and a.name=b.event and b.name=c.parent and c.member in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name=%s) ",dts['username'],as_dict=True)
     return data
 

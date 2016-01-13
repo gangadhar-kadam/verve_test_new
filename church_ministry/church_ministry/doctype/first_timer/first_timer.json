@@ -324,7 +324,7 @@
    "set_only_once": 0
   }, 
   {
-   "fieldname": "data_30", 
+   "fieldname": "cell_name", 
    "fieldtype": "Read Only", 
    "label": "Cell Name", 
    "options": "cell.cell_name", 
@@ -1367,7 +1367,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-09 17:43:43.765093", 
+ "modified": "2016-01-12 18:43:55.498909", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Timer", 

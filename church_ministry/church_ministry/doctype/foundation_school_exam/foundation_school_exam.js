@@ -1,6 +1,7 @@
 //cur_frm.add_fetch("church", "church_group", "church_group");
 cur_frm.add_fetch("church", "region", "region");
 cur_frm.add_fetch("church", "zone", "zone");
+cur_frm.add_fetch("church", "church_name", "church_name");
 
 frappe.ui.form.on("Foundation School Exam", "onload", function(frm,cdt,cdn,doc) {
 	if(frm.doc.__islocal){

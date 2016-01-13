@@ -74,12 +74,14 @@
    "read_only": 0
   }, 
   {
-   "fieldname": "data_6", 
-   "fieldtype": "Read Only", 
+   "depends_on": "eval:doc.church", 
+   "fieldname": "church_name", 
+   "fieldtype": "Data", 
    "label": "Church Name", 
-   "options": "church.church_name", 
+   "options": "", 
    "permlevel": 0, 
-   "precision": ""
+   "precision": "", 
+   "read_only": 1
   }, 
   {
    "allow_on_submit": 0, 
@@ -236,7 +238,7 @@
  "is_submittable": 1, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-08 18:47:13.361232", 
+ "modified": "2016-01-12 19:07:10.629906", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Foundation School Exam", 
