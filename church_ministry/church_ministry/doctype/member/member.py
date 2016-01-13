@@ -1625,7 +1625,7 @@ def get_team_members(data):
 		}
 	else:
 		match_conditions,cond=get_match_conditions('Member',dts['username'])
-		qry="select name as ID ,member_name,user_id from tabMember where '1'='1' "+cond
+		qry="select name as ID ,member_name,email_id as user_id from tabMember where '1'='1' "+cond
 		data=frappe.db.sql(qry,as_dict=True)
 		return data
 
