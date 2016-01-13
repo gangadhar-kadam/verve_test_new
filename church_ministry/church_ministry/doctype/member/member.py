@@ -1116,15 +1116,22 @@ def create_partnership_reocrd(data):
 	    pr.branch=dts['branch']
     else:
     	pr.type_of_pledge=dts['type_of_pledge']
-    hr_details=frappe.db.sql("select cell,senior_cell,pcf,church,church_group,zone,region from tabMember where name='%s'" %(dts['member']))
+    hr_details=frappe.db.sql("select cell,cell_name,senior_cell,senior_cell_name,pcf,pcf_name,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name from tabMember where name='%s'" %(dts['member']))
     if hr_details:
     	pr.cell=hr_details and hr_details[0][0] or ''
-    	pr.senior_cell=hr_details and hr_details[0][1] or ''
-    	pr.pcf=hr_details and hr_details[0][2] or ''
-    	pr.church=hr_details and hr_details[0][3] or ''
-    	pr.church_group=hr_details and hr_details[0][4] or ''
-    	pr.zone=hr_details and hr_details[0][5] or ''
-    	pr.region=hr_details and hr_details[0][6] or ''
+    	pr.cell_name=hr_details and hr_details[0][1] or ''
+    	pr.senior_cell=hr_details and hr_details[0][2] or ''
+    	pr.senior_cell_name=hr_details and hr_details[0][3] or ''
+    	pr.pcf=hr_details and hr_details[0][4] or ''
+    	pr.pcf_name=hr_details and hr_details[0][5] or ''
+    	pr.church=hr_details and hr_details[0][6] or ''
+    	pr.church_name=hr_details and hr_details[0][7] or ''
+    	pr.church_group=hr_details and hr_details[0][8] or ''
+    	pr.church_group_name=hr_details and hr_details[0][9] or ''
+    	pr.zone=hr_details and hr_details[0][10] or ''
+    	pr.zone_name=hr_details and hr_details[0][11] or ''
+    	pr.region=hr_details and hr_details[0][12] or ''
+    	pr.region_name=hr_details and hr_details[0][13] or ''
 
     pr.flags.ignore_mandatory = True
     pr.insert(ignore_permissions=True)
