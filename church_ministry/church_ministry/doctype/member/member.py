@@ -2140,7 +2140,12 @@ def message_braudcast_send(data):
         gcm = GCM('AIzaSyBIc4LYCnUU9wFV_pBoFHHzLoGm_xHl-5k')
         res=frappe.db.sql("select device_id from tabUser where name in ('%s')" % "','".join(map(str,rc_list)),as_list=1)
         if res:
-                res = gcm.json_request(registration_ids=res[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+                response = gcm.json_request(registration_ids=res[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
+                if 'errors' in response:
+                	return {
+                		"status":"401",
+                		"message": "The user is not registered for Push notification . Please login with user from mobile to generate Device ID"
+                	 }
                 msg+= "Push notification"
     if 'email' in dts:
         frappe.sendmail(recipients=dts['recipents'], sender='verve@lws.com', content=dts['message'], subject='Broadcast Message')
