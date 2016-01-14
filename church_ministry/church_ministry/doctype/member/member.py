@@ -189,7 +189,7 @@ def user_roles(data):
 			defkey='Cells'
                 elif "Bible Study Class Teacher"  in user_roles:
 			role='Bible Study Class Teacher'
-			    elif "Partnership Rep"  in user_roles:
+		elif "Partnership Rep"  in user_roles:
 			role='Partnership Rep'
 			defkey='Cells'
                 elif "Member"  in user_roles:
