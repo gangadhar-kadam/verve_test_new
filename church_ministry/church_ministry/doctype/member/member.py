@@ -303,6 +303,45 @@ def create_cells(data):
 		}
 		return ret
 
+@frappe.whitelist(allow_guest=True)
+def create_pcf(data):
+	"""
+	Need to check validation/ duplication  etc
+
+	"""
+	dts=json.loads(data)
+	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+	valid=frappe.db.sql(qry)
+	if not valid:
+		return {
+		  "status":"401",
+		  "message":"User name or Password is incorrect"
+		}
+        if not frappe.has_permission(doctype="Cells", ptype="create",user=dts['username']):
+                return {
+                  "status":"403",
+                  "message":"You have no permission to create PCFs"
+                }
+	else:
+		obj=frappe.new_doc("PCFs")
+		obj.pcf_name=dts['pcf_name']
+		obj.pcf_code=dts['pcf_code']
+		#obj.meeting_location=dts['meeting_location']
+		#obj.address=dts['address']
+		#obj.senior_cell=dts['senior_cell']
+		obj.zone=dts['zone']
+		obj.region=dts['region']
+		obj.church_group=dts['church_group']
+		obj.church=dts['church']
+		#obj.pcf=dts['pcf']
+		obj.contact_phone_no=dts['contact_phone_no']
+		obj.contact_email_id=dts['contact_email_id']
+		obj.insert(ignore_permissions=True)
+		ret={
+			"message":"Successfully created PCF '"+obj.name+"'"
+		}
+		return ret
+
 
 
 @frappe.whitelist(allow_guest=True)
