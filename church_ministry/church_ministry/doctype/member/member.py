@@ -2159,7 +2159,7 @@ def message_braudcast_send(data):
                 response = gcm.json_request(registration_ids=res[0], data=data,collapse_key='uptoyou', delay_while_idle=True, time_to_live=3600)
                 if 'errors' in response:
                 	return {
-                		"status":"401",
+                		"status":"402",
                 		"message": "The user is not registered for Push notification . Please login with user from mobile to generate Device ID"
                 	 }
                 msg+= "Push notification"
