@@ -1808,14 +1808,14 @@ def search_group_member_church(data):
                 key='1'
                 value=1
         cond+="where "+key+"='"+cstr(value)+"'"
-
+    
    	if (('from_date' in dts) and ('to_date' in dts)):
     	        	cond+=" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date'])
     	elif 'from_date' in dts :
     	        	cond+=" creation>= '%s' " %dts['from_date']
     	elif 'to_date' in dts :
     	        	cond+="  creation <= '%s' " %dts['to_date'] 
-
+        #return cond
         if 'search' in dts and dts['search']=='Group':
         	        total_count= frappe.db.sql("select count(*) from (select name,cell_name,senior_cell,contact_phone_no,contact_email_id from tabCells %s union select name,senior_cell_name,pcf,contact_phone_no,contact_email_id from `tabSenior Cells` %s union select name,pcf_name,church,contact_phone_no,contact_email_id from `tabPCFs` %s ) x " %(cond,cond,cond))
     		 	if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
@@ -1827,8 +1827,11 @@ def search_group_member_church(data):
     			if total_count and (total_count[0][0]<=end_index):
 					end_index=total_count[0][0] 
     			result['total_count']=total_count[0][0]
+    			abc="select name,cell_name,senior_cell,contact_phone_no,contact_email_id from tabCells %s union select name,senior_cell_name,pcf,contact_phone_no,contact_email_id from `tabSenior Cells` %s union select name,pcf_name,church,contact_phone_no,contact_email_id from `tabPCFs` %s order by name limit %s,20" %(cond,cond,cond,cint(start_index))
+    			#return abc
     			result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
                         result['records']=frappe.db.sql("select name,cell_name,senior_cell,contact_phone_no,contact_email_id from tabCells %s union select name,senior_cell_name,pcf,contact_phone_no,contact_email_id from `tabSenior Cells` %s union select name,pcf_name,church,contact_phone_no,contact_email_id from `tabPCFs` %s order by name limit %s,20" %(cond,cond,cond,cint(start_index)),as_dict=True)
+                        return result
         elif 'search' in dts and dts['search']=='Church':
         	        total_count= frappe.db.sql("select count(*) from (select name,church_name,phone_no,email_id from tabChurches %s union select name,church_group,contact_phone_no,contact_email_id from `tabGroup Churches` %s union select name,zone_name,contact_phone_no,contact_email_id from `tabZones`  %s union select name,region_name,contact_phone_no,contact_email_id from `tabRegions` %s)x "%(cond,cond,cond,cond))
     		 	if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
@@ -1843,6 +1846,7 @@ def search_group_member_church(data):
     			result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
         
                 	result['records']=frappe.db.sql("select name,church_name,phone_no,email_id from tabChurches %s union select name,church_group,contact_phone_no,contact_email_id from `tabGroup Churches` %s union select name,zone_name,contact_phone_no,contact_email_id from `tabZones`  %s union select name,region_name,contact_phone_no,contact_email_id from `tabRegions` %s order by name limit %s,20"%(cond,cond,cond,cond,cint(start_index)),as_dict=True)
+                	return result
         else:
         	if 'member' in dts:
         	    cond+=" and member_name like '%%%s%%'"%(dts['member'])
