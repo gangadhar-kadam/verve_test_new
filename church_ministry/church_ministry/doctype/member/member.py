@@ -1817,7 +1817,10 @@ def search_group_member_church(data):
     	        	cond+="  creation <= '%s' " %dts['to_date'] 
         #return cond
         if 'search' in dts and dts['search']=='Group':
-        	        total_count= frappe.db.sql("select count(*) from (select name,cell_name,senior_cell,contact_phone_no,contact_email_id from tabCells %s union select name,senior_cell_name,pcf,contact_phone_no,contact_email_id from `tabSenior Cells` %s union select name,pcf_name,church,contact_phone_no,contact_email_id from `tabPCFs` %s ) x " %(cond,cond,cond))
+        		if 'member' in dts:
+        	    		total_count= frappe.db.sql("select count(*) from (select name,cell_name,senior_cell,contact_phone_no,contact_email_id from tabCells %s and (name like '%%%s%%' or cell_name like '%%%s%%' ) union select name,senior_cell_name,pcf,contact_phone_no,contact_email_id from `tabSenior Cells` %s and (name like '%%%s%%' or senior_cell_name like '%%%s%%' ) union select name,pcf_name,church,contact_phone_no,contact_email_id from `tabPCFs` %s  and (name like '%%%s%%' or pcf_name like '%%%s%%' )) x " %(cond ,dts['member'],dts['member'],cond,dts['member'],dts['member'],cond,dts['member'],dts['member']))
+        	    	else:
+        	    		total_count= frappe.db.sql("select count(*) from (select name,cell_name,senior_cell,contact_phone_no,contact_email_id from tabCells %s union select name,senior_cell_name,pcf,contact_phone_no,contact_email_id from `tabSenior Cells` %s union select name,pcf_name,church,contact_phone_no,contact_email_id from `tabPCFs` %s ) x " %(cond,cond,cond))
     		 	if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 					dts['page_no']=1
 					start_index=0
@@ -1827,13 +1830,18 @@ def search_group_member_church(data):
     			if total_count and (total_count[0][0]<=end_index):
 					end_index=total_count[0][0] 
     			result['total_count']=total_count[0][0]
-    			abc="select name,cell_name,senior_cell,contact_phone_no,contact_email_id from tabCells %s union select name,senior_cell_name,pcf,contact_phone_no,contact_email_id from `tabSenior Cells` %s union select name,pcf_name,church,contact_phone_no,contact_email_id from `tabPCFs` %s order by name limit %s,20" %(cond,cond,cond,cint(start_index))
-    			#return abc
     			result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-                        result['records']=frappe.db.sql("select name,cell_name,senior_cell,contact_phone_no,contact_email_id from tabCells %s union select name,senior_cell_name,pcf,contact_phone_no,contact_email_id from `tabSenior Cells` %s union select name,pcf_name,church,contact_phone_no,contact_email_id from `tabPCFs` %s order by name limit %s,20" %(cond,cond,cond,cint(start_index)),as_dict=True)
+    			if 'member' in dts:
+    				result['records']=frappe.db.sql("select name as id , 'Cells' as type,cell_name as name,contact_phone_no,contact_email_id from tabCells %s  and (name like '%%%s%%' or cell_name like '%%%s%%' ) union select name  as id,'Senior Cells' as type,senior_cell_name as name,contact_phone_no,contact_email_id from `tabSenior Cells` %s and (name like '%%%s%%' or senior_cell_name like '%%%s%%' ) union select name  as id,'PCFs' as type,pcf_name as name,contact_phone_no,contact_email_id from `tabPCFs` %s and (name like '%%%s%%' or pcf_name like '%%%s%%' ) order by type,name limit %s,20" %(cond ,dts['member'],dts['member'],cond,dts['member'],dts['member'],cond,dts['member'],dts['member'],cint(start_index)),as_dict=True)
+                        	return result
+    			
+                        result['records']=frappe.db.sql("select name as id , 'Cells' as type,cell_name as name,contact_phone_no,contact_email_id from tabCells %s union select name  as id,'Senior Cells' as type,senior_cell_name as name,contact_phone_no,contact_email_id from `tabSenior Cells` %s union select name  as id,'PCFs' as type,pcf_name as name,contact_phone_no,contact_email_id from `tabPCFs` %s order by type,name limit %s,20" %(cond,cond,cond,cint(start_index)),as_dict=True)
                         return result
         elif 'search' in dts and dts['search']=='Church':
-        	        total_count= frappe.db.sql("select count(*) from (select name,church_name,phone_no,email_id from tabChurches %s union select name,church_group,contact_phone_no,contact_email_id from `tabGroup Churches` %s union select name,zone_name,contact_phone_no,contact_email_id from `tabZones`  %s union select name,region_name,contact_phone_no,contact_email_id from `tabRegions` %s)x "%(cond,cond,cond,cond))
+        		if 'member' in dts:
+        	    		total_count= frappe.db.sql("select count(*) from (select name as id , 'Churches' as type,church_name as name,phone_no,email_id from tabChurches %s and (name like '%%%s%%' or church_name like '%%%s%%' ) union select name as id , 'Group Churches' as type,church_group as name,contact_phone_no,contact_email_id from `tabGroup Churches` %s and (name like '%%%s%%' or church_group like '%%%s%%' ) union select name as id , 'Zones' as type,zone_name as name,contact_phone_no,contact_email_id from `tabZones`  %s and (name like '%%%s%%' or zone_name like '%%%s%%' ) union select name as id , 'Regions' as type,region_name as name,contact_phone_no,contact_email_id from `tabRegions` %s and (name like '%%%s%%' or region_name like '%%%s%%' ))x "%(cond,dts['member'],dts['member'],cond,dts['member'],dts['member'],cond,dts['member'],dts['member'],cond,dts['member'],dts['member']))
+        	    	else:
+        	        	total_count= frappe.db.sql("select count(*) from (select name,church_name,phone_no,email_id from tabChurches %s union select name,church_group,contact_phone_no,contact_email_id from `tabGroup Churches` %s union select name,zone_name,contact_phone_no,contact_email_id from `tabZones`  %s union select name,region_name,contact_phone_no,contact_email_id from `tabRegions` %s)x "%(cond,cond,cond,cond))
     		 	if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 					dts['page_no']=1
 					start_index=0
@@ -1844,8 +1852,10 @@ def search_group_member_church(data):
 					end_index=total_count[0][0] 
     			result['total_count']=total_count[0][0]
     			result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-        
-                	result['records']=frappe.db.sql("select name,church_name,phone_no,email_id from tabChurches %s union select name,church_group,contact_phone_no,contact_email_id from `tabGroup Churches` %s union select name,zone_name,contact_phone_no,contact_email_id from `tabZones`  %s union select name,region_name,contact_phone_no,contact_email_id from `tabRegions` %s order by name limit %s,20"%(cond,cond,cond,cond,cint(start_index)),as_dict=True)
+    			if 'member' in dts:
+    				result['records']=frappe.db.sql("select name as id , 'Churches' as type,church_name as name,phone_no,email_id from tabChurches %s and (name like '%%%s%%' or church_name like '%%%s%%' ) union select name as id , 'Group Churches' as type,church_group as name,contact_phone_no,contact_email_id from `tabGroup Churches` %s and (name like '%%%s%%' or church_group like '%%%s%%' ) union select name as id , 'Zones' as type,zone_name as name,contact_phone_no,contact_email_id from `tabZones`  %s and (name like '%%%s%%' or zone_name like '%%%s%%' ) union select name as id , 'Regions' as type,region_name as name,contact_phone_no,contact_email_id from `tabRegions` %s and (name like '%%%s%%' or region_name like '%%%s%%' ) order by type,id limit %s,20"%(cond,dts['member'],dts['member'],cond,dts['member'],dts['member'],cond,dts['member'],dts['member'],cond,dts['member'],dts['member'],cint(start_index)),as_dict=True)
+                		return result
+                	result['records']=frappe.db.sql("select name as id , 'Churches' as type,church_name as name,phone_no,email_id from tabChurches %s union select name as id , 'Group Churches' as type,church_group as name,contact_phone_no,contact_email_id from `tabGroup Churches` %s union select name as id , 'Zones' as type,zone_name as name,contact_phone_no,contact_email_id from `tabZones`  %s union select name as id , 'Regions' as type,region_name as name,contact_phone_no,contact_email_id from `tabRegions` %s order by type,id limit %s,20"%(cond,cond,cond,cond,cint(start_index)),as_dict=True)
                 	return result
         else:
         	if 'member' in dts:
