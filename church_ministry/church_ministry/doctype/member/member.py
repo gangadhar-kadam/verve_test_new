@@ -885,11 +885,11 @@ def get_database_masters(data):
   		if 'to_date' in dts['filters']:
     		    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+"-"+dts['filters']['to_date'][3:5]+"-"+dts['filters']['to_date'][:2]
     	        if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
-    	        	fltrs.append(" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
+    	        	fltrs.append(" date(creation) between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	        elif 'from_date' in dts['filters'] :
-    	        	fltrs.append(" creation >= '%s' " %dts['filters']['from_date'])
+    	        	fltrs.append(" date(creation) >= '%s' " %dts['filters']['from_date'])
     	        elif 'to_date' in dts['filters'] :
-    	        	fltrs.append(" creation <= '%s' " %dts['filters']['to_date'])    
+    	        	fltrs.append(" date(creation) <= '%s' " %dts['filters']['to_date'])    
     	 	for key,value in dts['filters'].iteritems():
     	 		if key in ('region','zone','church_group','church','pcf','senior_cell','cell'):
     	        		fltrs.append(" %s = '%s' " %(key,value))
@@ -930,6 +930,7 @@ def get_database_masters(data):
 	if total_count[0][0]<=end_index:
 		end_index=total_count[0][0] 
 	result['total_count']=total_count[0][0]
+	#frappe.errprint(cond)
 	result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
 	result['records']=frappe.db.sql("""select %s from `tab%s`  %s order by name limit %s,20"""%(colmns[dts['tbl']],dts['tbl'], cond,cint(start_index)), as_dict=1)
 	return result
@@ -1045,7 +1046,7 @@ def partnership_arms_list(data):
   	if 'to_date' in dts['filters']:
     	    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]        
   	if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
-  	     	fltrs.append(" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
+  	     	fltrs.append(" date(creation) between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	elif 'from_date' in dts['filters'] :
     	        	fltrs.append(" creation >= '%s' " %dts['filters']['from_date'])
     	        
@@ -1222,7 +1223,7 @@ def event_list_new(data):
   	if 'to_date' in dts['filters']:
     	    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]    
   	if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
-  	     	fltrs.append(" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
+  	     	fltrs.append(" date(creation) between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	elif 'from_date' in dts['filters'] :
     	        	fltrs.append(" creation >= '%s' " %dts['filters']['from_date'])
     	        
@@ -1686,8 +1687,8 @@ def dashboard(data):
 	#partnership=partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 1 Year) and now() %s group by year(creation), MONTH(creation)"%(cond),as_dict=1)
         ##partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull((select sum(amount) from `tabPartnership Record` where giving_or_pledge='Giving' and partnership_arms=p.partnership_arms and year(creation)=year(p.creation) and MONTH(creation)=MONTH(p.creation)),0) as `giving`,ifnull((select sum(amount) from `tabPartnership Record` where giving_or_pledge='Pledge' and partnership_arms=p.partnership_arms and year(creation)=year(p.creation) and MONTH(creation)=MONTH(p.creation)),0) as pledge,partnership_arms from `tabPartnership Record` p where creation between date_sub(now(),INTERVAL 120 day) and now() and  partnership_arms is not null group by year(creation), MONTH(creation),partnership_arms",as_dict=1)
         match_conditions,cond=get_match_conditions('Partnership Record',dts['username'])
-    	partnership=frappe.db.sql("SELECT MONTHNAME(creation) as Month,ifnull( ( SELECT SUM(amount) FROM `tabPartnership Record`   WHERE giving_or_pledge='Giving' and docstatus=1 %s  AND partnership_arms=p.partnership_arms   AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS `giving`,   ifnull(   (  SELECT  SUM(amount)  FROM  `tabPartnership Record`  WHERE  giving_or_pledge='Pledge'  and docstatus=1 %s  AND partnership_arms=p.partnership_arms  AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS pledge FROM   `tabPartnership Record` p WHERE   creation BETWEEN date_sub(now(),INTERVAL 120 DAY) AND now() AND partnership_arms IS NOT NULL and docstatus=1 %s GROUP BY   YEAR(creation),   MONTH(creation)"%(cond,cond,cond),as_dict=1)
-	#partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where creation between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
+    	partnership=frappe.db.sql("SELECT MONTHNAME(creation) as Month,ifnull( ( SELECT SUM(amount) FROM `tabPartnership Record`   WHERE giving_or_pledge='Giving' and docstatus=1 %s  AND partnership_arms=p.partnership_arms   AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS `giving`,   ifnull(   (  SELECT  SUM(amount)  FROM  `tabPartnership Record`  WHERE  giving_or_pledge='Pledge'  and docstatus=1 %s  AND partnership_arms=p.partnership_arms  AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS pledge FROM   `tabPartnership Record` p WHERE   date(creation) between date_sub(now(),INTERVAL 120 DAY) AND now() AND partnership_arms IS NOT NULL and docstatus=1 %s GROUP BY   YEAR(creation),   MONTH(creation)"%(cond,cond,cond),as_dict=1)
+	#partnership=frappe.db.sql("select MONTHNAME(creation) as Month, ifnull(sum(amount),0) as `giving`,ifnull(sum(amount),0) as pledge from `tabPartnership Record` where date(creation) between date_sub(now(),INTERVAL 1 Year) and now() group by year(creation), MONTH(creation)",as_dict=1)
         data['partnership']=partnership
 
 	return data
@@ -1812,7 +1813,7 @@ def search_group_member_church(data):
         cond+="where "+key+"='"+cstr(value)+"'"
     
    	if (('from_date' in dts) and ('to_date' in dts)):
-    	        	cond+=" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date'])
+    	        	cond+=" date(creation) between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date'])
     	elif 'from_date' in dts :
     	        	cond+=" creation>= '%s' " %dts['from_date']
     	elif 'to_date' in dts :
@@ -2088,7 +2089,7 @@ def send_notification_cell_meeting_not_hold():
 	senior_cell_list=frappe.db.sql("select distinct(senior_cell) from tabCells",as_list=1)
 	for sc in senior_cell_list:
 		res=frappe.db.sql("select name,senior_cell,pcf from tabCells where name not in (select distinct(cell) \
-			from `tabAttendance Record` where attendance_type='Meeting attendance' and creation BETWEEN \
+			from `tabAttendance Record` where attendance_type='Meeting attendance' and date(creation) between \
 			DATE_SUB(NOW(), INTERVAL 7 DAY)  AND DATE_SUB(NOW(), INTERVAL 15 DAY)) and senior_cell='%s'"%(sc[0]),as_list=1)
 		#frappe.errprint(res)
 		cell_leader=frappe.db.sql("select a.name,a.first_name ,dv.defvalue,dv.defkey from tabUser a,tabUserRole ur,\
