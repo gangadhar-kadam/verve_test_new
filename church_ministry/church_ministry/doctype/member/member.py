@@ -992,7 +992,7 @@ def get_master_details(data):
 		"Zones":"zone_code,zone_name,region,contact_phone_no,contact_email_id,zonal_hq",
 		"Regions":"region_code,region_name,contact_phone_no,contact_email_id",
 		"Invitees and Contacts":"name,title,invitee_contact_name,sex,convert_invitee_contact_to_ft,date_of_convert,date_of_birth,age_group,invited_by,source_of_invitation,phone_1,email_id",
-		"First Timer":"name,ftv_name ,surname,date_of_birth,marital_info,phone_1,email_id,address,office_address,image",
+		"First Timer":"name,ftv_name ,surname,date_of_birth,marital_info,phone_1,phone_2,email_id,email_id_2,address,office_address,image",
 		"Partnership Record":"name,partnership_arms,ministry_year,is_member,member,date,cell,FORMAT(amount,2) as amount,giving_or_pledge,giving_type,type_of_pledge,instrument__no,bank_name,branch"
 	}
 	tablename=dts['tbl']
@@ -1022,7 +1022,7 @@ def update_master_details(data):
 		"Zones":"zone_code,zone_name,region,contact_phone_no,contact_email_id,zonal_hq",
 		"Regions":"region_code,region_name,contact_phone_no,contact_email_id",
 		"Invitees and Contacts":"title,invitee_contact_name,sex,convert_invitee_contact_to_ft,date_of_convert,date_of_birth,age_group,invited_by,source_of_invitation,phone_1,email_id",
-		"First Timer":"ftv_name,surname,date_of_birth,marital_info,phone_1,email_id,address,office_address,image",
+		"First Timer":"ftv_name,surname,date_of_birth,marital_info,phone_1,phone_2,email_id,email_id_2,address,office_address,image",
 		"Partnership Record":"partnership_arms,ministry_year,is_member,member,date,cell,FORMAT(amount,2) as amount,giving_or_pledge,giving_type,type_of_pledge,instrument__no,bank_name,branch"
 	}
 	set_cols = ",".join( [ " {0} = '{1}' ".format(key, value)  for key ,value in dts.get("records").items() if key and key!='name'])
