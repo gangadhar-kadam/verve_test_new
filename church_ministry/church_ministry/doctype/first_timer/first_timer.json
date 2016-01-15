@@ -69,6 +69,13 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "surname", 
+   "fieldtype": "Data", 
+   "label": "Surname", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "allow_on_submit": 0, 
    "fieldname": "date_of_birth", 
    "fieldtype": "Date", 
@@ -1367,7 +1374,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-13 13:22:22.996389", 
+ "modified": "2016-01-15 16:38:11.269298", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Timer", 
