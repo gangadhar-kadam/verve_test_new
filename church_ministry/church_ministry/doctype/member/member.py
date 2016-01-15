@@ -326,14 +326,10 @@ def create_pcf(data):
 		obj=frappe.new_doc("PCFs")
 		obj.pcf_name=dts['pcf_name']
 		obj.pcf_code=dts['pcf_code']
-		#obj.meeting_location=dts['meeting_location']
-		#obj.address=dts['address']
-		#obj.senior_cell=dts['senior_cell']
 		obj.zone=dts['zone']
 		obj.region=dts['region']
 		obj.church_group=dts['church_group']
 		obj.church=dts['church']
-		#obj.pcf=dts['pcf']
 		obj.contact_phone_no=dts['contact_phone_no']
 		obj.contact_email_id=dts['contact_email_id']
 		obj.insert(ignore_permissions=True)
@@ -1018,13 +1014,20 @@ def update_master_details(data):
 				"message":"User name or Password is incorrect"
 		}
 	dictnory={
-		"Cells":"contact_phone_no,contact_email_id,meeting_location,address,lat,lon",
-		"Senior Cells":"meeting_location,contact_phone_no,contact_email_id",
-		"PCFs":"contact_phone_no,contact_email_id"
+		"Cells":"cell_code,cell_name,senior_cell,pcf,church,church_group,zone,region,contact_phone_no,contact_email_id,contact_email_id as cell_leader,meeting_location,address,lat,lon",
+		"Senior Cells":"senior_cell_code,senior_cell_name,meeting_location,pcf,church,church_group,zone,region,contact_phone_no,contact_email_id,contact_email_id as senior_cell_leader",
+		"PCFs":"pcf_code,pcf_name,church,church_group,zone,region,contact_phone_no,contact_email_id,contact_email_id as pcf_leader",
+		"Churches":"church_code,church_name,church_group,zone,region,phone_no,email_id,address",
+		"Group Churches":"church_group_code,church_group,zone,region,contact_phone_no,contact_email_id,group_church_hq",
+		"Zones":"zone_code,zone_name,region,contact_phone_no,contact_email_id,zonal_hq",
+		"Regions":"region_code,region_name,contact_phone_no,contact_email_id",
+		"Invitees and Contacts":"title,invitee_contact_name,sex,convert_invitee_contact_to_ft,date_of_convert,date_of_birth,age_group,invited_by,source_of_invitation,phone_1,email_id",
+		"First Timer":"ftv_name as`First Name`,ftv_name as`Last Name`,date_of_birth,marital_info,phone_1,email_id,address,office_address,image",
+		"Partnership Record":"partnership_arms,ministry_year,is_member,member,date,cell,FORMAT(amount,2) as amount,giving_or_pledge,giving_type,type_of_pledge,instrument__no,bank_name,branch"
 	}
-	tablename=dts['tbl']
-	#return list(dictnory['Cells'].split(','))
-	#frappe.db.sql("select %s from `tab%s` where name='%s'"  %(dictnory[tablename],dts['tbl'],dts['name']),as_dict=True)
+	set_cols = ",".join( [ " {0} = '{1}' ".format(key, value)  for key ,value in dts.get("records").items() if key and key!='name'])
+	qry="update `tab%s` set %s where name='%s'" %(dts['tbl'],set_cols,dts['name'])  
+	frappe.db.sql(qry)
 	return {
 				"status":"200",
 				"message":"Record Updated Successfully..!"
