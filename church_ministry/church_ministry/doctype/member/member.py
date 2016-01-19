@@ -1272,11 +1272,15 @@ def event_list_new(data):
     	        
     	elif 'to_date' in dts['filters'] :
     	        	fltrs.append(" creation <= '%s' " %dts['filters']['to_date'])    
+    	if 'event_type' in dts['filters']:
+  	     	fltrs.append(" event_type= '%s'" %(dts['filters']['event_type']))
     	for key,value in dts['filters'].iteritems():
     	 	if key in ('region','zone','church_group','church','pcf','senior_cell','cell'):
     	       		fltrs.append(" %s = '%s' " %(key,value))
-	fltr_cnd=" and "+' and '.join([x for x in fltrs])    
-    total_count= frappe.db.sql("""select ifnull(count(name),0) from tabEvent where %s %s """%(get_permission_query_conditions(dts['username']),fltr_cnd))	
+	fltr_cnd=' and '.join([x for x in fltrs])+ " and "
+
+    tot_qry="""select ifnull(count(name),0) from tabEvent where %s %s """%(fltr_cnd,get_permission_query_conditions(dts['username']))
+    total_count= frappe.db.sql(tot_qry)	
     if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 	dts['page_no']=1
 	start_index=0
@@ -1290,8 +1294,7 @@ def event_list_new(data):
     result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
     #result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1)
     #return result    
-    qry=" select name as event_name,address,starts_on as event_date,subject from tabEvent where "+get_permission_query_conditions(dts['username']) +" "+fltr_cnd+" order by name limit "+cstr(start_index)+",20"
-    #return qry
+    qry=" select name as event_name,event_type,address,starts_on as event_date,subject from tabEvent where "+ fltr_cnd+" "+ get_permission_query_conditions(dts['username'])+" order by name limit "+cstr(start_index)+",20"
     result['records']=frappe.db.sql(qry,as_dict=True)
     return result    
 
