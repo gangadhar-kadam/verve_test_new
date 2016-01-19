@@ -623,7 +623,7 @@ def meetings_members(data):
                   "message":"User name or Password is incorrect"
                 }
         else:
-		data=frappe.db.sql("select b.name,b.member,b.member_name,ifnull(b.present,'0') as present ,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s",dts['meeting_id'],as_dict=True)
+		data=frappe.db.sql("select b.name,b.member,b.member_name,ifnull(b.present,'0') as present ,a.venue,case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date,a.to_date as end_date from `tabAttendance Record` a,`tabInvitation Member Details` b  where a.name=b.parent and  a.name=%s order by b.member ",dts['meeting_id'],as_dict=True)
                 return data
 
 
@@ -649,7 +649,7 @@ def meetings_attendance(data):
 				#print record['name']
         			frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
 				#print "update `tabInvitation Member Details` set present="+cstr(record['present'])+" where name="+cstr(record['name'])
-				mail_notify_msg = """Dear User, \n\n \t\t Your Attendance is updated by Leader '%s'. Please Check. \n\n Records, \n\n Love World Synergy"""%(dts['username'])
+				mail_notify_msg = """Dear User, \n\n \t\t Your Attendance is updated by Leader '%s'. Please Check. \n\n Regards, \n\n Love World Synergy"""%(dts['username'])
 				membr = frappe.db.sql("select member,email_id from `tabInvitation Member Details` where name=%s",(record['name']),as_list=1)
 				#frappe.errprint(membr)
 				notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field = 'attendance_updated_by_leader'""",as_list=1)
@@ -735,7 +735,7 @@ def meetings_list_member_new(data):
                 result['total_count']=total_count[0][0]
                 result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
 
-	        result['records']=frappe.db.sql("select a.name as meeting_name,a.meeting_category as meeting_category, case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date as from_date,a.to_date as to_date,a.venue as venue,b.name as name,ifnull(b.present,0) as present from `tabAttendance Record`  a,`tabInvitation Member Details` b where a.name=b.parent and b.email_id='%s' %s order by name limit %s,20"%(dts['username'],fltr_cnd,cint(start_index)),as_dict=True)
+	        result['records']=frappe.db.sql("select a.name as meeting_name,a.meeting_category as meeting_category, case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date as from_date,a.to_date as to_date,a.venue as venue,b.name as name,ifnull(b.present,0) as present from `tabAttendance Record`  a,`tabInvitation Member Details` b where a.name=b.parent and b.email_id='%s' %s order by name limit %s,20"%(dts['username'],fltr_cnd,cint(start_index)),as_dict=True,debug=1)
                 return result                
 
 
@@ -761,7 +761,7 @@ def mark_my_attendance(data):
 					record['present']=0
 					#print 'in not present'
 				frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
-				mail_notify_msg = """Dear User, \n\n \t\tYour Attendance is updated by Member '%s'. Please Check. \n\n Records, \n\n Love World Synergy"""%(dts['username'])
+				mail_notify_msg = """Dear User, \n\n \t\tYour Attendance is updated by Leader '%s'. Please Check. \n\n Regards, \n\n Love World Synergy"""%(dts['username'])
 				notify = frappe.db.sql("""select value from `tabSingles` where doctype='Notification Settings' and field='attendance_updated_by_member'""",as_list=1)
 				membr = frappe.db.sql("select member,email_id from `tabInvitation Member Details` where name=%s",(record['name']),as_list=1)
 				user = frappe.db.sql("""select parent from `tabDefaultValue` where defkey='Cells' and 
