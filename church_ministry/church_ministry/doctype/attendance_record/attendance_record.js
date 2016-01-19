@@ -49,6 +49,19 @@ cur_frm.add_fetch("church_group", "zone_name", "zone_name");
 cur_frm.add_fetch("zone", "region", "region");
 cur_frm.add_fetch("zone", "zone_name", "zone_name");
 
+cur_frm.add_fetch("event", "subject", "meeting_subject");
+cur_frm.add_fetch("event", "starts_on", "from_date");
+cur_frm.add_fetch("event", "ends_on", "to_date");
+cur_frm.add_fetch("event", "cell", "cell");
+cur_frm.add_fetch("event", "senior_cell", "senior_cell");
+cur_frm.add_fetch("event", "pcf", "pcf");
+cur_frm.add_fetch("event", "church", "church");
+cur_frm.add_fetch("event", "church_group", "church_group");
+cur_frm.add_fetch("event", "zone", "zone");
+cur_frm.add_fetch("event", "region", "region");
+
+
+
 frappe.ui.form.on("Attendance Record", "refresh", function(frm,dt,dn) {
     if(frm.doc.meeting_category=="Church Meeting"){
       hide_field('meeting_subject')

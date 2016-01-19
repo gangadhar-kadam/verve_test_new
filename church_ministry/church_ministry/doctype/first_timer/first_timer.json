@@ -1374,7 +1374,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-15 16:38:11.269298", 
+ "modified": "2016-01-18 14:19:18.829880", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Timer", 
@@ -1587,7 +1587,7 @@
   }, 
   {
    "amend": 0, 
-   "apply_user_permissions": 1, 
+   "apply_user_permissions": 0, 
    "cancel": 0, 
    "create": 0, 
    "delete": 0, 

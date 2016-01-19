@@ -52,13 +52,17 @@ app_version = "0.0.1"
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
-#
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
+permission_query_conditions = {
+	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
+	"Task": "erpnext.projects.doctype.task.task.get_permission_query_conditions",
+	"First Timer": "church_ministry.church_ministry.doctype.first_timer.first_timer.get_permission_query_conditions"
+}
+
+has_permission = {
+	"Event": "frappe.desk.doctype.event.event.has_permission",
+	"Task": "erpnext.projects.doctype.task.task.has_permission",
+	"First Timer": "church_ministry.church_ministry.doctype.first_timer.first_timer.has_permission"
+}
 
 # Document Events
 # ---------------

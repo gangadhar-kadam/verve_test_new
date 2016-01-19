@@ -163,3 +163,79 @@ def set_higher_values(args):
     	out = frappe.db.sql("""select region,zone,church_group,church,pcf,senior_cell,name,cell_name,    pcf_name,    church_name,    zone_name,    region_name,    senior_cell_name,    group_church_name from `tabCells` 				where %s='%s'"""%(key,val),as_dict=1)
     if out:
           return out[0]
+
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+
+	if "System Manager" in frappe.get_roles(user):
+		return None
+	else:
+		abc="""
+			`tabFirst Timer`.cell=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Cells')
+			or
+			`tabFirst Timer`.senior_cell=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Senior Cells')
+			or
+			`tabFirst Timer`.pcf=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='PCFs')
+			or
+			`tabFirst Timer`.church=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Churches')
+			or
+			`tabFirst Timer`.church_group=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Group Churches')
+			or
+			`tabFirst Timer`.zone=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Zones')
+			or
+			`tabFirst Timer`.region=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Regions')
+			or 
+			`tabFirst Timer`.ftv_owner=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Member')
+			""" % {
+				"user": frappe.db.escape(user),
+				"roles": "', '".join([frappe.db.escape(r) for r in frappe.get_roles(user)])
+			}
+		frappe.errprint(abc)
+		return abc
+
+def has_permission(doc, user):
+
+	if "System Manager" in frappe.get_roles(user):
+		return True
+
+	if doc.cell:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Cells'"%(user))
+		if res:
+			return True
+
+	if doc.senior_cell:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Senior Cells'"%(user))
+		if res:
+			return True
+
+	if doc.pcf:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='PCFs'"%(user))
+		if res:
+			return True
+
+	if doc.church:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.church_group:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.zone:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.region:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+	if doc.ftv_owner:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Member'"%(user))
+		if res:
+			return True
+
+	return False
