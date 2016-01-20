@@ -1294,7 +1294,7 @@ def event_list_new(data):
     result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
     #result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1)
     #return result    
-    qry=" select name as event_name,event_type,address,starts_on as event_date,subject from tabEvent where "+ fltr_cnd+" "+ get_permission_query_conditions(dts['username'])+" order by name limit "+cstr(start_index)+",20"
+    qry=" select name as event_name,address,starts_on as event_date,subject from tabEvent where "+ fltr_cnd+" "+ get_permission_query_conditions(dts['username'])+" order by name limit "+cstr(start_index)+",20"
     result['records']=frappe.db.sql(qry,as_dict=True)
     return result    
 
@@ -1349,7 +1349,49 @@ def my_event_list(data):
         return {
                 "status":"401",
                 "message":"User name or Password is incorrect"
-        }       
+        }
+
+    fltr_cnd=''
+    fltrs=[]
+    if 'filters' in dts:
+   	if 'from_date' in dts['filters']:
+    	    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+""+dts['filters']['from_date'][3:5]+""+dts['filters']['from_date'][:2]
+  	if 'to_date' in dts['filters']:
+    	    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]    
+  	if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
+  	     	fltrs.append(" date(a.creation) between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
+    	elif 'from_date' in dts['filters'] :
+    	        	fltrs.append(" a.creation >= '%s' " %dts['filters']['from_date'])
+    	        
+    	elif 'to_date' in dts['filters'] :
+    	        	fltrs.append(" a.creation <= '%s' " %dts['filters']['to_date'])    
+    	if 'event_type' in dts['filters']:
+  	     	fltrs.append(" a.event_type= '%s'" %(dts['filters']['event_type']))
+    	for key,value in dts['filters'].iteritems():
+    	 	if key in ('region','zone','church_group','church','pcf','senior_cell','cell'):
+    	       		fltrs.append(" a.%s = '%s' " %(key,value))
+	fltr_cnd="and "+' and '.join([x for x in fltrs])
+    #return fltr_cnd
+    tot_qry="""select ifnull(count(a.subject),0) from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c where attendance_type='Event Attendance' and a.name=b.event and b.name=c.parent and c.member in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name='%s') %s """%(dts['username'],fltr_cnd)
+    #return tot_qry
+    total_count= frappe.db.sql(tot_qry)	
+    if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
+	dts['page_no']=1
+	start_index=0
+    else:   
+	start_index=(cint(dts['page_no'])-1)*20
+    end_index =start_index+20	
+    if total_count[0][0]<=end_index:
+	end_index=total_count[0][0] 
+    result={}
+    result['total_count']=total_count[0][0]
+    result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
+    #result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1)
+    #return result    
+    qry=" select a.subject ,a.name as `event_code`,a.starts_on as event_date,a.ends_on as `to_date`, c.member_name,a.address,c.name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c where attendance_type='Event Attendance' and a.name=b.event and b.name=c.parent and c.member in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name='%s') "+ fltr_cnd+" order by b.name limit "+cstr(start_index)+",20"
+    result['records']=frappe.db.sql(qry,as_dict=True)
+    return result    
+
     data=frappe.db.sql("select a.subject ,a.name as `event_code`,a.starts_on as event_date,a.ends_on as `to_date`, c.member_name,a.address,c.name,ifnull(c.present,0) as present,comments from `tabEvent` a, `tabAttendance Record` b,`tabInvitation Member Details` c \
                          where attendance_type='Event Attendance' and a.name=b.event and b.name=c.parent and c.member in (select a.name from tabMember a,tabUser b where a.email_id=b.name and b.name=%s) ",dts['username'],as_dict=True)
     return data
