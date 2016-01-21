@@ -797,7 +797,7 @@ def get_match_conditions(doctype,username):
 		qry="select fieldname from tabDocField where options='"+cstr(item['defkey'])+"' and parent='"+cstr(doctype)+"'"
         	res=frappe.db.sql(qry)
         	if res:	
-			match_conditions.append(""" {fieldname} is null or {fieldname} ='{values}'""".format(doctype=doctype,fieldname=res[0][0],values=item['defvalue']))
+			match_conditions.append(""" {fieldname} ='{values}'""".format(doctype=doctype,fieldname=res[0][0],values=item['defvalue']))
 	cond=''		
 	if match_conditions :
 		cond =  ' or '.join(match_conditions) 
@@ -1748,9 +1748,11 @@ def dashboard(data):
 	match_conditions,cond=get_match_conditions('First Timer',dts['username'])
     	from church_ministry.church_ministry.doctype.first_timer.first_timer import get_permission_query_conditions as ft_perm
     	ft_cond= ft_perm(dts['username'])
+    	
     	if ft_cond:
     		ft_cond=" and "+ft_cond
-        
+        else:
+        	ft_cond=' '
 	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( ft_cond,ft_cond,ft_cond), as_dict=1)
         data['new_converts']=new_born
     
@@ -1759,6 +1761,7 @@ def dashboard(data):
         data['first_timers']=first_timers
 	
 	match_conditions,cond=get_match_conditions('Member',dts['username'])
+	return cond
 	membership_strength=frappe.db.sql("select a.month,a.total_member_count from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation) %s ) a  "%(cond) ,as_dict=1)
         if membership_strength:
                data['membership_strength']=membership_strength
