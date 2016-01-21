@@ -1761,7 +1761,7 @@ def dashboard(data):
         data['first_timers']=first_timers
 	
 	match_conditions,cond=get_match_conditions('Member',dts['username'])
-	return cond
+	#return cond
 	membership_strength=frappe.db.sql("select a.month,a.total_member_count from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() GROUP BY YEAR(creation),MONTH(creation) %s ) a  "%(cond) ,as_dict=1)
         if membership_strength:
                data['membership_strength']=membership_strength
