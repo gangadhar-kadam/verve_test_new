@@ -1,6 +1,54 @@
 // set region and zone from church group and zone trigger
 
 frappe.ui.form.on("Cells", "onload", function(frm) {
+  if(frm.doc.__islocal){
+    if  (frm.doc.senior_cell){
+          argmnt={
+              "senior_cell": frm.doc.senior_cell, 
+            }
+    }
+    else if  (frm.doc.pcf){
+          argmnt={
+              "pcf": frm.doc.pcf, 
+            }
+    }
+
+    else if  (frm.doc.church){
+          argmnt={
+              "church": frm.doc.church, 
+            }
+    }
+
+    else if  (frm.doc.church_group){
+          argmnt={
+              "church_group": frm.doc.church_group, 
+            }
+    }
+    else if  (frm.doc.zone){
+          argmnt={
+              "zone": frm.doc.zone, 
+            }
+    }
+    else if  (frm.doc.region){
+          argmnt={
+              "region": frm.doc.region, 
+            }
+    }
+ 
+    frappe.call({
+        method:"church_ministry.church_ministry.doctype.first_timer.first_timer.set_higher_values",
+        args:{"args":argmnt},
+        callback: function(r) {
+          if (r.message){
+            for (var key in r.message) {
+                    cur_frm.set_value(key,r.message[key])                 
+                    refresh_field(key)
+                  }            
+            }
+          }
+    });
+  }
+
 	if (in_list(user_roles, "Zonal Pastor")){
     set_field_permlevel('zone',1);
     set_field_permlevel('region',2);
@@ -46,14 +94,6 @@ frappe.ui.form.on("Cells", "onload", function(frm) {
 });
 
 frappe.ui.form.on("Cells", "refresh", function(frm,dt,dn) {
-/*    get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
-      refresh_field('region');
-      refresh_field('zone');
-      refresh_field('church_group');
-      refresh_field('church');
-      refresh_field('pcf');
-      refresh_field('senior_cell');
-    });*/
     if(in_list(user_roles, "Cell Leader")){
       set_field_permlevel('contact_phone_no',0);
       set_field_permlevel('contact_email_id',0);

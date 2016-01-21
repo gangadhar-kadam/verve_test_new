@@ -10,22 +10,47 @@ cur_frm.add_fetch("church_group", "zone", "zone");
 
 cur_frm.add_fetch("zone", "region", "region");
 
-/*frappe.ui.form.on("PCFs", "refresh", function(frm,dt,dn) {
-    get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1, function(r){
-      refresh_field('region');
-      refresh_field('zone');
-      refresh_field('church_group');
-      refresh_field('church');
-    });
-    if(in_list(user_roles, "PCF Leader")){
-      set_field_permlevel('contact_phone_no',0);
-      set_field_permlevel('contact_email_id',0);
-      set_field_permlevel('pcf_code',1);
-      set_field_permlevel('pcf_name',1);
-    }
-});*/
-
 frappe.ui.form.on("PCFs", "onload", function(frm) {
+
+if(frm.doc.__islocal){
+
+    if  (frm.doc.church){
+          argmnt={
+              "church": frm.doc.church, 
+            }
+    }
+
+    else if  (frm.doc.church_group){
+          argmnt={
+              "church_group": frm.doc.church_group, 
+            }
+    }
+    else if  (frm.doc.zone){
+          argmnt={
+              "zone": frm.doc.zone, 
+            }
+    }
+    else if  (frm.doc.region){
+          argmnt={
+              "region": frm.doc.region, 
+            }
+    }
+
+
+    frappe.call({
+        method:"church_ministry.church_ministry.doctype.first_timer.first_timer.set_higher_values",
+        args:{"args":argmnt},
+        callback: function(r) {
+          if (r.message){
+            for (var key in r.message) {
+                    cur_frm.set_value(key,r.message[key])                 
+                    refresh_field(key)
+                  }            
+            }
+          }
+    });
+  }
+
 	if (in_list(user_roles, "Zonal Pastor")){
 		set_field_permlevel('church_group',1);
     	set_field_permlevel('zone',1);

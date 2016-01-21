@@ -153,32 +153,58 @@ frappe.ui.form.on("Attendance Record", "onload", function(frm) {
     unhide_field('meeting_sub')
   }
 
-  if(frm.doc.__islocal && frm.doc.cell ){   
-    argmnt={
-              "name": frm.doc.cell  
+  if(frm.doc.__islocal){
+    if  (frm.doc.senior_cell){
+          argmnt={
+              "senior_cell": frm.doc.senior_cell, 
             }
+    }
+    else if  (frm.doc.pcf){
+          argmnt={
+              "pcf": frm.doc.pcf, 
+            }
+    }
+
+    else if  (frm.doc.church){
+          argmnt={
+              "church": frm.doc.church, 
+            }
+    }
+
+    else if  (frm.doc.church_group){
+          argmnt={
+              "church_group": frm.doc.church_group, 
+            }
+    }
+    else if  (frm.doc.zone){
+          argmnt={
+              "zone": frm.doc.zone, 
+            }
+    }
+    else if  (frm.doc.region){
+          argmnt={
+              "region": frm.doc.region, 
+            }
+    }
+
+    else if  (frm.doc.cell){
+          argmnt={
+              "name": frm.doc.cell, 
+            }
+    }
  
     frappe.call({
         method:"church_ministry.church_ministry.doctype.first_timer.first_timer.set_higher_values",
         args:{"args":argmnt},
         callback: function(r) {
           if (r.message){
-            frm.doc.region=r.message.region
-            frm.doc.zone=r.message.zone
-            frm.doc.church_group=r.message.church_group
-            frm.doc.church=r.message.church
-            frm.doc.pcf=r.message.pcf
-            frm.doc.senior_cell=r.message.senior_cell
-
-            refresh_field('region');              
-            refresh_field('zone');
-            refresh_field('church_group');              
-            refresh_field('church');
-            refresh_field('pcf');              
-            refresh_field('senior_cell');
+            for (var key in r.message) {
+                    cur_frm.set_value(key,r.message[key])                 
+                    refresh_field(key)
+                  }            
+            }
           }
-        }
-      });
+    });
   }
   
 	if (in_list(user_roles, "Cell Leader")){

@@ -2,6 +2,34 @@
 cur_frm.add_fetch("zone", "region", "region");
 
 frappe.ui.form.on("Group Churches", "onload", function(frm) {
+
+ if(frm.doc.__islocal){
+
+    if  (frm.doc.zone){
+          argmnt={
+              "zone": frm.doc.zone, 
+            }
+    }
+    else if  (frm.doc.region){
+          argmnt={
+              "region": frm.doc.region, 
+            }
+    }
+ 
+    frappe.call({
+        method:"church_ministry.church_ministry.doctype.first_timer.first_timer.set_higher_values",
+        args:{"args":argmnt},
+        callback: function(r) {
+          if (r.message){
+            for (var key in r.message) {
+                    cur_frm.set_value(key,r.message[key])                 
+                    refresh_field(key)
+                  }            
+            }
+          }
+    });
+  }
+
 	if (in_list(user_roles, "Regional Pastor")){
     	set_field_permlevel('region',1);
   	}
@@ -16,9 +44,6 @@ frappe.ui.form.on("Group Churches", "onload", function(frm) {
 });
 
 frappe.ui.form.on("Group Churches", "refresh", function(frm,dt,dn) {
-/*    get_server_fields('set_higher_values','','',frm.doc, dt, dn, 1);
-      refresh_field('region');
-      refresh_field('zone');*/
 
     if(in_list(user_roles, "Group Church Pastor")){
       set_field_permlevel('contact_phone_no',0);

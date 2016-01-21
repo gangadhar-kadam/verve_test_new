@@ -68,98 +68,6 @@ class AttendanceRecord(Document):
 			child.member_name = d[1]
 			child.email_id = d[2]
 
-	# def set_higher_values(self):
-	# 	if self.region:
-	# 		value = frappe.db.sql("select zone,church_group,church,pcf,senior_cell,name from `tabCells` where region='%s'"%(self.region),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"zone": value[0][0],
-	# 				"church_group": value[0][1],
-	# 				"church" : value[0][2],
-	# 				"pcf" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.zone:
-	# 		value = frappe.db.sql("select region,church_group,church,pcf,senior_cell,name from `tabCells` where zone='%s'"%(self.zone),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"church_group": value[0][1],
-	# 				"church" : value[0][2],
-	# 				"pcf" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.church_group:
-	# 		value = frappe.db.sql("select region,zone,church,pcf,senior_cell,name from `tabCells` where church_group='%s'"%(self.church_group),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church" : value[0][2],
-	# 				"pcf" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.church:
-	# 		value = frappe.db.sql("select region,zone,church_group,pcf,senior_cell,name from `tabCells` where church='%s'"%(self.church),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church_group" : value[0][2],
-	# 				"pcf" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.pcf:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,senior_cell,name from `tabCells` where pcf='%s'"%(self.pcf),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church_group" : value[0][2],
-	# 				"church" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.senior_cell:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,pcf,name from `tabCells` where senior_cell='%s'"%(self.senior_cell),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church_group" : value[0][2],
-	# 				"church" : value[0][3],
-	# 				"pcf" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.cell:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,pcf,senior_cell from `tabCells` where name='%s'"%(self.cell),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church_group" : value[0][2],
-	# 				"church" : value[0][3],
-	# 				"pcf" : value[0][4],
-	# 				"senior_cell" : value[0][5]
-	# 			}
-	# 		return ret
 
 def validate_duplicate(doc,method):
 	if doc.get("__islocal"):
@@ -190,3 +98,73 @@ def validate_duplicate(doc,method):
 				frappe.throw(_("Number of New Converts cannot be negative..!"))
 		if doc.data_20 and cint(doc.data_20) <= 0 :
 				frappe.throw(_("Total Cell Offering cannot be negative..!"))
+
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+
+	if "System Manager" in frappe.get_roles(user):
+		return None
+	else:
+		abc="""
+			`tabAttendance Record`.cell=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Cells')
+			or
+			`tabAttendance Record`.senior_cell=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Senior Cells')
+			or
+			`tabAttendance Record`.pcf=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='PCFs')
+			or
+			`tabAttendance Record`.church=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Churches')
+			or
+			`tabAttendance Record`.church_group=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Group Churches')
+			or
+			`tabAttendance Record`.zone=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Zones')
+			or
+			`tabAttendance Record`.region=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Regions')
+			""" % {
+				"user": frappe.db.escape(user),
+				"roles": "', '".join([frappe.db.escape(r) for r in frappe.get_roles(user)])
+			}
+		frappe.errprint(abc)
+		return abc
+
+def has_permission(doc, user):
+
+	if "System Manager" in frappe.get_roles(user):
+		return True
+
+	if doc.cell:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Cells'"%(user))
+		if res:
+			return True
+
+	if doc.senior_cell:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Senior Cells'"%(user))
+		if res:
+			return True
+
+	if doc.pcf:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='PCFs'"%(user))
+		if res:
+			return True
+
+	if doc.church:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.church_group:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.zone:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.region:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	return False
