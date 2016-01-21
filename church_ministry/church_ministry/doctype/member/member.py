@@ -1312,7 +1312,7 @@ def event_participents(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }       
-    data=frappe.db.sql("select a.name as `name` ,a.member,a.member_name,ifnull(a.present,0) as present,a.comments from `tabInvitation Member Details`  a,`tabAttendance Record` b  where b.attendance_type='Event Attendance' and a.parent=b.name and b.event=%s",dts['event_id'],as_dict=True)
+    data=frappe.db.sql("select a.name as `name` ,a.member,a.member_name,ifnull(a.present,0) as present,a.comments from `tabInvitation Member Details`  a,`tabAttendance Record` b  where b.attendance_type='Event Attendance' and a.parent=b.name and b.event=%s order by a.member ",dts['event_id'],as_dict=True)
     return data
                 
 
@@ -1746,10 +1746,15 @@ def dashboard(data):
         data['invities_contacts']=new_visitor
 
 	match_conditions,cond=get_match_conditions('First Timer',dts['username'])
-	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( cond,cond,cond), as_dict=1)
+    	from church_ministry.church_ministry.doctype.first_timer.first_timer import get_permission_query_conditions as ft_perm
+    	ft_cond= ft_perm(dts['username'])
+    	if ft_cond:
+    		ft_cond=" and "+ft_cond
+        
+	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( ft_cond,ft_cond,ft_cond), as_dict=1)
         data['new_converts']=new_born
     
-	first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) %s )c" %( cond,cond,cond), as_dict=1)
+	first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) %s )c" %( ft_cond,ft_cond,ft_cond), as_dict=1)
 	
         data['first_timers']=first_timers
 	
