@@ -83,57 +83,58 @@ frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
   }
-  else if(frm.doc.__islocal){ 
-    argmnt={
-              "region": frm.doc.region,
-              "zone": frm.doc.zone,
-              "church_group": frm.doc.church_group,
-              "church": frm.doc.church ,
-              "pcf": frm.doc.pcf,
-              "senior_cell": frm.doc.senior_cell,
-              "name": frm.doc.cell  
+  else if(frm.doc.__islocal){
+    if  (frm.doc.senior_cell){
+          argmnt={
+              "senior_cell": frm.doc.senior_cell, 
             }
+    }
+    else if  (frm.doc.pcf){
+          argmnt={
+              "pcf": frm.doc.pcf, 
+            }
+    }
+
+    else if  (frm.doc.church){
+          argmnt={
+              "church": frm.doc.church, 
+            }
+    }
+
+    else if  (frm.doc.church_group){
+          argmnt={
+              "church_group": frm.doc.church_group, 
+            }
+    }
+    else if  (frm.doc.zone){
+          argmnt={
+              "zone": frm.doc.zone, 
+            }
+    }
+    else if  (frm.doc.region){
+          argmnt={
+              "region": frm.doc.region, 
+            }
+    }
+
+    else if  (frm.doc.cell){
+          argmnt={
+              "name": frm.doc.cell, 
+            }
+    }
  
     frappe.call({
         method:"church_ministry.church_ministry.doctype.first_timer.first_timer.set_higher_values",
         args:{"args":argmnt},
         callback: function(r) {
           if (r.message){
-            console.log(r.message);
-           /* frm.doc.region=r.message.region
-            frm.doc.zone=r.message.zone
-            frm.doc.church_group=r.message.church_group
-            frm.doc.church=r.message.church
-            frm.doc.pcf=r.message.pcf
-            frm.doc.senior_cell=r.message.senior_cell
-            frm.doc.cell=r.message.name
-
-            frm.doc.data_30=r.message.cell_name
-            frm.doc.senior_cell_name=r.message.senior_cell_name
-            frm.doc.pcf_name=r.message.pcf_name
-            frm.doc.church_name=r.message.church_name
-            frm.doc.group_church_name=r.message.group_church_name
-            frm.doc.zone_name=r.message.zone_name
-            frm.doc.region_name=r.message.region_name
-
-            refresh_field('region');              
-            refresh_field('zone');
-            refresh_field('church_group');              
-            refresh_field('church');
-            refresh_field('pcf');              
-            refresh_field('senior_cell');
-            refresh_field('cell');
-
-            refresh_field('data_30');              
-            refresh_field('senior_cell_name');
-            refresh_field('pcf_name');              
-            refresh_field('church_name');
-            refresh_field('group_church_name');              
-            refresh_field('zone_name');
-           refresh_field('region_name');*/
+            for (var key in r.message) {
+                    cur_frm.set_value(key,r.message[key])                 
+                    refresh_field(key)
+                  }            
+            }
           }
-        }
-      });
+    });
   }
 
   if (in_list(user_roles, "Cell Leader")){

@@ -25,99 +25,6 @@ class FirstTimer(Document):
 				frappe.throw(_('{0} is not a valid email id').format(self.email_id))
 
 
-	# def set_higher_values(self):
-	# 	if self.region:
-	# 		value = frappe.db.sql("select zone,church_group,church,pcf,senior_cell,name from `tabCells` where region='%s'"%(self.region),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"zone": value[0][0],
-	# 				"church_group": value[0][1],
-	# 				"church" : value[0][2],
-	# 				"pcf" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.zone:
-	# 		value = frappe.db.sql("select region,church_group,church,pcf,senior_cell,name from `tabCells` where zone='%s'"%(self.zone),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"church_group": value[0][1],
-	# 				"church" : value[0][2],
-	# 				"pcf" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-		# elif self.church_group:
-		# 	value = frappe.db.sql("select region,zone,church,pcf,senior_cell,name from `tabCells` where church_group='%s'"%(self.church_group),as_list=1)
-		# 	ret={}
-		# 	if value:
-		# 		ret={
-		# 			"region": value[0][0],
-		# 			"zone": value[0][1],
-		# 			"church" : value[0][2],
-		# 			"pcf" : value[0][3],
-		# 			"senior_cell" : value[0][4],
-		# 			"cell" : value[0][5]
-		# 		}
-		# 	return ret
-	# 	elif self.church:
-	# 		value = frappe.db.sql("select region,zone,church_group,pcf,senior_cell,name from `tabCells` where church='%s'"%(self.church),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church_group" : value[0][2],
-	# 				"pcf" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.pcf:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,senior_cell,name from `tabCells` where pcf='%s'"%(self.pcf),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church_group" : value[0][2],
-	# 				"church" : value[0][3],
-	# 				"senior_cell" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.senior_cell:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,pcf,name from `tabCells` where senior_cell='%s'"%(self.senior_cell),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church_group" : value[0][2],
-	# 				"church" : value[0][3],
-	# 				"pcf" : value[0][4],
-	# 				"cell" : value[0][5]
-	# 			}
-	# 		return ret
-	# 	elif self.cell:
-	# 		value = frappe.db.sql("select region,zone,church_group,church,pcf,senior_cell from `tabCells` where name='%s'"%(self.cell),as_list=1)
-	# 		ret={}
-	# 		if value:
-	# 			ret={
-	# 				"region": value[0][0],
-	# 				"zone": value[0][1],
-	# 				"church_group" : value[0][2],
-	# 				"church" : value[0][3],
-	# 				"pcf" : value[0][4],
-	# 				"senior_cell" : value[0][5]
-	# 			}
-	# 		return ret
-
 @frappe.whitelist()
 def make_member(source_name, target_doc=None):
 	return _make_member(source_name, target_doc)
@@ -156,11 +63,18 @@ def ismember(name):
 @frappe.whitelist()
 def set_higher_values(args):
     args = json.loads(args)
-    keys = ["region", "zone", "church_group", "church", "pcf", "senior_cell", "name"]
-    # out = frappe.db.get_all("Cells", fields=keys, filters={'name':args['name']})
+    mapper={
+		"name":"cell_name,senior_cell,senior_cell_name,pcf,pcf_name,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name",
+		"senior_cell":"senior_cell_name,pcf,pcf_name,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name",
+		"pcf":"pcf_name,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name",
+		"church":"church_name,church_group,group_church_name,zone,zone_name,region,region_name",
+		"church_group":"group_church_name,zone,zone_name,region,region_name",
+		"zone":"zone_name,region,region_name",
+		"region":"region_name"
+		}
     out = []
     for key, val in args.items():
-    	out = frappe.db.sql("""select region,zone,church_group,church,pcf,senior_cell,name,cell_name,    pcf_name,    church_name,    zone_name,    region_name,    senior_cell_name,    group_church_name from `tabCells` 				where %s='%s'"""%(key,val),as_dict=1)
+    	out = frappe.db.sql("""select %s from `tabCells` where %s='%s'"""%(mapper[key],key,val),as_dict=1)
     if out:
           return out[0]
 
