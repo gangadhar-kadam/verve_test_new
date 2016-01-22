@@ -6,6 +6,9 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
     set_field_permlevel('email_id',1);
   }
   else if(frm.doc.__islocal){
+    argmnt={
+             
+            }
     if  (frm.doc.senior_cell){
           argmnt={
               "senior_cell": frm.doc.senior_cell, 
