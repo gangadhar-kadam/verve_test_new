@@ -47,8 +47,11 @@ frappe.ui.form.on("Churches", "refresh", function(frm,dt,dn) {
 frappe.ui.form.on("Churches", "onload", function(frm) {
 
 if(frm.doc.__islocal){
-
-    else if  (frm.doc.church_group){
+   
+    argmnt={
+             
+            }
+    if  (frm.doc.church_group){
           argmnt={
               "church_group": frm.doc.church_group, 
             }
@@ -63,7 +66,7 @@ if(frm.doc.__islocal){
               "region": frm.doc.region, 
             }
     }
- 
+    
     frappe.call({
         method:"church_ministry.church_ministry.doctype.first_timer.first_timer.set_higher_values",
         args:{"args":argmnt},

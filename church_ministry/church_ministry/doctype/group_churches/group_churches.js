@@ -4,8 +4,10 @@ cur_frm.add_fetch("zone", "region", "region");
 frappe.ui.form.on("Group Churches", "onload", function(frm) {
 
  if(frm.doc.__islocal){
-
-    if  (frm.doc.zone){
+    argmnt={
+             
+            }
+    if  (frm.doc.zone ){
           argmnt={
               "zone": frm.doc.zone, 
             }
@@ -15,7 +17,7 @@ frappe.ui.form.on("Group Churches", "onload", function(frm) {
               "region": frm.doc.region, 
             }
     }
- 
+    if (argmnt) {
     frappe.call({
         method:"church_ministry.church_ministry.doctype.first_timer.first_timer.set_higher_values",
         args:{"args":argmnt},
@@ -29,6 +31,7 @@ frappe.ui.form.on("Group Churches", "onload", function(frm) {
           }
     });
   }
+}
 
 	if (in_list(user_roles, "Regional Pastor")){
     	set_field_permlevel('region',1);
