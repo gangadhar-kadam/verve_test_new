@@ -154,7 +154,11 @@ frappe.ui.form.on("Attendance Record", "onload", function(frm) {
   }
 
   if(frm.doc.__islocal){
-    if  (frm.doc.senior_cell){
+     argmnt={
+             
+            }
+
+        if  (frm.doc.senior_cell){
           argmnt={
               "senior_cell": frm.doc.senior_cell, 
             }
