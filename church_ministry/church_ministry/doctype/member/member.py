@@ -63,9 +63,8 @@ class Member(Document):
 			v.defkey = 'Member'
 			v.defvalue = self.name 
 			v.insert()
-			frappe.db.sql("update `tabMember` set flag='SetPerm' where name='%s'"%(self.name))
+			frappe.db.sql("update `tabMember` set flag='SetPerm',user_id='%s' where name='%s'"%(self.email_id,self.name))
 			frappe.db.commit()
-			self.user_id = self.email_id
 
 def get_list(doctype, txt, searchfield, start, page_len, filters):
 	from frappe.desk.reportview import get_match_cond
@@ -1148,7 +1147,13 @@ def create_partnership_reocrd(data):
     pr=frappe.new_doc("Partnership Record")
     pr.partnership_arms=dts['partnership_arms']
     pr.amount=dts['amount']
-    pr.ministry_year=dts['ministry_year']
+    try :
+    	pr.ministry_year=get_fiscal_year(nowdate())[0]
+    except Exception ,e:
+    	return {
+                "status":"402",
+                "message":"Ministry Year not found for %s " %(nowdate())
+        } 
     pr.is_member='Member'
     pr.member=dts['member']
     pr.member_name=dts['member_name']
@@ -1181,7 +1186,6 @@ def create_partnership_reocrd(data):
 
     pr.flags.ignore_mandatory = True
     pr.insert(ignore_permissions=True)
-    
 
     return pr.name
 
@@ -1667,6 +1671,7 @@ def cell_members(data):
 @frappe.whitelist(allow_guest=True)
 def create_task(data):
     dts=json.loads(data)
+    print dts
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
     #print dts
