@@ -1214,6 +1214,7 @@ def partnership_arms_list(data):
 def create_partnership_reocrd(data):
     dts=json.loads(data)
     frappe.errprint(dts)
+    print dts
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
     if not valid:
