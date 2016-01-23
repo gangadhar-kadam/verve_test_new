@@ -345,7 +345,7 @@ def create_cells(data):
 
 	"""
 	dts=json.loads(data)
-	print data
+	#print data
 	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
 	valid=frappe.db.sql(qry)
 	if not valid:
@@ -691,7 +691,7 @@ def meetings_members(data):
         dts=json.loads(data)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
-	print dts
+	#print dts
         if not valid:
                 return {
                   "status":"401",
@@ -1213,6 +1213,7 @@ def partnership_arms_list(data):
 @frappe.whitelist(allow_guest=True)
 def create_partnership_reocrd(data):
     dts=json.loads(data)
+    frappe.errprint(dts)
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
     if not valid:
@@ -1263,7 +1264,10 @@ def create_partnership_reocrd(data):
     pr.flags.ignore_mandatory = True
     pr.insert(ignore_permissions=True)
 
-    return pr.name
+    return {
+                "status":"200",
+                "message":"Successfully created partnership record "+pr.name
+        } 
 
 
 @frappe.whitelist(allow_guest=True)
