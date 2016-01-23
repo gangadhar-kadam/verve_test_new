@@ -109,60 +109,7 @@ frappe.ui.form.on("Invitees and Contacts", "onload", function(frm,cdt, cdn) {
   if(!frm.doc.__islocal){
     set_field_permlevel('email_id',1);
   }
-  else{
-    if  (frm.doc.senior_cell){
-          argmnt={
-              "senior_cell": frm.doc.senior_cell, 
-            }
-    }
-    else if  (frm.doc.pcf){
-          argmnt={
-              "pcf": frm.doc.pcf, 
-            }
-    }
-
-    else if  (frm.doc.church){
-          argmnt={
-              "church": frm.doc.church, 
-            }
-    }
-
-    else if  (frm.doc.church_group){
-          argmnt={
-              "church_group": frm.doc.church_group, 
-            }
-    }
-    else if  (frm.doc.zone){
-          argmnt={
-              "zone": frm.doc.zone, 
-            }
-    }
-    else if  (frm.doc.region){
-          argmnt={
-              "region": frm.doc.region, 
-            }
-    }
-
-    else if  (frm.doc.cell){
-          argmnt={
-              "name": frm.doc.cell, 
-            }
-    }
- 
-    frappe.call({
-        method:"church_ministry.church_ministry.doctype.first_timer.first_timer.set_higher_values",
-        args:{"args":argmnt},
-        callback: function(r) {
-          if (r.message){
-            for (var key in r.message) {
-                    cur_frm.set_value(key,r.message[key])                 
-                    refresh_field(key)
-                  }            
-            }
-          }
-    });
-  }
-
+  
   if (in_list(user_roles, "Cell Leader")){
     set_field_permlevel('cell',1);
     set_field_permlevel('senior_cell',2);

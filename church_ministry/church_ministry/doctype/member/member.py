@@ -652,12 +652,12 @@ def meetings_list_new(data):
   			if 'to_date' in dts['filters']:
     		    		dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]		      
   			if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
-  	     			fltrs.append(" creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
+  	     			fltrs.append(" date(creation) >= '%s' and date(a.creation) <= '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     			elif 'from_date' in dts['filters'] :
-    	        		fltrs.append(" creation >= '%s' " %dts['filters']['from_date'])
+    	        		fltrs.append(" date(creation) >= '%s' " %dts['filters']['from_date'])
     	        
     			elif 'to_date' in dts['filters'] :
-    	        		fltrs.append(" creation <= '%s' " %dts['filters']['to_date'])    
+    	        		fltrs.append(" date(creation) <= '%s' " %dts['filters']['to_date'])    
     			for key,value in dts['filters'].iteritems():
     	 			if key in ('region','zone','church_group','church','pcf','senior_cell','cell'):
     	       				fltrs.append(" %s = '%s' " %(key,value))
@@ -786,7 +786,7 @@ def meetings_list_member_new(data):
   			if 'to_date' in dts['filters']:
     		    		dts['filters']['to_date']=dts['filters']['to_date'][6:]+""+dts['filters']['to_date'][3:5]+""+dts['filters']['to_date'][:2]
 		  	if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
-  	     			fltrs.append(" a.creation between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
+  	     			fltrs.append(" date(a.creation) >= '%s' and date(a.creation) <= '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
 		    	elif 'from_date' in dts['filters'] :
     	        		fltrs.append(" a.creation >= '%s' " %dts['filters']['from_date'])
     	        
@@ -995,7 +995,7 @@ def get_database_masters(data):
   		if 'to_date' in dts['filters']:
     		    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+"-"+dts['filters']['to_date'][3:5]+"-"+dts['filters']['to_date'][:2]
     	        if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
-    	        	fltrs.append(" date(creation) between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
+    	        	fltrs.append(" date(creation) >= '%s' and date(creation) <='%s'" %(dts['filters']['from_date'],dts['filters']['to_date']))
     	        elif 'from_date' in dts['filters'] :
     	        	fltrs.append(" date(creation) >= '%s' " %dts['filters']['from_date'])
     	        elif 'to_date' in dts['filters'] :
@@ -1005,7 +1005,7 @@ def get_database_masters(data):
     	        		fltrs.append(" %s = '%s' " %(key,value))
      
     	        if 'Week' in dts['filters'] :
-    	        	fltrs.append(" creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY) ")    
+    	        	fltrs.append(" date(creation)>= DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND date(creation)<= DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY) ")    
     	        elif 'Month' in dts['filters'] :
     	        	if isinstance(dts['filters']['Month'], basestring):
     	        		fltrs.append(" YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) ")
@@ -1823,20 +1823,19 @@ def dashboard(data):
         data['dates']=dates
 
 	match_conditions,cond=get_match_conditions('Invitees and Contacts',dts['username'])
-	new_visitor=frappe.db.sql("select a.`Week` as `Week1`,b.`Month` as `Month1`,c.`Year` as `Year1` from (select count(name) as `Week` from `tabInvitees and Contacts` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  %s ) a,(select count(name) as `Month` from `tabInvitees and Contacts` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabInvitees and Contacts` where YEAR(creation)=YEAR(now()) %s)c"%( cond,cond,cond), as_dict=1)
+	new_visitor=frappe.db.sql("select a.`Week` as `Week1`,b.`Month` as `Month1`,c.`Year` as `Year1` from (select count(name) as `Week` from `tabInvitees and Contacts` where date(creation) >= DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  date(creation) <= DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  %s ) a,(select count(name) as `Month` from `tabInvitees and Contacts` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabInvitees and Contacts` where YEAR(creation)=YEAR(now()) %s)c"%( cond,cond,cond), as_dict=1)
         data['invities_contacts']=new_visitor
 
 	match_conditions,cond=get_match_conditions('First Timer',dts['username'])
-	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( cond,cond,cond), as_dict=1)
+	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where date(creation) >= DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  date(creation) <= DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)   and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( cond,cond,cond), as_dict=1)
         data['new_converts']=new_born
     
-	first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where creation between DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)  %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) %s )c" %( cond,cond,cond), as_dict=1)
+	first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where date(creation) >= DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  date(creation) <= DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)   %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) %s )c" %( cond,cond,cond), as_dict=1)
 	
         data['first_timers']=first_timers
 	
 	match_conditions,cond=get_match_conditions('Member',dts['username'])
-	#return "select a.month,a.total_member_count from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() %s GROUP BY YEAR(creation),MONTH(creation) ) a  "%(cond)
-	membership_strength=frappe.db.sql("select a.month,a.total_member_count from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE creation BETWEEN date_sub(now(),INTERVAL 90 day) AND now() %s GROUP BY YEAR(creation),MONTH(creation)  ) a  "%(cond) ,as_dict=1)
+	membership_strength=frappe.db.sql("select a.month,a.total_member_count from ( SELECT COUNT(name) AS total_member_count,MONTHNAME(creation) as month FROM `tabMember` WHERE date(creation)>= date_sub(now(),INTERVAL 90 day) AND date(creation)<= CURDATE() %s GROUP BY YEAR(creation),MONTH(creation)  ) a  "%(cond) ,as_dict=1)
         if membership_strength:
                data['membership_strength']=membership_strength
         else:
