@@ -122,6 +122,82 @@ def validate_birth(doc,method):
 				frappe.throw(_('{0} is not a valid email id').format(doc.email_id))
 
 
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+
+	if "System Manager" in frappe.get_roles(user):
+		return None
+	else:
+		abc="""
+			`tabMember`.cell=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Cells')
+			or
+			`tabMember`.senior_cell=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Senior Cells')
+			or
+			`tabMember`.pcf=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='PCFs')
+			or
+			`tabMember`.church=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Churches')
+			or
+			`tabMember`.church_group=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Group Churches')
+			or
+			`tabMember`.zone=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Zones')
+			or
+			`tabMember`.region=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Regions')
+			or 
+			`tabMember`.name=(select distinct defvalue from `tabDefaultValue` where parent='%(user)s' and defkey='Member')
+			""" % {
+				"user": frappe.db.escape(user),
+				"roles": "', '".join([frappe.db.escape(r) for r in frappe.get_roles(user)])
+			}
+		return abc
+
+def has_permission(doc, user):
+
+	if "System Manager" in frappe.get_roles(user):
+		return True
+
+	if doc.cell:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Cells'"%(user))
+		if res:
+			return True
+
+	if doc.senior_cell:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Senior Cells'"%(user))
+		if res:
+			return True
+
+	if doc.pcf:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='PCFs'"%(user))
+		if res:
+			return True
+
+	if doc.church:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.church_group:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.zone:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+
+	if doc.region:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Churches'"%(user))
+		if res:
+			return True
+	if doc.name:
+		res=frappe.db.sql("select distinct defvalue from `tabDefaultValue` where parent='%s' and defkey='Member'"%(user))
+		if res:
+			return True
+
+	return False
+
+
+
 @frappe.whitelist(allow_guest=True)
 def get_attendance_points(args):
 	"""

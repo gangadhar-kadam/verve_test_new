@@ -1061,7 +1061,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-09 14:56:24.485451", 
+ "modified": "2016-01-23 14:17:38.396306", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
@@ -1216,7 +1216,7 @@
    "role": "Welfare user"
   }, 
   {
-   "apply_user_permissions": 1, 
+   "apply_user_permissions": 0, 
    "create": 1, 
    "email": 1, 
    "export": 1, 

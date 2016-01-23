@@ -56,14 +56,16 @@ permission_query_conditions = {
 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
 	"Task": "erpnext.projects.doctype.task.task.get_permission_query_conditions",
 	"First Timer":"church_ministry.church_ministry.doctype.first_timer.first_timer.get_permission_query_conditions",
-    "Attendance Record":"church_ministry.church_ministry.doctype.attendance_record.attendance_record.get_permission_query_conditions"
+    "Attendance Record":"church_ministry.church_ministry.doctype.attendance_record.attendance_record.get_permission_query_conditions",
+    "Member":"church_ministry.church_ministry.doctype.member.member.get_permission_query_conditions"
 }
 
 has_permission = {
 	"Event": "frappe.desk.doctype.event.event.has_permission",
 	"Task": "erpnext.projects.doctype.task.task.has_permission",
 	"First Timer":"church_ministry.church_ministry.doctype.first_timer.first_timer.has_permission",
-	"Attendance Record":"church_ministry.church_ministry.doctype.attendance_record.attendance_record.has_permission"
+	"Attendance Record":"church_ministry.church_ministry.doctype.attendance_record.attendance_record.has_permission",
+	"Member":"church_ministry.church_ministry.doctype.member.member.has_permission"
 
 }
 
