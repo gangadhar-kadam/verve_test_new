@@ -68,6 +68,11 @@ class AttendanceRecord(Document):
 			child.member_name = d[1]
 			child.email_id = d[2]
 
+	def set_missing_values(self, for_validate=False):
+		#frappe.errprint("in set missing ")
+		self.attendance_type = "Event Attendance"
+		self.load_participents()
+
 
 def validate_duplicate(doc,method):
 	if doc.get("__islocal"):
@@ -168,3 +173,34 @@ def has_permission(doc, user):
 			return True
 
 	return False
+	
+
+@frappe.whitelist()
+def create_event_attendance(source_name,target_doc=None):
+
+	def set_missing_values(source, target):
+		#frappe.errprint(source)
+		#frappe.errprint(target)
+		target.run_method("set_missing_values")
+
+	doclist = get_mapped_doc("Event", source_name, 	{
+		"Event": {
+			"doctype": "Attendance Record",
+			"field_map": {
+				"name": "event",
+				"starts_on": "from_date",
+				"ends_on": "to_date",
+				"subject": "meeting_subject",
+				"cell": "cell",
+				"senior_cell": "senior_cell",
+				"pcf": "pcf",
+				"church": "church",
+				"church_group": "church_group",
+				"zone": "zone",
+				"region": "region",
+
+			}
+		}
+	}, target_doc, set_missing_values)
+
+	return doclist

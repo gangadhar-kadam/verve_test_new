@@ -41,13 +41,6 @@
    "search_index": 0
   }, 
   {
-   "fieldname": "surname", 
-   "fieldtype": "Data", 
-   "label": "Surname", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
    "allow_on_submit": 0, 
    "fieldname": "member_name", 
    "fieldtype": "Data", 
@@ -65,6 +58,13 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0
+  }, 
+  {
+   "fieldname": "surname", 
+   "fieldtype": "Data", 
+   "label": "Surname", 
+   "permlevel": 0, 
+   "precision": ""
   }, 
   {
    "fieldname": "user_id", 
@@ -449,7 +449,7 @@
   {
    "fieldname": "region_name", 
    "fieldtype": "Read Only", 
-   "label": "Region", 
+   "label": "Region Name", 
    "options": "region.region_name", 
    "permlevel": 0, 
    "precision": ""
@@ -1066,7 +1066,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-23 17:20:45.333824", 
+ "modified": "2016-01-25 11:44:04.936272", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 

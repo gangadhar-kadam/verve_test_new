@@ -153,7 +153,48 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
     set_field_permlevel('zone',1);
     set_field_permlevel('region',1);
     set_field_permlevel('is_eligibale_for_follow_up',2);
+    set_field_permlevel('member_designation',1)
   } 
+});
+
+
+frappe.ui.form.on("Member", "member_designation", function(frm, dt, dn) {
+roleshr={
+  "PCF Leader":"Member,Cell Leader,Sr.Cell Leader",
+  "Senior Cell Leader":"Member,Cell Leader",
+  "Cell Leader":"Member"
+}
+
+if(in_list(user_roles, "PCF Leader")){
+var desigarray=roleshr['PCF Leader'].split(",")
+var inarry=desigarray.indexOf(frm.doc.member_designation)
+if (parseInt(inarry) < 0){
+  alert ("You have not permitted to select the designation "+frm.doc.member_designation);
+  cur_frm.set_value("member_designation","Member")                 
+  refresh_field("member_designation");
+} 
+}
+
+if(in_list(user_roles, "Senior Cell Leader")){
+var desigarray=roleshr['Senior Cell Leader'].split(",")
+var inarry=desigarray.indexOf(frm.doc.member_designation)
+if (parseInt(inarry) < 0){
+  alert ("You have not permitted to select the designation "+frm.doc.member_designation);
+  cur_frm.set_value("member_designation","Member")                 
+  refresh_field("member_designation");
+}  
+}
+
+if(in_list(user_roles, "Cell Leader")){
+var desigarray=roleshr['Cell Leader'].split(",")
+var inarry=desigarray.indexOf(frm.doc.member_designation)
+if (parseInt(inarry) < 0){
+  cur_frm.set_value("member_designation","Member");                 
+  refresh_field("member_designation");
+  alert ("You have not permitted to select the designation "+frm.doc.member_designation);  
+}    
+}
+
 });
 
 cur_frm.add_fetch("cell", "pcf", "pcf");

@@ -79,6 +79,32 @@ def set_higher_values(args):
           return out[0]
 
 
+@frappe.whitelist()
+def get_event_roles(doctype, txt, searchfield, start, page_len, filters):
+    roles=frappe.get_roles(frappe.session.user)
+    fltr=''
+    if "System Manager" in roles :
+ 		fltr= "'Regional Pastor,Zonal Pastor,Bible Study Class Teacher,Foundation School Teacher,Partnership Rep,Welfare user,Call Center Operator,Group Church Pastor,Church Pastor,PCF Leader,Senior Cell Leader,Cell Leader,Member'"
+    elif "Regional Pastor" in roles:
+    	fltr= "'Zonal Pastor,Bible Study Class Teacher,Foundation School Teacher,Partnership Rep,Welfare user,Call Center Operator,Group Church Pastor,Church Pastor,PCF Leader,Senior Cell Leader,Cell Leader,Member'"
+
+    elif "Zonal Pastor" in roles:
+    	fltr= "'Bible Study Class Teacher,Foundation School Teacher,Partnership Rep,Welfare user,Call Center Operator,Group Church Pastor,Church Pastor,PCF Leader,Senior Cell Leader,Cell Leader,Member'"
+
+    elif "Group Church Pastor" in roles:
+    	fltr= "'Bible Study Class Teacher,Foundation School Teacher,Partnership Rep,Welfare user,Call Center Operator,Church Pastor,PCF Leader,Senior Cell Leader,Cell Leader,Member'"
+    elif "Church Pastor" in roles:
+    	fltr= "'Bible Study Class Teacher,Foundation School Teacher,Partnership Rep,Call Center Operator,Welfare user,PCF Leader,Senior Cell Leader,Cell Leader,Member'"
+    elif "PCF Leader" in roles:
+    	fltr= "'Senior Cell Leader,Cell Leader,Member'"
+    elif "Senior Cell Leader" in roles:
+    	fltr="'Cell Leader,Member'"
+    elif "Cell Leader" in roles:
+    	fltr= "'Member'"
+   
+    return frappe.db.sql("select name from tabRole where name in (%s)"%("','".join(fltr.split(','))))
+
+
 def get_permission_query_conditions(user):
 	if not user: user = frappe.session.user
 
