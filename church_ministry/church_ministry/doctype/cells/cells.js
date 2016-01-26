@@ -108,6 +108,12 @@ cur_frm.add_fetch("senior_cell", "church", "church");
 cur_frm.add_fetch("senior_cell", "church_group", "church_group");
 cur_frm.add_fetch("senior_cell", "region", "region");
 cur_frm.add_fetch("senior_cell", "zone", "zone");
+cur_frm.add_fetch("senior_cell", "zone_name", "zone_name");
+cur_frm.add_fetch("senior_cell", "region_name", "region_name");
+cur_frm.add_fetch("senior_cell", "church_name", "church_name");
+cur_frm.add_fetch("senior_cell", "group_church_name", "group_church_name");
+cur_frm.add_fetch("senior_cell", "pcf_name", "pcf_name");
+
 
 
 cur_frm.add_fetch("pcf", "church", "church");

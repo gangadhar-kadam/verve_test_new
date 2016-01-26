@@ -62,17 +62,16 @@ frappe.ui.form.on("Member", "onload", function(frm, dt, dn) {
     });
   }
 
-  //  home address map div
-  $( "#map-canvas" ).remove();
-  $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 425px;"></div>');
-
   if(!frm.doc.__islocal && (frm.doc.address)){
+    $( "#map-canvas" ).remove();
+    $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 425px;"></div>');
       cur_frm.cscript.address(frm.doc,frm.dt,frm.dn);
     }
    //  office address map div
-  $( "#map-canvas1" ).remove();
-  $(cur_frm.get_field("office_address").wrapper).append('<div id="map-canvas1" style="width: 425px; height: 425px;"></div>');
+  
   if(!frm.doc.__islocal && (frm.doc.office_address)){
+    $( "#map-canvas1" ).remove();
+    $(cur_frm.get_field("office_address").wrapper).append('<div id="map-canvas1" style="width: 425px; height: 425px;"></div>');
       cur_frm.cscript.office_address(frm.doc,frm.dt,frm.dn);
     }
 
@@ -408,12 +407,17 @@ var getLatLng = function(lat, lng) {
 };
 
 cur_frm.cscript.address = function(doc, dt, dn){
+      
       geocoder.geocode( { 'address': doc.address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
           doc.address=results[0].formatted_address;
           refresh_field('address');
           var latLng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-
+          if (doc.address) {
+            //alert("is address");
+            $( "#map-canvas" ).remove();
+            $(cur_frm.get_field("address").wrapper).append('<div id="map-canvas" style="width: 425px; height: 425px;"></div>');
+          }
           var map = new google.maps.Map(document.getElementById('map-canvas'), {
               zoom: 16,
               center: latLng,
@@ -433,6 +437,7 @@ cur_frm.cscript.address = function(doc, dt, dn){
               geocodePosition(marker.getPosition());
           });
       } else {
+        $( "#map-canvas" ).remove();
         alert("Geocode was not successful for the following reason: " + status);
       }
     });
@@ -443,6 +448,7 @@ cur_frm.cscript.address = function(doc, dt, dn){
 
 cur_frm.cscript.create_pin_on_map1=function(doc,lat1,lon1){
         var latLng1 = new google.maps.LatLng(lat1, lon1);
+
         var map1 = new google.maps.Map(document.getElementById('map-canvas1'), {
             zoom: 14,
             center: latLng1,
@@ -530,7 +536,11 @@ cur_frm.cscript.office_address = function(doc, dt, dn){
           doc.office_address=results[0].formatted_address;
           refresh_field('office_address');
           var latLng1 = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-
+          if (doc.office_address) {
+            //alert("is office_address");
+            $( "#map-canvas1" ).remove();
+            $(cur_frm.get_field("office_address").wrapper).append('<div id="map-canvas1" style="width: 425px; height: 425px;"></div>');
+          }
           var map1 = new google.maps.Map(document.getElementById('map-canvas1'), {
               zoom: 14,
               center: latLng1,
@@ -550,6 +560,7 @@ cur_frm.cscript.office_address = function(doc, dt, dn){
               geocodePosition1(marker1.getPosition());
           });
       } else {
+        $( "#map-canvas1" ).remove();
         alert("Geocode was not successful for the following reason: " + status);
       }
     });

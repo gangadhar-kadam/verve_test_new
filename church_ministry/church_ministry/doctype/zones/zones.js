@@ -25,3 +25,5 @@ frappe.ui.form.on("Zones", "refresh", function(frm,dt,dn) {
       set_field_permlevel('zonal_hq',0);
     }
 });
+
+cur_frm.add_fetch("region", "region_name", "region_name");

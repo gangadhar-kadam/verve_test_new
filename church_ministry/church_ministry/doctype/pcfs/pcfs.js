@@ -4,11 +4,19 @@
 cur_frm.add_fetch("church", "church_group", "church_group");
 cur_frm.add_fetch("church", "region", "region");
 cur_frm.add_fetch("church", "zone", "zone");
+cur_frm.add_fetch("church", "zone_name", "zone_name");
+cur_frm.add_fetch("church", "region_name", "region_name");
+cur_frm.add_fetch("church", "church_name", "church_name");
+
+
 
 cur_frm.add_fetch("church_group", "region", "region");
 cur_frm.add_fetch("church_group", "zone", "zone");
 
 cur_frm.add_fetch("zone", "region", "region");
+
+
+
 
 frappe.ui.form.on("PCFs", "onload", function(frm) {
 

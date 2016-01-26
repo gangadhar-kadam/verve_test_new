@@ -65,3 +65,7 @@ cur_frm.fields_dict['group_church_hq'].get_query = function(doc) {
       return "select name,church_code,church_name from `tabChurches`"
     }
 }
+
+cur_frm.add_fetch("zone", "zone_name", "zone_name");
+cur_frm.add_fetch("zone", "region", "region_name");
+cur_frm.add_fetch("zone", "region_name", "region_name");

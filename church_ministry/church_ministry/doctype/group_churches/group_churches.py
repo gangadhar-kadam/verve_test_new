@@ -13,14 +13,11 @@ class GroupChurches(Document):
 		from frappe.model.naming import make_autoname
 		self.name = make_autoname(self.zone + '/' + 'GRP' + '.####')
 
-	def onload(self):
-		frappe.errprint("in server onload")
-
 	def get_region(self):
-		frappe.errprint("get region")
+		#frappe.errprint("get region")
 		# to auto set region on load if zone is set
 		region = frappe.db.sql("""select region from `tabZone`	where name ='%s'""", self.doc.zone)
-		frappe.errprint(get_region)
+		#frappe.errprint(get_region)
 		ret = {
 			'region': region and region[0][0] or ''
 		}

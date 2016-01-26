@@ -1057,8 +1057,8 @@ def get_database_masters(data):
 	match_conditions,data=get_match_conditions(dts['tbl'],dts['username'])
 	colmns={
 	        "Invitees and Contacts":"name,invitee_contact_name,sex,email_id",
-		"First Timer":"name,ftv_name,sex,email_id",
-		"Member":"name,member_name,sex,email_id",		
+		"First Timer":"name,ftv_name,surname,sex,email_id",
+		"Member":"name,member_name,surname,email_id",		
 		"Partnership Record":"name,partnership_arms,FORMAT(amount,2) as amount,giving_or_pledge",
 		"Cells":"name,cell_name,senior_cell,senior_cell_name",
 		"PCFs":"name,pcf_name,church,church_name",
@@ -1106,7 +1106,7 @@ def get_database_masters(data):
 	       	cond+= " where "+ fltr_cnd
 	elif match_conditions:
 	       	cond+= " where "+ match_cond
-	#return cond    			
+	#frappe.errprint(cond)
 	total_count= frappe.db.sql("""select ifnull(count(name),0) from `tab%s`  %s """%(dts['tbl'], cond))	
 	if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 		dts['page_no']=1
@@ -2194,7 +2194,7 @@ def get_my_profile(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
             }
-        qr1="select m.name,u.first_name as member_name,m.surname as last_name,m.date_of_birth,m.short_bio,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.cell,m.cell_name,m.senior_cell,m.senior_cell_name,m.pcf,m.pcf_name,m.church,m.church_name,m.church_group,m.group_church_name,m.zone,m.zone_name,m.region,m.region_name,m.office_landmark,m.baptism_where,m.title,m.home_address,m.baptism_when,m.age_group,m.baptisum_status,m.sex,m.school_status,m.filled_with_holy_ghost,m.is_new_born,m.is_eligibale_for_follow_up,m.date_of_join,m.yokoo_id from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
+        qr1="select m.name,m.member_name,m.surname as last_name,m.date_of_birth,m.short_bio,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.cell,m.cell_name,m.senior_cell,m.senior_cell_name,m.pcf,m.pcf_name,m.church,m.church_name,m.church_group,m.group_church_name,m.zone,m.zone_name,m.region,m.region_name,m.office_landmark,m.baptism_where,m.title,m.home_address,m.baptism_when,m.age_group,m.baptisum_status,m.sex,m.school_status,m.filled_with_holy_ghost,m.is_new_born,m.is_eligibale_for_follow_up,m.date_of_join,m.yokoo_id from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
         res=frappe.db.sql(qr1,as_dict=1)
         return res
 
