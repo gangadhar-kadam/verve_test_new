@@ -346,7 +346,7 @@ def create_member(data):
 	dts=json.loads(data)
 	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
 	valid=frappe.db.sql(qry)
-	print dts
+	#print dts
 	if not valid:
 		return {
 		  "status":"401",
@@ -356,6 +356,13 @@ def create_member(data):
                 return {
                   "status":"403",
                   "message":"You have no permission to create Member"
+                }
+        
+        mm=frappe.db.get_value("User", dts['email_id'],'name' )
+        if mm:
+                return {
+                  "status":"402",
+                  "message":"Member not created another member with same email id ('"+mm+"') is exist "
                 }
 	else:
 		frappe.set_user(dts['username'])
@@ -398,7 +405,7 @@ def create_member(data):
 		obj.zone=dts['zone']
 		obj.region=dts['region']
 		obj.email_id=dts['email_id']
-		obj.surname=dts['last_name']
+		obj.surname=dts['surname']
 
 		if 'short_bio' in dts:
 			obj.short_bio=dts['short_bio']
@@ -409,7 +416,7 @@ def create_member(data):
 	 #        obj1.first_name=dts['member_name']
 	 #        obj1.save(ignore_permissions=True)
 			
-		return "Successfully created Member '"+obj.name+"'"
+		return "Successfully Created Member '"+obj.name+"'"
 
 
 
