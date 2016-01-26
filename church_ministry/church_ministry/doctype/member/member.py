@@ -363,10 +363,10 @@ def create_member(data):
 		obj=frappe.new_doc("Member")
 		obj.yearly_income=dts['yearly_income']
 		obj.office_address=dts['office_address']
-		obj.image=dts['image']
+		#obj.image=dts['image']
 		obj.industry_segment=dts['industry_segment']
 		obj.employment_status=dts['employment_status']
-		obj.address=dts['home_address']
+		obj.address=dts['address']
 		obj.date_of_birth=dts['date_of_birth']
 		obj.educational_qualification=dts['educational_qualification']
 		obj.core_competeance=dts['core_competeance']
