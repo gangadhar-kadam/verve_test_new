@@ -2186,7 +2186,7 @@ def list_members_details(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
             }
-	qr1="SELECT name,title, school_status, filled_with_holy_ghost, member_name, surname, date_of_birth, phone_1, phone_2, email_id, email_id2, address, office_address, office_landmark, employment_status, industry_segment, yearly_income, experience_years, core_competeance, educational_qualification, NULL AS `password`, image, marital_info, cell, cell_name, senior_cell, senior_cell_name, pcf, pcf_name, church, church_name, church_group, group_church_name, zone, zone_name, region, region_name, member_designation, age_group, baptisum_status, baptism_when, sex, school_status, filled_with_holy_ghost, is_new_born, is_eligibale_for_follow_up, date_of_join, yokoo_id from  tabMember where name='"+dts['name']+"'"
+	qr1="SELECT name,title, school_status, short_bio,filled_with_holy_ghost, member_name, surname, date_of_birth, phone_1, phone_2, email_id, email_id2, address, office_address, office_landmark, employment_status, industry_segment, yearly_income, experience_years, core_competeance, educational_qualification, NULL AS `password`, image, marital_info, cell, cell_name, senior_cell, senior_cell_name, pcf, pcf_name, church, church_name, church_group, group_church_name, zone, zone_name, region, region_name, member_designation, age_group, baptisum_status, baptism_when, sex, school_status, filled_with_holy_ghost, is_new_born, is_eligibale_for_follow_up, date_of_join, yokoo_id,baptism_where,home_address,user_id,lat,lon,lon1,lat1 from  tabMember where name='"+dts['name']+"'"
 	#return qr1
         res=frappe.db.sql(qr1,as_dict=1)
         return res
