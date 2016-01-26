@@ -380,7 +380,6 @@ def create_member(data):
 		obj.office_landmark=dts['office_landmark']
 		obj.baptism_where=dts['baptism_where']
 		obj.title=dts['title']
-		obj.home_address=dts['home_address']
 		obj.baptism_when=dts['baptism_when']
 		obj.age_group=dts['age_group']
 		obj.baptisum_status=dts['baptisum_status']
