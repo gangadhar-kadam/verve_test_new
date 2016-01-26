@@ -337,6 +337,83 @@ def create_senior_cells(data):
 		return "Successfully created senior Cell '"+obj.name+"'"
 		                
 
+@frappe.whitelist(allow_guest=True)
+def create_member(data):
+	"""
+	Need to check validation/ duplication  etc
+
+	"""
+	dts=json.loads(data)
+	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+	valid=frappe.db.sql(qry)
+	print dts
+	if not valid:
+		return {
+		  "status":"401",
+		  "message":"User name or Password is incorrect"
+		}
+        if not frappe.has_permission(doctype="Member", ptype="create",user=dts['username']):
+                return {
+                  "status":"403",
+                  "message":"You have no permission to create Member"
+                }
+	else:
+		frappe.set_user(dts['username'])
+		#frappe.errprint(frappe.session.user)
+		obj=frappe.new_doc("Member")
+		obj.yearly_income=dts['yearly_income']
+		obj.office_address=dts['office_address']
+		obj.image=dts['image']
+		obj.industry_segment=dts['industry_segment']
+		obj.employment_status=dts['employment_status']
+		obj.address=dts['home_address']
+		obj.date_of_birth=dts['date_of_birth']
+		obj.educational_qualification=dts['educational_qualification']
+		obj.core_competeance=dts['core_competeance']
+		obj.member_name=dts['member_name']
+		obj.email_id2=dts['email_id2']
+		obj.phone_2=dts['phone_2']
+		obj.marital_info=dts['marital_info']
+		obj.experience_years=dts['experience_years']
+		obj.phone_1=dts['phone_1']
+		obj.phone_2=dts['phone_2']
+		obj.office_landmark=dts['office_landmark']
+		obj.baptism_where=dts['baptism_where']
+		obj.title=dts['title']
+		obj.home_address=dts['home_address']
+		obj.baptism_when=dts['baptism_when']
+		obj.age_group=dts['age_group']
+		obj.baptisum_status=dts['baptisum_status']
+		obj.sex=dts['sex']
+		obj.school_status=dts['school_status']
+		obj.filled_with_holy_ghost=dts['filled_with_holy_ghost']
+		obj.is_new_born=dts['is_new_born']
+		obj.is_eligibale_for_follow_up=dts['is_eligibale_for_follow_up']
+		obj.date_of_join=dts['date_of_join']
+		obj.yokoo_id=dts['yokoo_id']
+		obj.cell=dts['cell']
+		obj.senior_cell=dts['senior_cell']
+		obj.pcf=dts['pcf']
+		obj.church=dts['church']
+		obj.church_group=dts['church_group']
+		obj.zone=dts['zone']
+		obj.region=dts['region']
+		obj.email_id=dts['email_id']
+		obj.surname=dts['last_name']
+
+		if 'short_bio' in dts:
+			obj.short_bio=dts['short_bio']
+		obj.insert(ignore_permissions=True)
+		# obj1=frappe.get_doc('User',dts['username'])
+	 #        obj1.new_password=dts['password']
+	 #        obj1.last_name=dts['last_name']
+	 #        obj1.first_name=dts['member_name']
+	 #        obj1.save(ignore_permissions=True)
+			
+		return "Successfully created Member '"+obj.name+"'"
+
+
+
 
 @frappe.whitelist(allow_guest=True)
 def create_cells(data):
@@ -1830,7 +1907,7 @@ def dashboard(data):
         data['invities_contacts']=new_visitor
 
 	match_conditions,cond=get_match_conditions('First Timer',dts['username'])
-	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where date(creation) >= DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  date(creation) <= DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)   and is_new_born='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_born='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_born='Yes' %s )c" %( cond,cond,cond), as_dict=1)
+	new_born=frappe.db.sql("select a.`Week` as `Week2`,b.`Month` as `Month2`,c.`Year` as `Year2` from (select count(name) as `Week` from `tabFirst Timer` where date(creation) >= DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  date(creation) <= DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)   and is_new_convert='Yes' %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) and is_new_convert='Yes' %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and is_new_convert='Yes' %s )c" %( cond,cond,cond), as_dict=1)
         data['new_converts']=new_born
     
 	first_timers=frappe.db.sql("select a.`Week` as `Week3`,b.`Month` as `Month3`,c.`Year` as `Year3` from (select count(name) as `Week` from `tabFirst Timer` where date(creation) >= DATE_ADD(CURDATE(), INTERVAL(1-DAYOFWEEK(CURDATE())) DAY) AND  date(creation) <= DATE_ADD(CURDATE(), INTERVAL(7-DAYOFWEEK(CURDATE())) DAY)   %s ) a,(select count(name) as `Month` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) and MONTH(creation)=MONTH(now()) %s ) b,(select count(name) as `Year` from `tabFirst Timer` where YEAR(creation)=YEAR(now()) %s )c" %( cond,cond,cond), as_dict=1)
@@ -2117,7 +2194,7 @@ def get_my_profile(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
             }
-        qr1="select m.name,u.first_name as member_name,m.surname as last_name,m.date_of_birth,m.short_bio,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.cell,m.cell_name,m.senior_cell,m.senior_cell_name,m.pcf,m.pcf_name,m.church,m.church_name,m.church_group,m.group_church_name,m.zone,m.zone_name,m.region,m.region_name from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
+        qr1="select m.name,u.first_name as member_name,m.surname as last_name,m.date_of_birth,m.short_bio,m.phone_1,m.phone_2,m.email_id,m.email_id2,m.address,m.office_address,m.employment_status,m.industry_segment,m.yearly_income,m.experience_years,m.core_competeance,m.educational_qualification,null AS `password`,m.image,m.marital_info,m.member_designation,m.cell,m.cell_name,m.senior_cell,m.senior_cell_name,m.pcf,m.pcf_name,m.church,m.church_name,m.church_group,m.group_church_name,m.zone,m.zone_name,m.region,m.region_name,m.office_landmark,m.baptism_where,m.title,m.home_address,m.baptism_when,m.age_group,m.baptisum_status,m.sex,m.school_status,m.filled_with_holy_ghost,m.is_new_born,m.is_eligibale_for_follow_up,m.date_of_join,m.yokoo_id from tabMember m,tabUser u where m.email_id=u.name and u.name='"+dts['username']+"'"
         res=frappe.db.sql(qr1,as_dict=1)
         return res
 
@@ -2148,6 +2225,21 @@ def update_my_profile(data):
 	obj.marital_info=dts['marital_info']
 	obj.experience_years=dts['experience_years']
 	obj.phone_1=dts['phone_1']
+	obj.phone_2=dts['phone_2']
+	obj.office_landmark=dts['office_landmark']
+	obj.baptism_where=dts['baptism_where']
+	obj.title=dts['title']
+	obj.home_address=dts['home_address']
+	obj.baptism_when=dts['baptism_when']
+	obj.age_group=dts['age_group']
+	obj.baptisum_status=dts['baptisum_status']
+	obj.sex=dts['sex']
+	obj.school_status=dts['school_status']
+	obj.filled_with_holy_ghost=dts['filled_with_holy_ghost']
+	obj.is_new_born=dts['is_new_born']
+	obj.is_eligibale_for_follow_up=dts['is_eligibale_for_follow_up']
+	obj.date_of_join=dts['date_of_join']
+	obj.yokoo_id=dts['yokoo_id']
 	obj.surname=dts['last_name']
 	if 'short_bio' in dts:
 		obj.short_bio=dts['short_bio']

@@ -57,7 +57,7 @@
    "ignore_user_permissions": 0, 
    "in_filter": 0, 
    "in_list_view": 1, 
-   "label": "FT Name", 
+   "label": "First Name", 
    "no_copy": 0, 
    "permlevel": 0, 
    "precision": "", 
@@ -71,6 +71,7 @@
   {
    "fieldname": "surname", 
    "fieldtype": "Data", 
+   "in_list_view": 1, 
    "label": "Surname", 
    "permlevel": 0, 
    "precision": ""
@@ -417,6 +418,7 @@
   {
    "fieldname": "church_name", 
    "fieldtype": "Read Only", 
+   "in_list_view": 1, 
    "label": "Church Name", 
    "options": "church.church_name", 
    "permlevel": 0, 
@@ -1374,7 +1376,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-18 14:19:18.829880", 
+ "modified": "2016-01-25 20:33:38.821214", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "First Timer", 
