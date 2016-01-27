@@ -1097,7 +1097,7 @@ def get_database_masters(data):
     	        elif 'Year' in dts['filters'] :
     	        	fltrs.append(" YEAR(creation)=YEAR(now()) ")  
     	        if 'New Converts' in dts['filters'] :
-    	        	fltrs.append(" is_new_born='Yes' ") 
+    	        	fltrs.append(" is_new_convert='Yes' ") 
        	        elif 'Giving' in dts['filters'].values() :
     	        	fltrs.append(" giving_or_pledge='Giving' ")
     	        elif 'Pledge' in dts['filters'].values() :
