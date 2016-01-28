@@ -2139,6 +2139,8 @@ def file_upload(data):
 
 	if dts['tbl']=='Member':
              frappe.db.sql("update tabMember set image=%s where name=%s",(filedata.file_url,dts['name']))
+    if dts['tbl']=='First Timer':
+             frappe.db.sql("update `tabFirst Timer` set image=%s where name=%s",(filedata.file_url,dts['name']))
         return {
             "name": filedata.name,
             "file_name": filedata.file_name,
