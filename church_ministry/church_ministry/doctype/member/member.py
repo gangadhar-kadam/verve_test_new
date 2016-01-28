@@ -2054,13 +2054,17 @@ def search_group_member_church(data):
                 key='1'
                 value=1
         cond+="where "+key+"='"+cstr(value)+"'"
-    
-   	if (('from_date' in dts) and ('to_date' in dts)):
-    	        	cond+=" date(creation) between '%s' and '%s'" %(dts['filters']['from_date'],dts['filters']['to_date'])
-    	elif 'from_date' in dts :
-    	        	cond+=" creation>= '%s' " %dts['from_date']
-    	elif 'to_date' in dts :
-    	        	cond+="  creation <= '%s' " %dts['to_date'] 
+    	if 'filters' in dts:
+    		if 'from_date' in dts['filters']:
+    		    	dts['filters']['from_date']=dts['filters']['from_date'][6:]+"-"+dts['filters']['from_date'][3:5]+"-"+dts['filters']['from_date'][:2]
+  		if 'to_date' in dts['filters']:
+    		    	dts['filters']['to_date']=dts['filters']['to_date'][6:]+"-"+dts['filters']['to_date'][3:5]+"-"+dts['filters']['to_date'][:2]    
+    		if (('from_date' in dts['filters']) and ('to_date' in dts['filters'])):
+    	        	cond+=" and date(creation) >= '%s' and date(creation) <='%s'" %(dts['filters']['from_date'],dts['filters']['to_date'])
+    		elif 'from_date' in dts['filters'] :
+    	        	cond+=" and creation>= '%s' " %dts['filters']['from_date']
+    		elif 'to_date' in dts['filters'] :
+    	        	cond+=" and creation <= '%s' " %dts['filters']['to_date'] 
         #return cond
         if 'search' in dts and dts['search']=='Group':
         		if 'member' in dts:
@@ -2106,7 +2110,7 @@ def search_group_member_church(data):
         else:
         	if 'member' in dts:
         	    cond+=" and member_name like '%%%s%%'"%(dts['member'])
-
+        	#frappe.errprint(cond)
         	total_count= frappe.db.sql("select count(name) from tabMember %s "%(cond))
     		if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 				dts['page_no']=1
