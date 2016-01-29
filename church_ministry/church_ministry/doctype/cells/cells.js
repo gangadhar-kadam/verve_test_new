@@ -2,6 +2,9 @@
 
 frappe.ui.form.on("Cells", "onload", function(frm) {
   if(frm.doc.__islocal){
+    argmnt={
+             
+            }
     if  (frm.doc.senior_cell){
           argmnt={
               "senior_cell": frm.doc.senior_cell, 

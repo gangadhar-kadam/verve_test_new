@@ -21,6 +21,9 @@ cur_frm.add_fetch("zone", "region", "region");
 frappe.ui.form.on("PCFs", "onload", function(frm) {
 
 if(frm.doc.__islocal){
+    argmnt={
+             
+            }
 
     if  (frm.doc.church){
           argmnt={
