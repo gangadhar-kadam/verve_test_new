@@ -1271,12 +1271,12 @@ def partnership_arms_list(data):
 				"Senior Cells":"senior_cell",
 				"Cells":"cell"
 			}
-	res=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey<>'Member' and defkey in (Group Churches','Zones','Cells','Churches','PCFs','Senior Cells','Cells','Regions') and parent='%s'" %dts['username'],as_list=1)
+	res=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey<>'Member' and defkey in ('Group Churches','Zones','Cells','Churches','PCFs','Senior Cells','Cells','Regions') and parent='%s'" %dts['username'],as_list=1)
     	cond_list=[]
     	for key,value in res:
     		cond_list.append(" %s = '%s' " %(column[key],value))
     	cond+="and ("+" or ".join([x for x in cond_list])+")"
-    frappe.errprint(cond)
+    #frappe.errprint(cond)
     total_count= frappe.db.sql("""select ifnull(count(name),0) from `tabPartnership Record`  %s """%(cond))	
     if (('page_no' not in dts) or cint(dts['page_no'])<=1): 
 	dts['page_no']=1
