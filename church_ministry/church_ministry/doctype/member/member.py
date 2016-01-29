@@ -893,7 +893,7 @@ def meetings_list_member_new(data):
                 result['total_count']=total_count[0][0]
                 result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
 
-	        result['records']=frappe.db.sql("select a.name as meeting_name,a.meeting_category as meeting_category, case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date as from_date,a.to_date as to_date,a.venue as venue,b.name as name,ifnull(b.present,0) as present from `tabAttendance Record`  a,`tabInvitation Member Details` b where a.name=b.parent and b.email_id='%s' %s order by name limit %s,20"%(dts['username'],fltr_cnd,cint(start_index)),as_dict=True,debug=1)
+	        result['records']=frappe.db.sql("select a.name as meeting_name,a.meeting_category as meeting_category, case a.meeting_category when 'Cell Meeting' then a.meeting_subject else a.meeting_sub end as `meeting_subject`,a.from_date as from_date,a.to_date as to_date,a.venue as venue,b.name as name,ifnull(b.present,0) as present from `tabAttendance Record`  a,`tabInvitation Member Details` b where a.name=b.parent and b.email_id='%s' %s order by name limit %s,20"%(dts['username'],fltr_cnd,cint(start_index)),as_dict=True)
                 return result                
 
 
@@ -1223,7 +1223,7 @@ def partnership_arms(data):
     	for key,value in res:
     		cond_list.append(" %s = '%s' " %(column[key],value))
     	cond+="and ("+" or ".join([x for x in cond_list])+")"
-    data=frappe.db.sql("select partnership_arms,ifnull(FORMAT(sum(amount),2),'0.00') as amount from `tabPartnership Record` %s group by partnership_arms" %(cond),as_dict=True,debug=1)
+    data=frappe.db.sql("select partnership_arms,ifnull(FORMAT(sum(amount),2),'0.00') as amount from `tabPartnership Record` %s group by partnership_arms" %(cond),as_dict=True)
     return data
     
     
@@ -1289,7 +1289,7 @@ def partnership_arms_list(data):
     result={}
     result['total_count']=total_count[0][0]
     result['paging_message']=cstr(cint(start_index)+1) + '-' + cstr(end_index) + ' of ' + cstr(total_count[0][0]) + ' items'
-    result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name,giving_type,type_of_pledge from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1,debug=1)
+    result['records']=frappe.db.sql("""select name,date,cell,ifnull(FORMAT(amount,2),'0.00') as amount,member,member_name,giving_type,type_of_pledge from `tabPartnership Record`  %s order by name limit %s,20"""%(cond,cint(start_index)), as_dict=1)
     return result
 
 
