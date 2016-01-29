@@ -310,7 +310,7 @@ def create_senior_cells(data):
 	dts=json.loads(data)
 	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
 	valid=frappe.db.sql(qry)
-	print dts
+	#print dts
 	if not valid:
 		return {
 		  "status":"401",
@@ -697,7 +697,7 @@ def meetings_list(data):
 	Need to add filter of permitted records for user
 	"""
         dts=json.loads(data)
-	print dts 
+	#print dts 
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
         if not valid:
@@ -945,7 +945,7 @@ def mark_my_attendance(data):
 def get_match_conditions(doctype,username):
 	meta = frappe.get_meta(doctype)
 	role_permissions = frappe.permissions.get_role_permissions(meta, username)
-	user_permissions=frappe.db.sql("select defkey,defvalue from tabDefaultValue where parent=%s ",username,as_dict=1)  
+	user_permissions=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey in ('Member','Group Churches','Zones','Cells','Churches','PCFs','Senior Cells','Cells','Regions') and parent=%s ",username,as_dict=1)  
 	match_conditions = []
 	#cond=''
 	for item in user_permissions:
@@ -1218,7 +1218,7 @@ def partnership_arms(data):
     if 'flag' in dts:       
    		cond+= " and `tabPartnership Record`.`member`= ( SELECT defvalue FROM tabDefaultValue WHERE defvalue=`tabPartnership Record`.`member` and defkey='Member' and tabDefaultValue.`parent`='"+cstr(dts['username'])+"')"
     else:
-    	res=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey<>'Member' and parent='%s'" %dts['username'],as_list=1)
+    	res=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey<>'Member' and defkey in ('Group Churches','Zones','Cells','Churches','PCFs','Senior Cells','Cells','Regions') and parent='%s'" %dts['username'],as_list=1)
     	cond_list=[]
     	for key,value in res:
     		cond_list.append(" %s = '%s' " %(column[key],value))
@@ -1271,7 +1271,7 @@ def partnership_arms_list(data):
 				"Senior Cells":"senior_cell",
 				"Cells":"cell"
 			}
-	res=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey<>'Member' and parent='%s'" %dts['username'],as_list=1)
+	res=frappe.db.sql("select defkey,defvalue from tabDefaultValue where defkey<>'Member' and defkey in (Group Churches','Zones','Cells','Churches','PCFs','Senior Cells','Cells','Regions') and parent='%s'" %dts['username'],as_list=1)
     	cond_list=[]
     	for key,value in res:
     		cond_list.append(" %s = '%s' " %(column[key],value))
@@ -1298,6 +1298,8 @@ def create_partnership_reocrd(data):
     dts=json.loads(data)
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
+    print "request for create_partnership_reocrd request----------------"
+    print dts
     if not valid:
         return {
                 "status":"401",
@@ -1833,7 +1835,7 @@ def cell_members(data):
 @frappe.whitelist(allow_guest=True)
 def create_task(data):
     dts=json.loads(data)
-    print dts
+    #print dts
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
     #print dts
@@ -1986,7 +1988,7 @@ def search_glm(data):
         dts=json.loads(data)
         qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
         valid=frappe.db.sql(qry)
-	print dts
+	#print dts
         if not valid:
             return {
                 "status":"401",
@@ -2442,7 +2444,7 @@ def task_esclate():
 	"""
 	this will return recipents details
 	"""
-	print "running task exclation"
+	#print "running task exclation"
 	task_list=[]
 	task_to_esclate=frappe.db.sql("""select name,owner,_assign,concat('["',owner,'"]') from tabTask where status<>'Closed' and exp_end_date<=curdate() and owner<> REPLACE (REPLACE (_assign, '["', ''), '"]', '')""",as_dict=1)
 	for task in task_to_esclate:
