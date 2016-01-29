@@ -2225,7 +2225,8 @@ def update_my_profile(data):
 	obj=frappe.get_doc('Member',dts['name'])
 	obj.yearly_income=dts['yearly_income']
 	obj.office_address=dts['office_address']
-	obj.image=dts['image']
+	if 'image' in dts:
+		obj.image=dts['image']
 	obj.industry_segment=dts['industry_segment']
 	obj.employment_status=dts['employment_status']
 	obj.address=dts['home_address']
