@@ -338,6 +338,91 @@ def create_senior_cells(data):
 		                
 
 @frappe.whitelist(allow_guest=True)
+def create_ftv(data):
+	"""
+	Need to check validation/ duplication  etc
+
+	"""
+	dts=json.loads(data)
+	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
+	valid=frappe.db.sql(qry)
+	#print dts
+	if not valid:
+		return {
+		  "status":"401",
+		  "message":"User name or Password is incorrect"
+		}
+        # if not frappe.has_permission(doctype="First Timer", ptype="create",user=dts['username']):
+        #         return {
+        #           "status":"403",
+        #           "message":"You have no permission to create First Timer"+
+        #         }
+        
+        # mm=frappe.db.get_value("User", dts['email_id'],'name' )
+        # if mm:
+        #         return {
+        #           "status":"402",
+        #           "message":"Member not created another member with same email id ('"+mm+"') is exist "
+        #         }
+	else:
+		frappe.set_user(dts['username'])
+		obj=frappe.new_doc("First Timer")
+		obj.office_address=dts['office_address']
+		obj.industry_segment=dts['industry_segment']
+		obj.employment_status=dts['employment_status']
+		obj.address=dts['address']
+		obj.date_of_birth=dts['date_of_birth']
+		obj.education_qualification=dts['education_qualification']
+		obj.core_competeance=dts['core_competeance']
+		obj.ftv_name=dts['ftv_name']
+		obj.email_id_2=dts['email_id2']
+		obj.ftv_type=dts['ftv_type']
+		obj.phone_2=dts['phone_2']
+		obj.marital_info=dts['marital_info']
+		obj.introduced_by=dts['introduced_by']
+		obj.first_contact_by=dts['first_contact_by']
+		obj.experience_years=dts['experience_years']
+		obj.phone_1=dts['phone_1']
+		obj.phone_2=dts['phone_2']
+		obj.office_landmark=dts['office_landmark']
+		obj.baptism_where=dts['baptism_where']
+		obj.title=dts['title']
+		obj.baptism_when=dts['baptism_when']
+		obj.age_group=dts['age_group']
+		obj.baptisum_status=dts['baptisum_status']
+		obj.sex=dts['sex']
+		obj.school_status=dts['school_status']
+		obj.filled_with_holy_ghost=dts['filled_with_holy_ghost']
+		obj.is_new_born=dts['is_new_born']
+		obj.is_new_convert=dts['is_new_convert']
+		obj.address_manual=dts['address_manual']
+		obj.date_of_visit=dts['date_of_visit']
+		obj.yokoo_id=dts['yokoo_id']
+		obj.yearly_income=dts['yearly_income']
+		obj.task_description=dts['task_description']
+		obj.due_date=dts['due_date']
+		if 'cell' in dts:
+			obj.cell=dts['cell']
+	    	if 'senior_cell' in dts:
+			obj.senior_cell=dts['senior_cell']
+		if 'pcf' in dts:	
+			obj.pcf=dts['pcf']
+		obj.church=dts['church']
+		obj.church_group=dts['church_group']
+		obj.zone=dts['zone']
+		obj.region=dts['region']
+		obj.email_id=dts['email_id']
+		obj.surname=dts['surname']
+		if 'short_bio' in dts:
+			obj.short_bio=dts['short_bio']
+		obj.insert(ignore_permissions=True)
+		
+		return "Successfully Created First Timer '"+obj.name+"'"
+
+
+
+
+@frappe.whitelist(allow_guest=True)
 def create_member(data):
 	"""
 	Need to check validation/ duplication  etc
@@ -1298,8 +1383,8 @@ def create_partnership_reocrd(data):
     dts=json.loads(data)
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
-    print "request for create_partnership_reocrd request----------------"
-    print dts
+    #print "request for create_partnership_reocrd request----------------"
+    #print dts
     if not valid:
         return {
                 "status":"401",
@@ -1308,12 +1393,14 @@ def create_partnership_reocrd(data):
     pr=frappe.new_doc("Partnership Record")
     pr.partnership_arms=dts['partnership_arms']
     pr.amount=dts['amount']
+    pr.date=dts['date']
+    #frappe.errprint(pr.date)
     try :
-    	pr.ministry_year=get_fiscal_year(nowdate())[0]
+    	pr.ministry_year=get_fiscal_year(dts['date'])[0]
     except Exception ,e:
     	return {
                 "status":"402",
-                "message":"Ministry Year not found for %s " %(nowdate())
+                "message":"Ministry Year not found for %s " %(dts['date'])
         } 
     pr.is_member='Member'
     pr.member=dts['member']
@@ -1347,7 +1434,7 @@ def create_partnership_reocrd(data):
 
     pr.flags.ignore_mandatory = True
     pr.insert(ignore_permissions=True)
-
+    frappe.db.set_value("Partnership Record", pr.name, "date", dts['date'])
     return {
                 "status":"200",
                 "message":"Successfully created partnership record "+pr.name

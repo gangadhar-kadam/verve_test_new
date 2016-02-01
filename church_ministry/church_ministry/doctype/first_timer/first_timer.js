@@ -84,6 +84,9 @@ frappe.ui.form.on("First Timer", "onload", function(frm,cdt, cdn) {
     set_field_permlevel('email_id',1);
   }
   else if(frm.doc.__islocal){
+    argmnt={
+             
+            }
     if  (frm.doc.senior_cell){
           argmnt={
               "senior_cell": frm.doc.senior_cell, 
