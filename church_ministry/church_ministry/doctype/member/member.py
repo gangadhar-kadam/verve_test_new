@@ -310,7 +310,7 @@ def create_senior_cells(data):
 	dts=json.loads(data)
 	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
 	valid=frappe.db.sql(qry)
-	#print dts
+	print dts
 	if not valid:
 		return {
 		  "status":"401",
@@ -326,11 +326,17 @@ def create_senior_cells(data):
 		obj.senior_cell_name=dts['senior_cell_name']
 		obj.senior_cell_code=dts['senior_cell_code']
 		obj.meeting_location=dts['meeting_location']
-		obj.zone=dts['zone']
-		obj.region=dts['region']
-		obj.church_group=dts['church_group']
-		obj.church=dts['church']
 		obj.pcf=dts['pcf']
+		higher_details=frappe.db.sql("select pcf_name,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name from `tabPCFs` where name='%s'"%(dts['pcf']))
+		obj.pcf_name=higher_details[0][0]
+		obj.church=higher_details[0][1]
+		obj.church_name=higher_details[0][2]
+		obj.church_group=higher_details[0][3]
+		obj.group_church_name=higher_details[0][4]
+		obj.zone=higher_details[0][5]
+		obj.zone_name=higher_details[0][6]
+		obj.region=higher_details[0][7]
+		obj.region_name=higher_details[0][8]
 		obj.contact_phone_no=dts['contact_phone_no']
 		obj.contact_email_id=dts['contact_email_id']
 		obj.insert(ignore_permissions=True)
@@ -532,12 +538,19 @@ def create_cells(data):
 		obj.cell_code=dts['cell_code']
 		obj.meeting_location=dts['meeting_location']
 		obj.address=dts['address']
+		higher_details=frappe.db.sql("select senior_cell_name,pcf,pcf_name ,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name from `tabSenior Cells` where name='%s'"%(dts['senior_cell']))
 		obj.senior_cell=dts['senior_cell']
-		obj.zone=dts['zone']
-		obj.region=dts['region']
-		obj.church_group=dts['church_group']
-		obj.church=dts['church']
-		obj.pcf=dts['pcf']
+		obj.senior_cell_name=higher_details[0][0]
+		obj.pcf=higher_details[0][1]
+		obj.pcf_name=higher_details[0][2]
+		obj.church=higher_details[0][3]
+		obj.church_name=higher_details[0][4]
+		obj.church_group=higher_details[0][5]
+		obj.group_church_name=higher_details[0][6]
+		obj.zone=higher_details[0][7]
+		obj.zone_name=higher_details[0][8]
+		obj.region=higher_details[0][9]
+		obj.region_name=higher_details[0][10]
 		obj.contact_phone_no=dts['contact_phone_no']
 		obj.contact_email_id=dts['contact_email_id']
 		obj.insert(ignore_permissions=True)
@@ -553,6 +566,7 @@ def create_pcf(data):
 
 	"""
 	dts=json.loads(data)
+	print dts
 	qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
 	valid=frappe.db.sql(qry)
 	if not valid:
@@ -569,10 +583,16 @@ def create_pcf(data):
 		obj=frappe.new_doc("PCFs")
 		obj.pcf_name=dts['pcf_name']
 		obj.pcf_code=dts['pcf_code']
-		obj.zone=dts['zone']
-		obj.region=dts['region']
-		obj.church_group=dts['church_group']
 		obj.church=dts['church']
+		#return "select church_name,church_group,church_group_name,zone,zone_name,region,region_name from `tabChurches` where name='%s'"%(dts['church'])
+		higher_details=frappe.db.sql("select church_name,church_group,church_group_name,zone,zone_name,region,region_name from `tabChurches` where name='%s'"%(dts['church']))
+		obj.church_name=higher_details[0][0]
+		obj.church_group=higher_details[0][1]
+		obj.group_church_name=higher_details[0][2]
+		obj.zone=higher_details[0][3]
+		obj.zone_name=higher_details[0][4]
+		obj.region=higher_details[0][5]
+		obj.region_name=higher_details[0][6]
 		obj.contact_phone_no=dts['contact_phone_no']
 		obj.contact_email_id=dts['contact_email_id']
 		obj.insert(ignore_permissions=True)
@@ -748,12 +768,21 @@ def create_meetings(data):
         obj.to_date=dts['to_date']
         obj.venue=dts['venue']
         obj.cell=dts['cell']
-        obj.senior_cell=dts['senior_cell']
-        obj.zone=dts['zone']
-        obj.region=dts['region']
-        obj.church_group=dts['church_group']
-        obj.church=dts['church']
-        obj.pcf=dts['pcf']
+        higher_details=frappe.db.sql("select senior_cell_name,pcf,pcf_name ,church,church_name,church_group,group_church_name,zone,zone_name,region,region_name,cell_name,senior_cell,senior_cell_name from `tabCells` where name='%s'"%(dts['cell']))
+	obj.senior_cell=higher_details[0][12]
+	obj.senior_cell_name=higher_details[0][13]
+	obj.cell_name=higher_details[0][11]
+	obj.senior_cell_name=higher_details[0][0]
+	obj.pcf=higher_details[0][1]
+	obj.pcf_name=higher_details[0][2]
+	obj.church=higher_details[0][3]
+	obj.church_name=higher_details[0][4]
+	obj.church_group=higher_details[0][5]
+	obj.group_church_name=higher_details[0][6]
+	obj.zone=higher_details[0][7]
+	obj.zone_name=higher_details[0][8]
+	obj.region=higher_details[0][9]
+	obj.region_name=higher_details[0][10]
         obj.flags.ignore_validate=True
         obj.insert(ignore_permissions=True)
         obj.set('invitation_member_details', [])
@@ -1560,6 +1589,8 @@ def event_participents(data):
     Event details og selected event
     """
     dts=json.loads(data)
+    # print "request in event_participents"
+    # print dts
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
     if not valid:
@@ -1568,6 +1599,8 @@ def event_participents(data):
                 "message":"User name or Password is incorrect"
         }       
     data=frappe.db.sql("select a.name as `name` ,a.member,a.member_name,ifnull(a.present,0) as present,a.comments from `tabInvitation Member Details`  a,`tabAttendance Record` b  where b.attendance_type='Event Attendance' and a.parent=b.name and b.event=%s order by a.member ",dts['event_id'],as_dict=True)
+    # print "responce----------------"
+    # print data
     return data
                 
 
@@ -1578,6 +1611,8 @@ def event_attendance(data):
     update Attendance Record
     """
     dts=json.loads(data)
+    # print "request in event_attendance"
+    # print dts
     qry="select user from __Auth where user='"+cstr(dts['username'])+"' and password=password('"+cstr(dts['userpass'])+"') "
     valid=frappe.db.sql(qry)
     if not valid:
@@ -1586,7 +1621,7 @@ def event_attendance(data):
                 "message":"User name or Password is incorrect"
         }
        
-    for record in dts['record']:
+    for record in dts['records']:
         if not record['present'] :
             record['present']=0
         frappe.db.sql("update `tabInvitation Member Details` set present=%s where name=%s",(record['present'],record['name']))
@@ -2020,7 +2055,8 @@ def dashboard(data):
                 data['membership_strength']=[{"new_converts":0,"total_member_count":0,"month":mydate.strftime("%B")}]
 	
         match_conditions,cond=get_match_conditions('Partnership Record',dts['username'])
-        partnership=frappe.db.sql("SELECT MONTHNAME(creation) as Month,ifnull( ( SELECT SUM(amount) FROM `tabPartnership Record`   WHERE giving_or_pledge='Giving' %s  AND partnership_arms=p.partnership_arms   AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS `giving`,   ifnull(   (  SELECT  SUM(amount)  FROM  `tabPartnership Record`  WHERE  giving_or_pledge='Pledge'  %s  AND partnership_arms=p.partnership_arms  AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS pledge FROM   `tabPartnership Record` p WHERE   date(creation) between date_sub(now(),INTERVAL 120 DAY) AND now() AND partnership_arms IS NOT NULL %s GROUP BY   YEAR(creation),   MONTH(creation)"%(cond,cond,cond),as_dict=1)
+        partnership=frappe.db.sql("SELECT MONTHNAME(creation) as Month,ifnull( ( SELECT SUM(amount) FROM `tabPartnership Record`   WHERE giving_or_pledge='Giving' %s  AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS `giving`,   ifnull(   (  SELECT  SUM(amount)  FROM  `tabPartnership Record`  WHERE  giving_or_pledge='Pledge'  %s  AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS pledge FROM   `tabPartnership Record` p WHERE   date(creation) between date_sub(now(),INTERVAL 120 DAY) AND now() AND partnership_arms IS NOT NULL %s GROUP BY   YEAR(creation),   MONTH(creation)"%(cond,cond,cond),as_dict=1)
+        #frappe.errprint("SELECT MONTHNAME(creation) as Month,ifnull( ( SELECT SUM(amount) FROM `tabPartnership Record`   WHERE giving_or_pledge='Giving' %s  AND partnership_arms=p.partnership_arms   AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS `giving`,   ifnull(   (  SELECT  SUM(amount)  FROM  `tabPartnership Record`  WHERE  giving_or_pledge='Pledge'  %s  AND partnership_arms=p.partnership_arms  AND YEAR(creation)=YEAR(p.creation)  AND MONTH(creation)=MONTH(p.creation)),0) AS pledge FROM   `tabPartnership Record` p WHERE   date(creation) between date_sub(now(),INTERVAL 120 DAY) AND now() AND partnership_arms IS NOT NULL %s GROUP BY   YEAR(creation),   MONTH(creation)"%(cond,cond,cond))
         data['partnership']=partnership
 
 	return data
@@ -2471,12 +2507,16 @@ def message_braudcast_details(data):
                 "status":"401",
                 "message":"User name or Password is incorrect"
         }
-    if dts['tbl']=='FT':
-       qry="select name,ftv_name ,email_id,phone_1 from `tabFirst Timer` where email_id in (select u.name from tabUser u,tabUserRole ur where u.enabled=1 and ur.role='Member' )"
-    elif dts['tbl']=='Member':
-       qry="select name,member_name as ftv_name,email_id,phone_1 from tabMember where email_id in (select u.name from tabUser u,tabUserRole ur where u.enabled=1 and ur.role='Member') "
+    if 'tbl' in dts and dts['tbl']=='FT':
+       match_conditions,cond=get_match_conditions('First Timer',dts['username'])
+       qry="select name,ftv_name ,email_id,phone_1 from `tabFirst Timer` WHERE '1'=1 %s"%(cond)
+    elif 'tbl' in dts and dts['tbl']=='Member':
+       match_conditions,cond=get_match_conditions('Member',dts['username'])
+       qry="select name,member_name as ftv_name,email_id,phone_1 from tabMember where email_id not IN ( SELECT DISTINCT parent FROM tabUserRole WHERE role IN ('PCF Leader','Cell Leader', 'Senior Cell Leader','Church Pastor','Group Church Pastor','Regional Pastor','Zonal Pastor')) %s"%(cond)
     else:
-        qry="select name,member_name as ftv_name,email_id,phone_1 from tabMember where email_id in (select distinct parent from tabUserRole where role in ('PCF Leader','Cell Leader','Senior Cell Leader','Church Pastor','Group Church Pastor','Regional Pastor','Zonal Pastor'))"
+    	match_conditions,cond=get_match_conditions('Member',dts['username'])
+        qry="select name,member_name as ftv_name,email_id,phone_1 from tabMember where email_id in (select distinct parent from tabUserRole where role in ('PCF Leader','Cell Leader','Senior Cell Leader','Church Pastor','Group Church Pastor','Regional Pastor','Zonal Pastor')) %s"%(cond)
+    print "qry----------------------"+qry
     res=frappe.db.sql(qry,as_dict=1)
     return res
 
