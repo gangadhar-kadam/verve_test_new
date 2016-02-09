@@ -30,6 +30,23 @@
    "set_only_once": 0
   }, 
   {
+   "fieldname": "image", 
+   "fieldtype": "Attach", 
+   "label": "Image", 
+   "options": "image", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
+   "fieldname": "image_view", 
+   "fieldtype": "Image", 
+   "in_list_view": 0, 
+   "label": "Image View", 
+   "options": "image", 
+   "permlevel": 0, 
+   "precision": ""
+  }, 
+  {
    "fieldname": "title", 
    "fieldtype": "Select", 
    "in_list_view": 0, 
@@ -263,23 +280,6 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0
-  }, 
-  {
-   "fieldname": "image", 
-   "fieldtype": "Attach", 
-   "label": "Image", 
-   "options": "image", 
-   "permlevel": 0, 
-   "precision": ""
-  }, 
-  {
-   "fieldname": "image_view", 
-   "fieldtype": "Image", 
-   "in_list_view": 0, 
-   "label": "Image View", 
-   "options": "image", 
-   "permlevel": 0, 
-   "precision": ""
   }, 
   {
    "allow_on_submit": 0, 
@@ -1068,7 +1068,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 0, 
- "modified": "2016-01-26 18:09:20.750788", 
+ "modified": "2016-02-09 16:41:13.993056", 
  "modified_by": "Administrator", 
  "module": "Church Ministry", 
  "name": "Member", 
